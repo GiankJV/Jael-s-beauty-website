@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Global styles for Jael's Beauty Salon.
+ *
+ * We rely on CSS variables for fonts to allow dynamic injection by
+ * `next/font/google`.  See `app/layout.tsx` for their definitions.
+ */
+
+:root {
+  --font-display: 'Fraunces';
+  --font-body: 'Quicksand';
+}
+
+html,
+body {
+  @apply text-ink bg-pink scroll-smooth;
+  font-family: var(--font-body), sans-serif;
+}
+
+/* Generic card component used throughout the site */
+.card {
+  @apply bg-beige rounded-2xl shadow-md p-6;
+}
+
+/* Utility for visually-hidden text (for accessibility) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

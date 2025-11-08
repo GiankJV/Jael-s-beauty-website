@@ -1,0 +1,133 @@
+"use client";
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+export interface HeaderProps {
+  /**
+   * Callback executed when the user clicks on the “Book Now” button.
+   */
+  onOpenBooking?: () => void;
+}
+
+/**
+ * Responsive site header that hides when scrolling down and reappears on
+ * scroll up. Includes navigation links and a prominent “Book Now” CTA.
+ */
+export default function Header({ onOpenBooking }: HeaderProps) {
+  const [hidden, setHidden] = useState(false);
+  const [lastY, setLastY] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      const currentY = window.scrollY;
+      setHidden(currentY > lastY && currentY > 100);
+      setLastY(currentY);
+    }
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [lastY]);
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 bg-pink/90 backdrop-blur-md ${
+        hidden ? '-translate-y-full' : 'translate-y-0'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+        <Link href="/" aria-label="Jael's Beauty Salon home" className="flex items-center gap-2">
+          <Image
+            src="/jaels-logo.png"
+            alt="Jael's Beauty Salon logo"
+            width={40}
+            height={40}
+            className="h-10 w-10 object-contain"
+          />
+          <span className="font-display text-xl tracking-wide">Jael’s Beauty Salon</span>
+        </Link>
+        <nav className="hidden md:flex gap-6 items-center font-medium">
+          <Link href="/services" className="hover:text-rose transition-colors">Services</Link>
+          <Link href="/about" className="hover:text-rose transition-colors">About</Link>
+          <Link href="/gallery" className="hover:text-rose transition-colors">Gallery</Link>
+          <Link href="/testimonials" className="hover:text-rose transition-colors">Testimonials</Link>
+          <Link href="/contact" className="hover:text-rose transition-colors">Contact</Link>
+          <button
+            onClick={onOpenBooking}
+            className="ml-4 bg-rose text-white px-4 py-2 rounded-full shadow hover:bg-rose/90 transition"
+          >
+            Book Now
+          </button>
+        </nav>
+        <button
+          className="md:hidden flex items-center justify-center p-2 rounded-md hover:bg-rose/10"
+          aria-label="Open menu"
+          onClick={() => setMobileOpen((open) => !open)}
+        >
+          <svg
+            className="h-6 w-6 text-ink"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+      {/* Mobile menu overlay */}
+      <MobileMenu
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        onOpenBooking={onOpenBooking}
+      />
+    </header>
+  );
+}
+
+// Separate component for mobile menu to avoid re-rendering entire header
+interface MobileMenuProps extends HeaderProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+function MobileMenu({ open, onClose, onOpenBooking }: MobileMenuProps) {
+  return (
+    <div
+      className={`md:hidden fixed inset-0 z-30 bg-ink/70 backdrop-blur-sm transition-opacity duration-300 ${
+        open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+      }`}
+      onClick={onClose}
+    >
+      <div
+        className={`absolute top-16 left-4 right-4 bg-beige rounded-xl p-6 transform transition-transform duration-300 ${
+          open ? 'translate-y-0' : '-translate-y-4'
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <nav className="flex flex-col gap-4 text-lg">
+          <Link href="/services" onClick={onClose}>Services</Link>
+          <Link href="/about" onClick={onClose}>About</Link>
+          <Link href="/gallery" onClick={onClose}>Gallery</Link>
+          <Link href="/testimonials" onClick={onClose}>Testimonials</Link>
+          <Link href="/contact" onClick={onClose}>Contact</Link>
+          <button
+            onClick={() => {
+              onClose();
+              onOpenBooking?.();
+            }}
+            className="mt-4 bg-rose text-white w-full py-2 rounded-full"
+          >
+            Book Now
+          </button>
+        </nav>
+      </div>
+    </div>
+  );
+}
