@@ -1,7 +1,6 @@
 "use client";
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export interface HeaderProps {
@@ -37,17 +36,12 @@ export default function Header({ onOpenBooking }: HeaderProps) {
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
-        <Link href="/" aria-label="Jael's Beauty Salon home" className="flex items-center gap-2">
-          <Image
-            src="/jaels-logo.png"
-            alt="Jael's Beauty Salon logo"
-            width={100}
-            height={100}
-            className="h-80 w-80 object-contain"
-          />
-          
+        <Link href="/" aria-label="Jael's Beauty Salon home" className="flex items-center">
+          <span className="font-display font-bold text-xl text-ink">Jael&apos;s Beauty Salon</span>
+        </Link>
         <nav className="hidden md:flex gap-6 items-center font-medium">
           <Link href="/services" className="hover:text-rose transition-colors">Services</Link>
+          <Link href="/services#spa" className="hover:text-rose transition-colors">Spa</Link>
           <Link href="/about" className="hover:text-rose transition-colors">About</Link>
           <Link href="/gallery" className="hover:text-rose transition-colors">Gallery</Link>
           <Link href="/testimonials" className="hover:text-rose transition-colors">Testimonials</Link>
@@ -112,6 +106,7 @@ function MobileMenu({ open, onClose, onOpenBooking }: MobileMenuProps) {
       >
         <nav className="flex flex-col gap-4 text-lg">
           <Link href="/services" onClick={onClose}>Services</Link>
+          <Link href="/services#spa" onClick={onClose}>Spa</Link>
           <Link href="/about" onClick={onClose}>About</Link>
           <Link href="/gallery" onClick={onClose}>Gallery</Link>
           <Link href="/testimonials" onClick={onClose}>Testimonials</Link>
