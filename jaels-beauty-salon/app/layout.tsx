@@ -2,6 +2,7 @@ import './globals.css';
 import { Fraunces, Quicksand } from 'next/font/google';
 import Script from 'next/script';
 import { BookingProvider } from '@/context/BookingContext';
+import { LanguageProvider } from '@/context/LanguageContext';
 import LayoutWithBooking from '@/components/LayoutWithBooking';
 
 // Load Google fonts and attach them to CSS variables.  The `variable`
@@ -29,11 +30,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       </head>
       <body>
-        {/* Wrap the children within the BookingProvider so any component
-            can access the booking context via useBooking. */}
-        <BookingProvider>
-          <LayoutWithBooking>{children}</LayoutWithBooking>
-        </BookingProvider>
+        {/* Wrap the UI with the language provider so text can toggle between EN/ES */}
+        <LanguageProvider>
+          {/* Booking provider enables Square modal access across the app */}
+          <BookingProvider>
+            <LayoutWithBooking>{children}</LayoutWithBooking>
+          </BookingProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

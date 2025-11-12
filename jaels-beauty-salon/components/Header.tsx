@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useLang } from '@/context/LanguageContext';
 
 export interface HeaderProps {
   /**
@@ -18,6 +19,7 @@ export default function Header({ onOpenBooking }: HeaderProps) {
   const [hidden, setHidden] = useState(false);
   const [lastY, setLastY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { lang, toggleLang } = useLang();
 
   useEffect(() => {
     function onScroll() {
@@ -47,10 +49,17 @@ export default function Header({ onOpenBooking }: HeaderProps) {
           <Link href="/testimonials" className="hover:text-rose transition-colors">Testimonials</Link>
           <Link href="/contact" className="hover:text-rose transition-colors">Contact</Link>
           <button
+            onClick={toggleLang}
+            className="px-3 py-1 rounded-full border border-rose text-rose text-sm hover:bg-rose hover:text-white transition"
+            aria-label="Toggle language"
+          >
+            {lang === 'en' ? 'ES' : 'EN'}
+          </button>
+          <button
             onClick={onOpenBooking}
             className="ml-4 bg-rose text-white px-4 py-2 rounded-full shadow hover:bg-rose/90 transition"
           >
-            Book Now
+            {lang === 'en' ? 'Book Now' : 'Reservar'}
           </button>
         </nav>
         <button
@@ -91,6 +100,7 @@ interface MobileMenuProps extends HeaderProps {
 }
 
 function MobileMenu({ open, onClose, onOpenBooking }: MobileMenuProps) {
+  const { lang, toggleLang } = useLang();
   return (
     <div
       className={`md:hidden fixed inset-0 z-30 bg-ink/70 backdrop-blur-sm transition-opacity duration-300 ${
@@ -113,12 +123,20 @@ function MobileMenu({ open, onClose, onOpenBooking }: MobileMenuProps) {
           <Link href="/contact" onClick={onClose}>Contact</Link>
           <button
             onClick={() => {
+              toggleLang();
+            }}
+            className="px-3 py-1 rounded-full border border-rose text-rose text-sm hover:bg-rose hover:text-white transition"
+          >
+            {lang === 'en' ? 'ES' : 'EN'}
+          </button>
+          <button
+            onClick={() => {
               onClose();
               onOpenBooking?.();
             }}
             className="mt-4 bg-rose text-white w-full py-2 rounded-full"
           >
-            Book Now
+            {lang === 'en' ? 'Book Now' : 'Reservar'}
           </button>
         </nav>
       </div>

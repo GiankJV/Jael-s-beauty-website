@@ -3,6 +3,7 @@
 import ServiceCard, { Service } from '@/components/ServiceCard';
 import SpaCard from '@/components/SpaCard';
 import { useBooking } from '@/context/BookingContext';
+import { useLang } from '@/context/LanguageContext';
 import { spaServices } from '@/lib/services/spa';
 
 const services: Service[] = [
@@ -46,10 +47,15 @@ const services: Service[] = [
 
 export default function ServicesPage() {
   const { openBooking } = useBooking();
+  const { lang } = useLang();
+  const servicesHeading = lang === 'en' ? 'Our Services' : 'Nuestros Servicios';
+  const spaHeading = lang === 'en' ? 'Spa' : 'Spa';
+  const spaSubheading =
+    lang === 'en' ? 'Japanese Head Spa Rituals' : 'Rituales Japoneses para la Cabeza';
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
       <section>
-        <h1 className="font-display text-4xl text-rose text-center mb-8">Our Services</h1>
+        <h1 className="font-display text-4xl text-rose text-center mb-8">{servicesHeading}</h1>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
             <ServiceCard key={service.title} service={service} onOpenBooking={openBooking} />
@@ -60,20 +66,14 @@ export default function ServicesPage() {
       <section id="spa" className="scroll-mt-24 py-12">
         <header className="mb-8 text-center">
           <h2 className="text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-display)' }}>
-            Spa
+            {spaHeading}
           </h2>
-          <p className="mt-2 text-sm opacity-80">Japanese Head Spa Rituals</p>
+          <p className="mt-2 text-sm opacity-80">{spaSubheading}</p>
         </header>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {spaServices.map((s) => (
-            <SpaCard
-              key={s.id}
-              name={s.name}
-              duration={s.duration}
-              price={s.price}
-              bullets={s.bullets}
-            />
+            <SpaCard key={s.id} service={s} />
           ))}
         </div>
       </section>
