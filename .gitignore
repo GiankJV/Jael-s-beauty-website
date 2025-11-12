@@ -1,0 +1,23 @@
+# Dependency directories
+node_modules/
+jaels-beauty-salon/node_modules/
+
+# Next.js build output
+.next/
+jaels-beauty-salon/.next/
+
+# Production builds
+out/
+
+# Env files
+.env
+.env.local
+.env.*
+
+# OS / Editor
+.DS_Store
+.vscode/
+*.log
+
+# Vercel
+.vercel
