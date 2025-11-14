@@ -43,7 +43,6 @@ export default function Header({}: HeaderProps) {
         </Link>
         <nav className="hidden md:flex gap-6 items-center font-medium">
           <Link href="/services" className="hover:text-rose transition-colors">Services</Link>
-          <Link href="/services#spa" className="hover:text-rose transition-colors">Spa</Link>
           <Link href="/about" className="hover:text-rose transition-colors">About</Link>
           <Link href="/gallery" className="hover:text-rose transition-colors">Gallery</Link>
           <Link href="/testimonials" className="hover:text-rose transition-colors">Testimonials</Link>
@@ -109,7 +108,6 @@ function MobileMenu({ open, onClose }: MobileMenuProps) {
       >
         <nav className="flex flex-col gap-4 text-lg">
           <Link href="/services" onClick={onClose}>Services</Link>
-          <Link href="/services#spa" onClick={onClose}>Spa</Link>
           <Link href="/about" onClick={onClose}>About</Link>
           <Link href="/gallery" onClick={onClose}>Gallery</Link>
           <Link href="/testimonials" onClick={onClose}>Testimonials</Link>

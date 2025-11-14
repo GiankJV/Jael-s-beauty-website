@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import { useLang } from '@/context/LanguageContext';
 import { SpaService } from '@/lib/services/spa';
 
@@ -16,14 +15,13 @@ export default function SpaCard({ service }: { service: SpaService }) {
         </p>
       </header>
       <p className="text-sm leading-relaxed">{service.description[lang]}</p>
-      <Link
-        href="/vision"
+      <a
+        href="#book-spa"
         className="mt-5 inline-flex items-center justify-center rounded-full px-5 py-2 text-white"
         style={{ background: '#D7ABA5' }}
-        aria-label={lang === 'en' ? `Start vision quiz` : 'Comienza con tu visión'}
       >
-        {lang === 'en' ? 'Start with your vision' : 'Empezar con tu visión'}
-      </Link>
+        {lang === 'en' ? 'Book this ritual' : 'Reservar este ritual'}
+      </a>
     </article>
   );
 }
