@@ -157,8 +157,28 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
           ${open ? 'translate-x-0' : 'translate-x-full'}
         `}
       >
-        {/* Top row with language pill */}
-        <div className="flex items-center justify-end px-8 pt-10">
+        {/* Top row: X + language pill */}
+        <div className="flex items-center justify-between px-8 pt-10">
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close menu"
+            className="p-2 -ml-2 rounded-full hover:bg-rose/20"
+          >
+            <svg
+              className="h-6 w-6 text-ink"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+
           <button
             type="button"
             onClick={toggleLang}
@@ -189,7 +209,7 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
         </div>
 
         {/* Nav links */}
-        <nav className="mt-16 px-8 flex flex-col space-y-10">
+        <nav className="mt-20 px-8 flex flex-col space-y-12">
           {navLinks.map((link) => (
             <a
               key={link.href}
