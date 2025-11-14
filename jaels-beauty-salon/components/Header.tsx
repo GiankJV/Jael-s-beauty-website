@@ -15,19 +15,19 @@ export interface HeaderProps {
  * Responsive site header that hides when scrolling down and reappears on
  * scroll up. Includes navigation links plus the bilingual vision CTA.
  */
+const navLinks = [
+  { href: '/services', label: { en: 'Services', es: 'Servicios' } },
+  { href: '/about', label: { en: 'About', es: 'Nosotras' } },
+  { href: '/gallery', label: { en: 'Gallery', es: 'Galería' } },
+  { href: '/testimonials', label: { en: 'Testimonials', es: 'Testimonios' } },
+  { href: '/contact', label: { en: 'Contact', es: 'Contacto' } },
+] as const;
+
 export default function Header({}: HeaderProps) {
   const [hidden, setHidden] = useState(false);
   const [lastY, setLastY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { lang, toggleLang } = useLang();
-
-  const navLinks = [
-    { href: '/services', label: { en: 'Services', es: 'Servicios' } },
-    { href: '/about', label: { en: 'About', es: 'Nosotras' } },
-    { href: '/gallery', label: { en: 'Gallery', es: 'Galería' } },
-    { href: '/testimonials', label: { en: 'Testimonials', es: 'Testimonios' } },
-    { href: '/contact', label: { en: 'Contact', es: 'Contacto' } },
-  ] as const;
 
   useEffect(() => {
     function onScroll() {
@@ -106,7 +106,6 @@ export default function Header({}: HeaderProps) {
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        navLinks={navLinks}
       />
     </header>
   );
@@ -116,10 +115,9 @@ export default function Header({}: HeaderProps) {
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
-  navLinks: typeof navLinks;
 }
 
-function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
+function MobileMenu({ open, onClose }: MobileMenuProps) {
   const { lang, toggleLang } = useLang();
   return (
     <div className="md:hidden fixed inset-0 z-40">
