@@ -17,15 +17,6 @@ export default function Footer() {
           <p>729 E Pass Rd h</p>
           <p>Gulfport, MS 39507</p>
           <p className="mt-4">
-            <strong>Phone:</strong> <a href="tel:+16573537263" className="hover:text-rose">(657) 353‑7263</a>
-          </p>
-          <p>
-            <strong>Email:</strong>{' '}
-            <a href="mailto:jaels3beautysalon@gmail.com" className="hover:text-rose">
-              jaels3beautysalon@gmail.com
-            </a>
-          </p>
-          <p className="mt-4">
             <strong>Hours:</strong> Mon–Fri, 8 am–6 pm
           </p>
         </div>

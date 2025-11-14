@@ -3,54 +3,56 @@
 import Link from 'next/link';
 import { useLang } from '@/context/LanguageContext';
 
-interface Category {
-  title: string;
-  description: string;
-}
-
-const categories: Category[] = [
+const cards = [
   {
-    title: 'Hair',
-    description: 'Cuts, colour, extensions and styling for every hair type.',
+    key: 'hair',
+    title: { en: 'Hair', es: 'Cabello' },
+    description: {
+      en: 'Cuts, color, extensions, and styling tailored to every hair type.',
+      es: 'Cortes, color, extensiones y peinados a medida para cada tipo de cabello.',
+    },
+    href: '/vision',
+    cta: { en: 'Start with your vision', es: 'Empezar con tu visión' },
   },
   {
-    title: 'Spa',
-    description: 'Facials, waxing, brows and relaxing spa treatments.',
+    key: 'spa',
+    title: { en: 'Spa', es: 'Spa' },
+    description: {
+      en: 'Japanese-inspired scalp rituals that melt stress and revive shine.',
+      es: 'Rituales japoneses para el cuero cabelludo que alivian el estrés y devuelven el brillo.',
+    },
+    href: '/services#spa',
+    cta: { en: 'Book spa', es: 'Reservar spa' },
   },
 ];
 
-/**
- * Display a grid of key service categories for quick explorations. Each card
- * now nudges guests into the vision quiz instead of the Square modal.
- */
 export default function QuickBookGrid() {
   const { lang } = useLang();
   return (
-    <div className="grid sm:grid-cols-3 gap-6 mt-8">
-      {categories.map((cat) => {
-        const isSpa = cat.title === 'Spa';
-        return (
-          <div key={cat.title} className="card flex flex-col justify-between">
+    <section className="mt-16">
+      <h2
+        className="text-center text-2xl md:text-3xl mb-8"
+        style={{ fontFamily: 'var(--font-display)' }}
+      >
+        {lang === 'en' ? 'How can we pamper you?' : '¿Cómo podemos consentirte?'}
+      </h2>
+      <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+        {cards.map((card) => (
+          <div key={card.key} className="card flex flex-col justify-between text-left">
             <div>
-              <h3 className="font-display text-xl mb-2 text-rose">{cat.title}</h3>
-              <p className="text-sm mb-4">{cat.description}</p>
+              <h3 className="font-display text-xl mb-2 text-rose">{card.title[lang]}</h3>
+              <p className="text-sm md:text-base opacity-80">{card.description[lang]}</p>
             </div>
             <Link
-              href={isSpa ? '/services#spa' : '/vision'}
-              className="self-start mt-auto inline-flex items-center justify-center rounded-full px-4 py-2 text-white shadow hover:bg-rose/90 transition"
+              href={card.href}
+              className="mt-6 inline-flex items-center justify-center rounded-full px-5 py-2 text-white shadow hover:bg-rose/90 transition"
               style={{ background: '#D7ABA5' }}
             >
-              {isSpa
-                ? lang === 'en'
-                  ? 'Book spa treatments'
-                  : 'Reservar spa'
-                : lang === 'en'
-                ? 'Start with your vision'
-                : 'Empezar con tu visión'}
+              {card.cta[lang]}
             </Link>
           </div>
-        );
-      })}
-    </div>
+        ))}
+      </div>
+    </section>
   );
 }

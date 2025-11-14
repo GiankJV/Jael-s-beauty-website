@@ -1,12 +1,13 @@
 "use client";
 
 import Image from 'next/image';
-import Link from 'next/link';
 import QuickBookGrid from '@/components/QuickBookGrid';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import InstagramGrid from '@/components/InstagramGrid';
+import { useLang } from '@/context/LanguageContext';
 
 export default function Home() {
+  const { lang } = useLang();
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BeautySalon',
@@ -53,38 +54,35 @@ export default function Home() {
               className="object-contain"
             />
             <h1 className="font-display text-4xl sm:text-5xl text-rose drop-shadow-sm">
-              Beauty Beyond Expectations
+              {lang === 'en' ? 'Beauty Beyond Expectations' : 'Belleza más allá de tus expectativas'}
             </h1>
             <p className="mt-4 text-lg text-ink max-w-prose">
-              Indulge in a luxurious experience crafted to leave you feeling confident and radiant. Our
-              stylists and estheticians deliver bespoke hair and spa services tailored to your unique
-              beauty needs.
+              {lang === 'en'
+                ? 'Indulge in a luxurious experience crafted to leave you feeling confident and radiant. Our stylists and estheticians deliver bespoke hair and spa services tailored to your unique beauty needs.'
+                : 'Disfruta de una experiencia de lujo diseñada para que te sientas segura y radiante. Nuestras estilistas y esteticistas crean servicios de cabello y spa a tu medida.'}
             </p>
-            <Link
-              href="/vision"
-              className="mt-6 inline-flex items-center justify-center bg-rose text-white px-8 py-3 rounded-full shadow-lg hover:bg-rose/90 transition"
-            >
-              Start with your vision
-            </Link>
           </div>
         </div>
       </section>
 
       {/* Quick book grid */}
-      <section className="max-w-7xl mx-auto px-6 py-12">
-        <h2 className="font-display text-3xl text-center text-rose mb-8">How can we pamper you?</h2>
+      <section className="px-6 py-12">
         <QuickBookGrid />
       </section>
 
       {/* Testimonials Carousel */}
       <section className="bg-beige py-12 px-6">
-        <h2 className="font-display text-3xl text-center text-rose mb-8">What Our Clients Say</h2>
+        <h2 className="font-display text-3xl text-center text-rose mb-8">
+          {lang === 'en' ? 'What Our Clients Say' : 'Lo que dicen nuestras clientas'}
+        </h2>
         <TestimonialCarousel />
       </section>
 
       {/* Instagram grid */}
       <section className="max-w-7xl mx-auto px-6 py-12">
-        <h2 className="font-display text-3xl text-center text-rose mb-8">Follow Us on Instagram</h2>
+        <h2 className="font-display text-3xl text-center text-rose mb-8">
+          {lang === 'en' ? 'Follow us on Instagram' : 'Síguenos en Instagram'}
+        </h2>
         <InstagramGrid />
       </section>
     </div>
