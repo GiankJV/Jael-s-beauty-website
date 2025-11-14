@@ -65,11 +65,8 @@ export default function Header({}: HeaderProps) {
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between py-5 md:py-6 px-6">
-        <Link href="/" aria-label="Jael's Beauty Salon home" className="flex items-center">
-          <span className="site-brand">
-            <span className="site-brand-script">Jael&apos;s</span>
-            <span className="site-brand-smallcaps">BEAUTY SALON</span>
-          </span>
+        <Link href="/" aria-label="Jael's Beauty Salon home">
+          <BrandLogo />
         </Link>
         <nav className="hidden md:flex gap-6 items-center font-body text-[15px] md:text-base">
           {navLinks.map(({ href, label }) => (
@@ -106,10 +103,10 @@ export default function Header({}: HeaderProps) {
           </svg>
         </button>
       </div>
-      {/* Mobile menu overlay */}
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
+        navLinks={navLinks}
       />
     </header>
   );
@@ -119,46 +116,52 @@ export default function Header({}: HeaderProps) {
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
+  navLinks: typeof navLinks;
 }
 
-function MobileMenu({ open, onClose }: MobileMenuProps) {
+function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
   const { lang, toggleLang } = useLang();
-  const navLinks = [
-    { href: '/services', label: { en: 'Services', es: 'Servicios' } },
-    { href: '/about', label: { en: 'About', es: 'Nosotras' } },
-    { href: '/gallery', label: { en: 'Gallery', es: 'Galería' } },
-    { href: '/testimonials', label: { en: 'Testimonials', es: 'Testimonios' } },
-    { href: '/contact', label: { en: 'Contact', es: 'Contacto' } },
-  ] as const;
   return (
-    <div
-      className={`md:hidden fixed inset-0 z-30 bg-beige/95 transition-opacity duration-300 ${
-        open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-      }`}
-      onClick={onClose}
-    >
+    <div className="md:hidden fixed inset-0 z-40">
       <div
-        className={`absolute top-16 left-4 right-4 bg-beige rounded-xl p-6 transform transition-transform duration-300 ${
-          open ? 'translate-y-0' : '-translate-y-4'
+        className={`absolute inset-0 bg-black/20 transition-opacity duration-300 ${
+          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
-        onClick={(e) => e.stopPropagation()}
+        onClick={onClose}
+      />
+      <nav
+        className={`absolute inset-y-0 right-0 w-full max-w-xs bg-beige px-6 pt-16 pb-8 shadow-xl flex flex-col justify-between transform transition-transform duration-300 ${
+          open ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
-        <nav className="flex flex-col gap-4 text-lg font-body">
+        <div className="space-y-6 text-lg font-body">
           {navLinks.map(({ href, label }) => (
-            <Link key={href} href={href} onClick={onClose}>
+            <Link
+              key={href}
+              href={href}
+              onClick={onClose}
+              className="block hover:text-rose transition-colors"
+            >
               {label[lang]}
             </Link>
           ))}
-          <button
-            onClick={() => {
-              toggleLang();
-            }}
-            className="px-3 py-1 rounded-full border border-rose text-rose text-sm hover:bg-rose hover:text-white transition"
-          >
-            {lang === 'en' ? 'ES' : 'EN'}
-          </button>
-        </nav>
-      </div>
+        </div>
+        <button
+          onClick={toggleLang}
+          className="w-full rounded-full border border-rose/50 py-3 text-sm font-body hover:bg-rose hover:text-white transition"
+        >
+          {lang === 'en' ? 'ES' : 'EN'}
+        </button>
+      </nav>
     </div>
+  );
+}
+
+function BrandLogo() {
+  return (
+    <span className="flex items-center gap-2 text-ink">
+      <span className="font-logo text-2xl md:text-3xl leading-none">Jael&apos;s</span>
+      <span className="font-brand-small text-[0.7rem] md:text-xs">Beauty Salon</span>
+    </span>
   );
 }

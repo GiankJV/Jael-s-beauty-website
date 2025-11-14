@@ -41,6 +41,17 @@ body {
   color: rgba(74, 74, 74, 0.8);
 }
 
+.font-logo {
+  font-family: var(--font-allura), 'Allura', cursive;
+  letter-spacing: 0.03em;
+}
+
+.font-brand-small {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
 /* Generic card component used throughout the site */
 .card {
   @apply bg-beige rounded-2xl shadow-md p-6;
