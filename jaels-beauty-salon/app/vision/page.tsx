@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useLang } from '@/context/LanguageContext';
 import { hairstyles } from '@/lib/hairstyles';
 import { scoreHairstyles, VisionAnswers } from '@/lib/visionQuiz';
-import QuoteRequestModal from '@/components/QuoteRequestModal';
 
 const goalsOptions = [
   { value: 'lived-in', label: { en: 'Lived-in blonde / balayage', es: 'Rubio natural / balayage' } },
@@ -49,8 +49,7 @@ export default function VisionPage() {
   const { lang } = useLang();
   const [answers, setAnswers] = useState<VisionAnswers>({});
   const [stepIndex, setStepIndex] = useState(0);
-  const [selectedHairstyleId, setSelectedHairstyleId] = useState<string | null>(null);
-  const [quoteOpen, setQuoteOpen] = useState(false);
+  const router = useRouter();
 
   const currentStep = steps[stepIndex];
   const scored = scoreHairstyles(hairstyles, answers);
@@ -63,12 +62,18 @@ export default function VisionPage() {
   const next = () => setStepIndex((i) => Math.min(i + 1, steps.length));
   const back = () => setStepIndex((i) => Math.max(i - 1, 0));
 
-  const openQuote = (id: string) => {
-    setSelectedHairstyleId(id);
-    setQuoteOpen(true);
+  const openQuote = (id?: string) => {
+    const params = new URLSearchParams();
+    if (id) params.set('hairstyleId', id);
+    const filteredAnswers = Object.fromEntries(
+      Object.entries(answers).filter(([, value]) => value)
+    );
+    if (Object.keys(filteredAnswers).length > 0) {
+      params.set('answers', JSON.stringify(filteredAnswers));
+    }
+    const query = params.toString();
+    router.push(`/vision/quote${query ? `?${query}` : ''}`);
   };
-
-  const closeQuote = () => setQuoteOpen(false);
 
   const renderOptions = () => {
     const commonClasses =
@@ -334,13 +339,6 @@ export default function VisionPage() {
               </article>
             ))}
           </div>
-
-          <QuoteRequestModal
-            open={quoteOpen}
-            onClose={closeQuote}
-            selectedHairstyleId={selectedHairstyleId}
-            answers={answers}
-          />
         </section>
       )}
     </div>

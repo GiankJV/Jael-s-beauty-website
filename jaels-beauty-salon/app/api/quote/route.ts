@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const lang = String(formData.get('lang') || 'en');
     const hairstyleId = String(formData.get('hairstyleId') || '');
     const answersRaw = String(formData.get('answers') || '{}');
-    const preferredTimes = String(formData.get('preferredTimes') || '');
+    const preferredTimes = String(formData.get('slots') || '');
 
     if (!name || !email || !consent) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
