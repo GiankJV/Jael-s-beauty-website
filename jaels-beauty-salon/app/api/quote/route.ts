@@ -40,9 +40,11 @@ export async function POST(req: NextRequest) {
         continue;
       }
       const arrayBuffer = await file.arrayBuffer();
-      const blob = await put(`quotes/${Date.now()}-${file.name}`, new Uint8Array(arrayBuffer), {
-        access: 'public',
-      });
+      const blob = await put(
+        `quotes/${Date.now()}-${file.name}`,
+        new Uint8Array(arrayBuffer),
+        { access: 'public' }
+      );
       photoLinks.push(blob.url);
     }
 
