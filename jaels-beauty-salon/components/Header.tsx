@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useLang } from '@/context/LanguageContext';
 
 export interface HeaderProps {
@@ -16,12 +15,12 @@ export interface HeaderProps {
  * Responsive site header that hides when scrolling down and reappears on
  * scroll up. Includes navigation links plus the bilingual vision CTA.
  */
-type NavLink = {
+type NavLinkConfig = {
   href: string;
   label: { en: string; es: string };
 };
 
-const navLinks: NavLink[] = [
+const navLinks: NavLinkConfig[] = [
   { href: '/services', label: { en: 'Services', es: 'Servicios' } },
   { href: '/about', label: { en: 'About', es: 'Nosotras' } },
   { href: '/gallery', label: { en: 'Gallery', es: 'Galería' } },
@@ -109,55 +108,60 @@ export default function Header({}: HeaderProps) {
           </svg>
         </button>
       </div>
-      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} navLinks={navLinks} />
+      <MobileMenu
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        navLinks={navLinks.map(({ href, label }) => ({ href, label: label[lang] }))}
+      />
     </header>
   );
 }
 
-// Separate component for mobile menu to avoid re-rendering entire header
-interface MobileMenuProps {
+type NavLink = {
+  href: string;
+  label: string;
+};
+
+type MobileMenuProps = {
   open: boolean;
   onClose: () => void;
   navLinks: NavLink[];
-}
+};
 
 function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
-  const { lang, toggleLang } = useLang();
+  const { toggleLang, lang } = useLang();
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          initial={{ x: '100%', opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: '100%', opacity: 0 }}
-          transition={{ type: 'tween', duration: 0.25 }}
-          className="fixed inset-0 z-50 bg-[#e8b3b3] md:hidden"
-        >
-          <div className="flex h-full flex-col">
-            <nav className="flex flex-1 flex-col justify-center px-10 space-y-8">
-              {navLinks.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={onClose}
-                  className="py-2 text-left font-heading text-2xl tracking-wide text-ink hover:opacity-80 transition"
-                >
-                  {label[lang]}
-                </Link>
-              ))}
-            </nav>
-            <div className="pb-10 px-10">
-              <button
-                onClick={toggleLang}
-                className="w-full rounded-full border border-rose/50 px-6 py-2 text-base font-body text-rose hover:bg-rose/20 transition"
-              >
-                {lang === 'en' ? 'ES' : 'EN'}
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div
+      className={`fixed inset-0 z-[9999] md:hidden transform transition-transform duration-300 ${
+        open ? 'translate-x-0' : 'translate-x-full'
+      } bg-[#e8b3b3]`}
+    >
+      <div className="flex h-full w-full flex-col">
+        <nav className="mt-24 px-10 flex flex-col space-y-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={onClose}
+              className="font-heading text-2xl tracking-wide text-ink text-left"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <div className="mt-auto px-10 pb-10">
+          <button
+            onClick={() => {
+              toggleLang();
+              onClose();
+            }}
+            className="w-full rounded-full border border-rose/50 px-6 py-2 text-base font-body text-rose hover:bg-rose/20 transition"
+          >
+            {lang === 'en' ? 'ES' : 'EN'}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
