@@ -106,6 +106,7 @@ export default function Header({}: HeaderProps) {
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
+        navLinks={navLinks}
       />
     </header>
   );
@@ -115,22 +116,24 @@ export default function Header({}: HeaderProps) {
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
+  navLinks: typeof navLinks;
 }
 
-function MobileMenu({ open, onClose }: MobileMenuProps) {
+function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
   const { lang, toggleLang } = useLang();
   return (
-    <div className="md:hidden fixed inset-0 z-40">
-      <div
-        className={`absolute inset-0 bg-black/20 transition-opacity duration-300 ${
-          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={onClose}
-      />
+    <div
+      aria-hidden={!open}
+      className={`fixed inset-0 z-50 transition-all duration-300 ${
+        open ? 'pointer-events-auto bg-black/30' : 'pointer-events-none bg-transparent'
+      }`}
+      onClick={open ? onClose : undefined}
+    >
       <nav
-        className={`absolute inset-y-0 right-0 w-full max-w-xs bg-beige px-6 pt-16 pb-8 shadow-xl flex flex-col justify-between transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-3/4 max-w-xs bg-beige shadow-xl px-6 pt-16 pb-8 flex flex-col justify-between transform transition-transform duration-300 ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="space-y-6 text-lg font-body">
           {navLinks.map(({ href, label }) => (
