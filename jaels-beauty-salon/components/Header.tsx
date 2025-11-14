@@ -132,7 +132,7 @@ function MobileMenu({ onClose }: MobileMenuProps) {
       onClick={onClose}
     >
       <div
-        className="flex min-h-screen flex-col items-center justify-center gap-4 px-6"
+        className="flex min-h-screen flex-col items-center justify-center gap-8 px-6"
         onClick={(e) => e.stopPropagation()}
       >
         {navLinks.map(({ href, label }) => (
@@ -140,7 +140,7 @@ function MobileMenu({ onClose }: MobileMenuProps) {
             key={href}
             href={href}
             onClick={onClose}
-            className="w-full py-4 text-center font-heading text-xl tracking-wide text-ink hover:opacity-80 transition"
+            className="w-full py-4 text-center font-heading text-2xl tracking-wide text-ink hover:opacity-80 transition"
           >
             {label[lang]}
           </Link>
@@ -148,7 +148,7 @@ function MobileMenu({ onClose }: MobileMenuProps) {
         <div className="mt-10 flex w-full justify-center">
           <button
             onClick={toggleLang}
-            className="rounded-full border border-rose/50 px-6 py-2 text-sm font-body text-rose hover:bg-rose/20 transition"
+            className="rounded-full border border-rose/50 px-6 py-2 text-base font-body text-rose hover:bg-rose/20 transition"
           >
             {lang === 'en' ? 'ES' : 'EN'}
           </button>
