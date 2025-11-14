@@ -77,7 +77,7 @@ export default function HairLooksReel() {
         </a>
       </div>
 
-      <p className="text-xs md:text-sm opacity-80 mb-4">
+      <p className="text-sm md:text-base opacity-80 mb-4">
         {lang === 'en'
           ? 'A peek at some of our color, cuts and styling work. Share your own hair photos and vision to receive a personalized quote.'
           : 'Un vistazo a algunos de nuestros trabajos de color, cortes y peinados. Comparte tus fotos y tu visión para recibir una cotización personalizada.'}

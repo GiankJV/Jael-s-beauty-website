@@ -21,6 +21,16 @@ const initialSlots: Slot[] = [
   { date: null, time: '' },
 ];
 
+const TIME_OPTIONS = [
+  '08:00 AM',
+  '09:30 AM',
+  '11:00 AM',
+  '12:30 PM',
+  '02:00 PM',
+  '03:30 PM',
+  '05:00 PM',
+];
+
 export default function QuoteRequestFlow() {
   const { lang } = useLang();
   const searchParams = useSearchParams();
@@ -430,12 +440,20 @@ function Step3TimingAndConsent({
               <label className="block text-xs mb-1">
                 {lang === 'en' ? 'Preferred time' : 'Horario preferido'}
               </label>
-              <input
-                type="time"
+              <select
                 value={slot.time}
                 onChange={(e) => handleSlotChange(idx, { time: e.target.value })}
-                className="w-full rounded-full border border-rose/40 px-3 py-2 text-sm bg-white"
-              />
+                className="w-full rounded-full border border-ink/10 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose/40 focus:border-rose/60 bg-white"
+              >
+                <option value="">
+                  {lang === 'en' ? 'Select a time' : 'Selecciona un horario'}
+                </option>
+                {TIME_OPTIONS.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         ))}

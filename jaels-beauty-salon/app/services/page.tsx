@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import SpaCard from '@/components/SpaCard';
 import HairLooksReel from '@/components/HairLooksReel';
-import SquareBookingEmbed from '@/components/SquareBookingEmbed';
 import { useLang } from '@/context/LanguageContext';
 import { spaServices } from '@/lib/services/spa';
 
@@ -15,14 +14,14 @@ export default function ServicesPage() {
     lang === 'en' ? 'Japanese Head Spa Rituals' : 'Rituales Japoneses para la Cabeza';
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
-      <section className="max-w-4xl mx-auto text-center mb-8">
+      <section className="text-center mb-8">
         <h1
-          className="text-4xl md:text-5xl mb-3 text-rose"
+          className="text-4xl md:text-5xl mb-4 text-rose"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {servicesHeading}
         </h1>
-        <p className="text-sm md:text-base opacity-80 mb-4">
+        <p className="text-sm md:text-base opacity-80 mb-4 max-w-2xl mx-auto">
           {lang === 'en'
             ? 'Discover our signature Japanese head spa rituals, or start with your vision if you’re dreaming of a custom hair transformation.'
             : 'Descubre nuestros rituales de spa capilar japonés o empieza con tu visión si buscas una transformación de color o peinado a medida.'}
@@ -38,55 +37,47 @@ export default function ServicesPage() {
 
       <HairLooksReel />
 
-      <section id="spa" className="scroll-mt-24 py-12">
-        <header className="mb-8 text-center">
-          <h2 className="text-3xl md:text-4xl" style={{ fontFamily: 'var(--font-display)' }}>
-            {spaHeading}
-          </h2>
-          <p className="mt-2 text-sm opacity-80">{spaSubheading}</p>
-        </header>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {spaServices.map((s) => (
-            <SpaCard key={s.id} service={s} />
-          ))}
-        </div>
+      <section className="mt-8 max-w-2xl mx-auto text-center">
+        <h3
+          className="text-xl md:text-2xl mb-3"
+          style={{ fontFamily: 'var(--font-display)' }}
+        >
+          {lang === 'en' ? 'What to expect' : 'Qué puedes esperar'}
+        </h3>
+        <ol className="space-y-2 text-sm md:text-base opacity-85 text-left md:text-center list-decimal list-inside">
+          <li>
+            {lang === 'en'
+              ? 'A brief consultation to understand your scalp, hair, and relaxation goals.'
+              : 'Una breve consulta para entender tu cuero cabelludo, cabello y objetivos de relajación.'}
+          </li>
+          <li>
+            {lang === 'en'
+              ? 'Deep cleansing, massage, and ritual tailored to your needs.'
+              : 'Limpieza profunda, masaje y ritual adaptado a tus necesidades.'}
+          </li>
+          <li>
+            {lang === 'en'
+              ? 'Finishing touches and at-home care guidance to extend your results.'
+              : 'Toques finales y guía de cuidado en casa para prolongar tus resultados.'}
+          </li>
+        </ol>
       </section>
 
-      <section className="mt-12 max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
-        <div>
-          <h3
-            className="text-xl mb-3"
-            style={{ fontFamily: 'var(--font-display)' }}
-          >
-            {lang === 'en' ? 'What to expect' : 'Qué puedes esperar'}
-          </h3>
-          <ol className="text-sm space-y-2 list-decimal list-inside opacity-90">
-            <li>
-              {lang === 'en'
-                ? 'A brief consultation to understand your scalp, hair, and relaxation goals.'
-                : 'Una breve consulta para entender tu cuero cabelludo, cabello y objetivos de relajación.'}
-            </li>
-            <li>
-              {lang === 'en'
-                ? 'Deep cleansing, massage, and ritual tailored to your needs.'
-                : 'Limpieza profunda, masaje y ritual adaptado a tus necesidades.'}
-            </li>
-            <li>
-              {lang === 'en'
-                ? 'Finishing touches and at-home care guidance to extend your results.'
-                : 'Toques finales y guía de cuidado en casa para prolongar tus resultados.'}
-            </li>
-          </ol>
-        </div>
-        <div>
-          <h3
-            className="text-xl mb-3"
-            style={{ fontFamily: 'var(--font-display)' }}
-          >
+      <section id="spa" className="scroll-mt-24 py-12">
+        <header className="mb-6 text-center">
+          <h2 className="text-2xl md:text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
+            {spaHeading}
+          </h2>
+          <p className="mt-2 text-sm md:text-base opacity-80">
+            {spaSubheading}
+          </p>
+        </header>
+
+        <div className="max-w-2xl mx-auto mb-6 text-sm md:text-base">
+          <h3 className="font-semibold mb-2 text-center">
             {lang === 'en' ? "Perfect if you're feeling…" : 'Perfecto si te sientes…'}
           </h3>
-          <ul className="text-sm space-y-2 list-disc list-inside opacity-90">
+          <ul className="list-disc list-inside space-y-1 opacity-85 text-left">
             <li>
               {lang === 'en'
                 ? 'Stressed, heavy, or mentally overloaded.'
@@ -104,22 +95,11 @@ export default function ServicesPage() {
             </li>
           </ul>
         </div>
-      </section>
 
-      <section id="book-spa" className="mt-12 max-w-3xl mx-auto text-center">
-        <h3
-          className="text-2xl mb-2"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
-          {lang === 'en' ? 'Ready to book your spa ritual?' : '¿Lista para reservar tu ritual de spa?'}
-        </h3>
-        <p className="text-sm opacity-80 mb-6">
-          {lang === 'en'
-            ? 'Choose a time that works for you using our secure Square booking below.'
-            : 'Elige un horario que te funcione usando nuestra agenda segura de Square.'}
-        </p>
-        <div className="bg-beige rounded-2xl p-4 shadow-sm">
-          <SquareBookingEmbed />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {spaServices.map((s) => (
+            <SpaCard key={s.id} service={s} />
+          ))}
         </div>
       </section>
     </div>

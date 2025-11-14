@@ -30,15 +30,23 @@ export default function PhotoDropzone({ files, setFiles }: PhotoDropzoneProps) {
 
   return (
     <div className="space-y-3">
-      <div className="bg-pink/20 border border-pink/40 rounded-xl px-4 py-3 text-xs md:text-sm flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-        <div className="font-medium">
+      <div className="bg-pink/20 border border-pink/40 rounded-xl px-4 py-3 text-xs md:text-sm flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div className="font-semibold">
           {lang === 'en' ? 'Photo guidelines' : 'Indicaciones para las fotos'}
         </div>
-        <ul className="list-disc list-inside opacity-80 text-[11px] md:text-xs">
-          <li>{lang === 'en' ? 'Natural daylight' : 'Luz natural'}</li>
-          <li>{lang === 'en' ? 'Hair down, from behind' : 'Cabello suelto, desde atrás'}</li>
-          <li>{lang === 'en' ? '1–3 photos, max 10MB each' : '1–3 fotos, máximo 10MB cada una'}</li>
-        </ul>
+        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 text-sm md:text-base">
+          <span className="font-medium">
+            {lang === 'en' ? 'Natural daylight' : 'Luz natural'}
+          </span>
+          <span className="font-medium">
+            {lang === 'en' ? 'Hair down, from behind' : 'Cabello suelto, desde atrás'}
+          </span>
+          <span className="font-medium">
+            {lang === 'en'
+              ? '1–3 photos • max 10MB each'
+              : '1–3 fotos • máx. 10MB cada una'}
+          </span>
+        </div>
       </div>
 
       <div
