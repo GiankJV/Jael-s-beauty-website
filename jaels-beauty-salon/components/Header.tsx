@@ -140,6 +140,7 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
         ${open ? 'pointer-events-auto' : 'pointer-events-none'}
       `}
     >
+      {/* Rose background overlay */}
       <div
         className={`
           absolute inset-0 bg-[#e8b3b3]
@@ -148,6 +149,7 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
         `}
       />
 
+      {/* Sliding panel */}
       <div
         className={`
           relative flex h-full w-full flex-col
@@ -155,7 +157,39 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
           ${open ? 'translate-x-0' : 'translate-x-full'}
         `}
       >
-        <nav className="pt-32 px-8 flex flex-col space-y-10">
+        {/* Top row with language pill */}
+        <div className="flex items-center justify-end px-8 pt-10">
+          <button
+            type="button"
+            onClick={toggleLang}
+            className="
+              inline-flex items-center rounded-full
+              border border-rose/70 bg-[#f6e8e8]
+              px-1 py-1 text-xs font-body text-ink shadow-sm
+            "
+            aria-label="Toggle language"
+          >
+            <span
+              className={`
+                px-3 py-0.5 rounded-full transition-colors
+                ${lang === 'en' ? 'bg-rose text-white' : 'text-ink'}
+              `}
+            >
+              EN
+            </span>
+            <span
+              className={`
+                px-3 py-0.5 rounded-full transition-colors
+                ${lang === 'es' ? 'bg-rose text-white' : 'text-ink'}
+              `}
+            >
+              ES
+            </span>
+          </button>
+        </div>
+
+        {/* Nav links */}
+        <nav className="mt-16 px-8 flex flex-col space-y-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -167,18 +201,6 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
             </a>
           ))}
         </nav>
-
-        <div className="mt-auto px-8 pb-12">
-          <button
-            onClick={() => {
-              toggleLang();
-              onClose();
-            }}
-            className="w-full rounded-full border border-rose/60 px-6 py-3 text-base font-body text-rose hover:bg-rose/20 transition"
-          >
-            {lang === 'en' ? 'ES' : 'EN'}
-          </button>
-        </div>
       </div>
     </div>
   );
