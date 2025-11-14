@@ -135,14 +135,14 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
     <div
       className={`
         fixed inset-0 z-[9999] md:hidden
+        bg-[#e8b3b3]
         transition-transform duration-300
         ${open ? 'translate-x-0' : 'translate-x-full'}
       `}
     >
-      <div className="absolute inset-0 bg-[#e8b3b3]" />
 
       <div className="relative flex h-full w-full flex-col">
-        <nav className="pt-28 px-8 flex flex-col space-y-8">
+        <nav className="pt-32 px-8 flex flex-col space-y-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
