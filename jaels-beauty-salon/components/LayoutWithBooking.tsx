@@ -3,17 +3,12 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import StickyCTA from '@/components/StickyCTA';
-import BookingModal from '@/components/BookingModal';
-import { useBooking } from '@/context/BookingContext';
 
 /**
- * Internal component that consumes the booking context and passes open/close
- * handlers down to the header, sticky CTA and booking modal. Having this
- * component separate from the root layout allows us to call the
- * `useBooking` hook safely within the provider.
+ * Shared layout wrapper that keeps the sticky header/footer around every page
+ * and preserves the mobile CTA pointing to the vision flow.
  */
 export default function LayoutWithBooking({ children }: { children: React.ReactNode }) {
-  const { open, closeBooking } = useBooking();
   return (
     <>
       {/* Header is fixed at top; add top padding to main content equal to header height */}
@@ -22,8 +17,6 @@ export default function LayoutWithBooking({ children }: { children: React.ReactN
       <Footer />
       {/* Sticky CTA appears only on mobile */}
       <StickyCTA />
-      {/* Booking modal overlay */}
-      <BookingModal open={open} onClose={closeBooking} />
     </>
   );
 }
