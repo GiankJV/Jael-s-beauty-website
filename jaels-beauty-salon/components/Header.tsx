@@ -66,11 +66,9 @@ export default function Header({}: HeaderProps) {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between py-5 md:py-6 px-6">
         <Link href="/" aria-label="Jael's Beauty Salon home" className="flex items-center">
-          <span className="flex items-baseline gap-1">
-            <span className="font-display text-2xl leading-none text-ink">Jael&apos;s</span>
-            <span className="font-display text-[11px] md:text-xs tracking-[0.35em] uppercase text-ink/80">
-              Beauty Salon
-            </span>
+          <span className="site-brand">
+            <span className="site-brand-script">Jael&apos;s</span>
+            <span className="site-brand-smallcaps">Beauty Salon</span>
           </span>
         </Link>
         <nav className="hidden md:flex gap-6 items-center font-body text-[15px] md:text-base">
@@ -134,7 +132,7 @@ function MobileMenu({ open, onClose }: MobileMenuProps) {
   ] as const;
   return (
     <div
-      className={`md:hidden fixed inset-0 z-30 bg-ink/70 backdrop-blur-sm transition-opacity duration-300 ${
+      className={`md:hidden fixed inset-0 z-30 bg-ink/60 transition-opacity duration-300 ${
         open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
       onClick={onClose}

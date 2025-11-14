@@ -18,8 +18,10 @@ const body = Work_Sans({
 
 export const metadata = {
   title: "Jael's Beauty Salon",
-  description:
-    'Luxury beauty salon in Gulfport serving Biloxi, Gulfport and the surrounding 100‑mile area. Hair, spa and bridal services by appointment.',
+  description: 'Japanese head spa rituals and bespoke hair transformations on the Gulf Coast.',
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

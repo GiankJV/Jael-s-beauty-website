@@ -10,14 +10,26 @@
  */
 
 :root {
-  --font-display: 'Fraunces';
-  --font-body: 'Quicksand';
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Work Sans', sans-serif;
 }
 
 html,
 body {
   @apply text-ink bg-pink scroll-smooth;
   font-family: var(--font-body), sans-serif;
+}
+
+.site-brand {
+  @apply flex items-baseline gap-1 text-ink;
+}
+
+.site-brand .site-brand-script {
+  @apply font-display text-2xl leading-none;
+}
+
+.site-brand .site-brand-smallcaps {
+  @apply font-display text-[11px] md:text-xs tracking-[0.35em] uppercase text-ink/80;
 }
 
 /* Generic card component used throughout the site */
