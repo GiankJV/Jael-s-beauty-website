@@ -24,8 +24,9 @@ module.exports = {
         '2xl': '1rem',
       },
       fontFamily: {
-        display: ['var(--font-display)', ...fontFamily.serif],
+        heading: ['var(--font-cormorant)', ...fontFamily.serif],
         body: ['var(--font-body)', ...fontFamily.sans],
+        logoScript: ['var(--font-allura)', 'cursive'],
       },
     },
   },

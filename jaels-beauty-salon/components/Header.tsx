@@ -60,7 +60,7 @@ export default function Header({}: HeaderProps) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 bg-pink/95 backdrop-blur-md ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 bg-pink/95 ${
         hidden ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
@@ -132,7 +132,7 @@ function MobileMenu({ open, onClose }: MobileMenuProps) {
   ] as const;
   return (
     <div
-      className={`md:hidden fixed inset-0 z-30 bg-ink/60 transition-opacity duration-300 ${
+      className={`md:hidden fixed inset-0 z-30 bg-beige/95 transition-opacity duration-300 ${
         open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
       onClick={onClose}

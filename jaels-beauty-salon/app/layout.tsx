@@ -1,18 +1,23 @@
 import './globals.css';
-import { Playfair_Display, Work_Sans } from 'next/font/google';
+import { Allura, Cormorant_Garamond, Nunito } from 'next/font/google';
 import Script from 'next/script';
 import { LanguageProvider } from '@/context/LanguageContext';
 import LayoutWithBooking from '@/components/LayoutWithBooking';
 
-const display = Playfair_Display({
+const allura = Allura({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-display',
+  weight: '400',
+  variable: '--font-allura',
 });
 
-const body = Work_Sans({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['500', '600', '700'],
+  variable: '--font-cormorant',
+});
+
+const nunito = Nunito({
+  subsets: ['latin'],
   variable: '--font-body',
 });
 
@@ -21,12 +26,13 @@ export const metadata = {
   description: 'Japanese head spa rituals and bespoke hair transformations on the Gulf Coast.',
   icons: {
     icon: '/icon.png',
+    shortcut: '/icon.png',
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${allura.variable} ${cormorant.variable} ${nunito.variable}`}>
       <head>
         {/* Insert the Nanochat script here if provided. Replace `YOUR_NANOCHAT_SCRIPT` with your snippet */}
         {process.env.NEXT_PUBLIC_NANOCHAT_SCRIPT && (
@@ -36,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         )}
       </head>
-      <body className={`${body.variable} ${display.variable} font-body antialiased bg-beige text-ink`}>
+      <body className="font-body antialiased bg-beige text-ink">
         {/* Wrap the UI with the language provider so text can toggle between EN/ES */}
         <LanguageProvider>
           <LayoutWithBooking>{children}</LayoutWithBooking>

@@ -10,8 +10,9 @@
  */
 
 :root {
-  --font-display: 'Playfair Display', serif;
-  --font-body: 'Work Sans', sans-serif;
+  --font-allura: 'Allura', cursive;
+  --font-cormorant: 'Cormorant Garamond', serif;
+  --font-body: 'Nunito', 'Helvetica Neue', Arial, sans-serif;
 }
 
 html,
@@ -24,12 +25,20 @@ body {
   @apply flex items-baseline gap-1 text-ink;
 }
 
-.site-brand .site-brand-script {
-  @apply font-display text-2xl leading-none;
+.site-brand-script {
+  font-family: var(--font-allura), 'Allura', cursive;
+  font-size: 1.9rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
 }
 
-.site-brand .site-brand-smallcaps {
-  @apply font-display text-[11px] md:text-xs tracking-[0.35em] uppercase text-ink/80;
+.site-brand-smallcaps {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  line-height: 1;
+  color: rgba(74, 74, 74, 0.8);
 }
 
 /* Generic card component used throughout the site */
