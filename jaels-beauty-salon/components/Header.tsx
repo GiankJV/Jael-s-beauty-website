@@ -135,14 +135,27 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
     <div
       className={`
         fixed inset-0 z-[9999] md:hidden
-        bg-[#e8b3b3]
-        transition-transform duration-300
-        ${open ? 'translate-x-0' : 'translate-x-full'}
+        ${open ? 'pointer-events-auto' : 'pointer-events-none'}
       `}
     >
+      {/* Solid full-screen background */}
+      <div
+        className={`
+          absolute inset-0 bg-[#e8b3b3]
+          transition-opacity duration-300
+          ${open ? 'opacity-100' : 'opacity-0'}
+        `}
+      />
 
-      <div className="relative flex h-full w-full flex-col">
-        <nav className="pt-32 px-8 flex flex-col space-y-10">
+      {/* Sliding panel with the nav items */}
+      <div
+        className={`
+          relative flex h-full w-full flex-col
+          transition-transform duration-300
+          ${open ? 'translate-x-0' : 'translate-x-full'}
+        `}
+      >
+        <nav className="pt-28 px-8 flex flex-col space-y-8">
           {navLinks.map((link) => (
             <a
               key={link.href}
