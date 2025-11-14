@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import SpaCard from '@/components/SpaCard';
+import HairLooksReel from '@/components/HairLooksReel';
 import SquareBookingEmbed from '@/components/SquareBookingEmbed';
 import { useLang } from '@/context/LanguageContext';
 import { spaServices } from '@/lib/services/spa';
@@ -34,6 +35,8 @@ export default function ServicesPage() {
           {lang === 'en' ? "What's your vision?" : '¿Cuál es tu visión?'}
         </Link>
       </section>
+
+      <HairLooksReel />
 
       <section id="spa" className="scroll-mt-24 py-12">
         <header className="mb-8 text-center">
