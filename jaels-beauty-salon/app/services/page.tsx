@@ -1,48 +1,8 @@
 "use client";
 
-import ServiceCard, { Service } from '@/components/ServiceCard';
 import SpaCard from '@/components/SpaCard';
 import { useLang } from '@/context/LanguageContext';
 import { spaServices } from '@/lib/services/spa';
-
-const services: Service[] = [
-  {
-    title: 'Women’s Haircut',
-    description: 'Precision cuts tailored to your face shape and lifestyle.',
-    duration: '45–60 min',
-    price: 'From $45',
-  },
-  {
-    title: 'Balayage & Colour',
-    description: 'Hand‑painted highlights and full colour services for a sun‑kissed look.',
-    duration: '2–3 hrs',
-    price: 'From $120',
-  },
-  {
-    title: 'Blowout & Styling',
-    description: 'Smooth blowouts, curls and updos for every occasion.',
-    duration: '60–90 min',
-    price: 'From $50',
-  },
-  {
-    title: 'Facials & Skin Care',
-    description: 'Custom facials using high‑end products to cleanse, exfoliate and rejuvenate.',
-    duration: '60–90 min',
-    price: 'From $80',
-  },
-  {
-    title: 'Bridal Hair & Makeup',
-    description: 'Elegantly crafted looks for your special day, including trials.',
-    duration: 'Varies',
-    price: 'Custom Quote',
-  },
-  {
-    title: 'Spa Packages',
-    description: 'Combos of hair, skin and body treatments for a head‑to‑toe glow.',
-    duration: 'Varies',
-    price: 'From $200',
-  },
-];
 
 export default function ServicesPage() {
   const { lang } = useLang();
@@ -52,14 +12,9 @@ export default function ServicesPage() {
     lang === 'en' ? 'Japanese Head Spa Rituals' : 'Rituales Japoneses para la Cabeza';
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
-      <section>
-        <h1 className="font-display text-4xl text-rose text-center mb-8">{servicesHeading}</h1>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <ServiceCard key={service.title} service={service} />
-          ))}
-        </div>
-      </section>
+      <header className="text-center">
+        <h1 className="font-display text-4xl text-rose">{servicesHeading}</h1>
+      </header>
 
       <section id="spa" className="scroll-mt-24 py-12">
         <header className="mb-8 text-center">

@@ -46,9 +46,6 @@ export default function Header({}: HeaderProps) {
           <Link href="/services#spa" className="hover:text-rose transition-colors">Spa</Link>
           <Link href="/about" className="hover:text-rose transition-colors">About</Link>
           <Link href="/gallery" className="hover:text-rose transition-colors">Gallery</Link>
-          <Link href="/vision" className="hover:text-rose transition-colors">
-            {lang === 'en' ? "What's your vision?" : '¿Cuál es tu visión?'}
-          </Link>
           <Link href="/testimonials" className="hover:text-rose transition-colors">Testimonials</Link>
           <Link href="/contact" className="hover:text-rose transition-colors">Contact</Link>
           <button
@@ -115,9 +112,6 @@ function MobileMenu({ open, onClose }: MobileMenuProps) {
           <Link href="/services#spa" onClick={onClose}>Spa</Link>
           <Link href="/about" onClick={onClose}>About</Link>
           <Link href="/gallery" onClick={onClose}>Gallery</Link>
-          <Link href="/vision" onClick={onClose}>
-            {lang === 'en' ? "What's your vision?" : '¿Cuál es tu visión?'}
-          </Link>
           <Link href="/testimonials" onClick={onClose}>Testimonials</Link>
           <Link href="/contact" onClick={onClose}>Contact</Link>
           <button

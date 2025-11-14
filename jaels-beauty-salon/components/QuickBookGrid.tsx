@@ -17,10 +17,6 @@ const categories: Category[] = [
     title: 'Spa',
     description: 'Facials, waxing, brows and relaxing spa treatments.',
   },
-  {
-    title: 'Packages',
-    description: 'Bridal, prom and curated beauty packages for special moments.',
-  },
 ];
 
 /**
