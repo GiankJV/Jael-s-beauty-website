@@ -1,16 +1,16 @@
 import './globals.css';
-import { Allura, Cormorant_Garamond, Nunito } from 'next/font/google';
+import { Playfair_Display, Work_Sans } from 'next/font/google';
 import Script from 'next/script';
 import { LanguageProvider } from '@/context/LanguageContext';
 import LayoutWithBooking from '@/components/LayoutWithBooking';
 
-const script = Allura({ subsets: ['latin'], weight: '400', variable: '--font-script' });
-const display = Cormorant_Garamond({
+const display = Playfair_Display({
   subsets: ['latin'],
-  weight: ['500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-display',
 });
-const body = Nunito({
+
+const body = Work_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-body',
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         )}
       </head>
-      <body className={`${body.variable} ${display.variable} ${script.variable} font-body antialiased bg-beige text-ink`}>
+      <body className={`${body.variable} ${display.variable} font-body antialiased bg-beige text-ink`}>
         {/* Wrap the UI with the language provider so text can toggle between EN/ES */}
         <LanguageProvider>
           <LayoutWithBooking>{children}</LayoutWithBooking>

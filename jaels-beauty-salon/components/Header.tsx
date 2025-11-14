@@ -21,6 +21,14 @@ export default function Header({}: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { lang, toggleLang } = useLang();
 
+  const navLinks = [
+    { href: '/services', label: { en: 'Services', es: 'Servicios' } },
+    { href: '/about', label: { en: 'About', es: 'Nosotras' } },
+    { href: '/gallery', label: { en: 'Gallery', es: 'Galería' } },
+    { href: '/testimonials', label: { en: 'Testimonials', es: 'Testimonios' } },
+    { href: '/contact', label: { en: 'Contact', es: 'Contacto' } },
+  ] as const;
+
   useEffect(() => {
     function onScroll() {
       const currentY = window.scrollY;
@@ -31,30 +39,49 @@ export default function Header({}: HeaderProps) {
     return () => window.removeEventListener('scroll', onScroll);
   }, [lastY]);
 
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handleScroll = () => setMobileOpen(false);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [mobileOpen]);
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 bg-pink/90 backdrop-blur-md ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 bg-pink/95 backdrop-blur-md ${
         hidden ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+      <div className="max-w-7xl mx-auto flex items-center justify-between py-5 md:py-6 px-6">
         <Link href="/" aria-label="Jael's Beauty Salon home" className="flex items-center">
           <span className="flex items-baseline gap-1">
-            <span className="font-script text-2xl leading-none text-ink">Jael&apos;s</span>
-            <span className="font-display text-xs md:text-sm tracking-[0.25em] uppercase text-ink/80">
+            <span className="font-display text-2xl leading-none text-ink">Jael&apos;s</span>
+            <span className="font-display text-[11px] md:text-xs tracking-[0.35em] uppercase text-ink/80">
               Beauty Salon
             </span>
           </span>
         </Link>
-        <nav className="hidden md:flex gap-6 items-center font-medium">
-          <Link href="/services" className="hover:text-rose transition-colors">Services</Link>
-          <Link href="/about" className="hover:text-rose transition-colors">About</Link>
-          <Link href="/gallery" className="hover:text-rose transition-colors">Gallery</Link>
-          <Link href="/testimonials" className="hover:text-rose transition-colors">Testimonials</Link>
-          <Link href="/contact" className="hover:text-rose transition-colors">Contact</Link>
+        <nav className="hidden md:flex gap-6 items-center font-body text-[15px] md:text-base">
+          {navLinks.map(({ href, label }) => (
+            <Link key={href} href={href} className="hover:text-rose transition-colors">
+              {label[lang]}
+            </Link>
+          ))}
           <button
             onClick={toggleLang}
-            className="px-3 py-1 rounded-full border border-rose text-rose text-sm hover:bg-rose hover:text-white transition"
+            className="px-4 py-1.5 rounded-full border border-rose text-rose text-sm hover:bg-rose hover:text-white transition"
             aria-label="Toggle language"
           >
             {lang === 'en' ? 'ES' : 'EN'}
@@ -98,6 +125,13 @@ interface MobileMenuProps {
 
 function MobileMenu({ open, onClose }: MobileMenuProps) {
   const { lang, toggleLang } = useLang();
+  const navLinks = [
+    { href: '/services', label: { en: 'Services', es: 'Servicios' } },
+    { href: '/about', label: { en: 'About', es: 'Nosotras' } },
+    { href: '/gallery', label: { en: 'Gallery', es: 'Galería' } },
+    { href: '/testimonials', label: { en: 'Testimonials', es: 'Testimonios' } },
+    { href: '/contact', label: { en: 'Contact', es: 'Contacto' } },
+  ] as const;
   return (
     <div
       className={`md:hidden fixed inset-0 z-30 bg-ink/70 backdrop-blur-sm transition-opacity duration-300 ${
@@ -111,12 +145,12 @@ function MobileMenu({ open, onClose }: MobileMenuProps) {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <nav className="flex flex-col gap-4 text-lg">
-          <Link href="/services" onClick={onClose}>Services</Link>
-          <Link href="/about" onClick={onClose}>About</Link>
-          <Link href="/gallery" onClick={onClose}>Gallery</Link>
-          <Link href="/testimonials" onClick={onClose}>Testimonials</Link>
-          <Link href="/contact" onClick={onClose}>Contact</Link>
+        <nav className="flex flex-col gap-4 text-lg font-body">
+          {navLinks.map(({ href, label }) => (
+            <Link key={href} href={href} onClick={onClose}>
+              {label[lang]}
+            </Link>
+          ))}
           <button
             onClick={() => {
               toggleLang();

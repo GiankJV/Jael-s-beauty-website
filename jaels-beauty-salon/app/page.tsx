@@ -66,7 +66,7 @@ export default function Home() {
       </section>
 
       {/* Quick book grid */}
-      <section className="px-6 py-12">
+      <section className="px-6 pb-12 pt-8">
         <QuickBookGrid />
       </section>
 

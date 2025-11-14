@@ -28,7 +28,7 @@ export default function ServicesPage() {
       </section>
 
       <section className="mt-12">
-        <h2 className="font-display text-2xl md:text-3xl text-center mb-2">
+        <h2 className="font-display text-3xl md:text-4xl text-center mb-3 text-ink">
           {lang === 'en' ? 'Hair transformations' : 'Transformaciones de cabello'}
         </h2>
         <p className="text-sm md:text-base max-w-2xl mx-auto text-center opacity-80 mb-4">
@@ -44,7 +44,7 @@ export default function ServicesPage() {
             {lang === 'en' ? "What's your vision?" : '¿Cuál es tu visión?'}
           </Link>
         </div>
-        <section className="max-w-3xl mx-auto rounded-2xl bg-beige/70 border border-rose/15 px-6 py-5 shadow-sm">
+        <section className="max-w-3xl mx-auto rounded-2xl bg-beige/70 border border-rose/15 px-6 py-5 shadow-sm text-left">
           <h3 className="font-display text-xl mb-2">
             {lang === 'en'
               ? 'What to expect from your hair transformation'
@@ -60,7 +60,7 @@ export default function ServicesPage() {
       </section>
 
       <section id="spa" className="scroll-mt-24 py-12">
-        <h2 className="font-display text-2xl md:text-3xl text-center mb-1">
+        <h2 className="font-display text-3xl md:text-4xl text-center mb-1 text-ink">
           {spaHeading}
         </h2>
         <p className="text-sm md:text-base text-center opacity-80 mb-3">
