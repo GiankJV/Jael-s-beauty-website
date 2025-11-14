@@ -68,7 +68,7 @@ export default function Header({}: HeaderProps) {
         <Link href="/" aria-label="Jael's Beauty Salon home" className="flex items-center">
           <span className="site-brand">
             <span className="site-brand-script">Jael&apos;s</span>
-            <span className="site-brand-smallcaps">Beauty Salon</span>
+            <span className="site-brand-smallcaps">BEAUTY SALON</span>
           </span>
         </Link>
         <nav className="hidden md:flex gap-6 items-center font-body text-[15px] md:text-base">
