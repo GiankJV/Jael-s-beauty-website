@@ -29,10 +29,9 @@ const cards = [
 export default function QuickBookGrid() {
   const { lang } = useLang();
   return (
-    <section className="mt-16">
+    <section className="mt-10 md:mt-12">
       <h2
-        className="text-center text-2xl md:text-3xl mb-8"
-        style={{ fontFamily: 'var(--font-display)' }}
+        className="font-display text-center text-2xl md:text-3xl mb-8"
       >
         {lang === 'en' ? 'How can we pamper you?' : '¿Cómo podemos consentirte?'}
       </h2>

@@ -9,10 +9,7 @@ export default function ContactPage() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-12 space-y-12">
       <section className="text-center">
-        <h1
-          className="text-3xl md:text-4xl mb-4"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
+        <h1 className="font-display text-3xl md:text-4xl mb-4">
           {lang === 'en' ? 'Contact' : 'Contacto'}
         </h1>
         <p className="text-sm md:text-base opacity-80 max-w-2xl mx-auto">
@@ -24,7 +21,7 @@ export default function ContactPage() {
 
       <div className="grid md:grid-cols-2 gap-12 items-start">
         <div>
-          <h2 className="font-semibold mb-2">
+          <h2 className="font-display text-xl mb-2">
             {lang === 'en' ? 'Call or text us' : 'Llámanos o mándanos mensaje'}
           </h2>
           <p>
@@ -33,7 +30,7 @@ export default function ContactPage() {
             </a>
           </p>
 
-          <h2 className="font-semibold mt-4 mb-2">
+          <h2 className="font-display text-xl mt-4 mb-2">
             {lang === 'en' ? 'Email' : 'Correo electrónico'}
           </h2>
           <p>
@@ -42,7 +39,7 @@ export default function ContactPage() {
             </a>
           </p>
 
-          <h2 className="font-semibold mt-4 mb-2">
+          <h2 className="font-display text-xl mt-4 mb-2">
             {lang === 'en' ? 'Hours' : 'Horario'}
           </h2>
           <p>
@@ -51,7 +48,7 @@ export default function ContactPage() {
               : 'Lunes a viernes, 8 am–6 pm (solo con cita)'}
           </p>
 
-          <h2 className="font-semibold mt-4 mb-2">
+          <h2 className="font-display text-xl mt-4 mb-2">
             {lang === 'en' ? 'Visit us' : 'Visítanos'}
           </h2>
           <p>Jael’s Beauty Salon</p>

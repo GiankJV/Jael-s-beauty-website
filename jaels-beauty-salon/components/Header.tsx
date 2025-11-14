@@ -39,7 +39,12 @@ export default function Header({}: HeaderProps) {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
         <Link href="/" aria-label="Jael's Beauty Salon home" className="flex items-center">
-          <span className="font-display font-bold text-xl text-ink">Jael&apos;s Beauty Salon</span>
+          <span className="flex items-baseline gap-1">
+            <span className="font-script text-2xl leading-none text-ink">Jael&apos;s</span>
+            <span className="font-display text-xs md:text-sm tracking-[0.25em] uppercase text-ink/80">
+              Beauty Salon
+            </span>
+          </span>
         </Link>
         <nav className="hidden md:flex gap-6 items-center font-medium">
           <Link href="/services" className="hover:text-rose transition-colors">Services</Link>

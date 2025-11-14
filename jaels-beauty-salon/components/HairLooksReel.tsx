@@ -13,7 +13,11 @@ function shuffle<T>(array: T[]): T[] {
   return arr;
 }
 
-export default function HairLooksReel() {
+type HairLooksReelProps = {
+  hideIntro?: boolean;
+};
+
+export default function HairLooksReel({ hideIntro = false }: HairLooksReelProps) {
   const { lang } = useLang();
   const [order, setOrder] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -61,27 +65,28 @@ export default function HairLooksReel() {
 
   return (
     <section className="mt-10 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-3 gap-4">
-        <h3
-          className="text-xl md:text-2xl"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
-          {lang === 'en' ? 'Hair transformations' : 'Transformaciones de cabello'}
-        </h3>
-        <a
-          href="/vision"
-          className="hidden md:inline-flex items-center justify-center rounded-full px-4 py-2 text-xs md:text-sm text-white"
-          style={{ background: '#D7ABA5' }}
-        >
-          {lang === 'en' ? "What's your vision?" : '¿Cuál es tu visión?'}
-        </a>
-      </div>
+      {!hideIntro && (
+        <>
+          <div className="flex items-center justify-between mb-3 gap-4">
+            <h3 className="font-display text-xl md:text-2xl">
+              {lang === 'en' ? 'Hair transformations' : 'Transformaciones de cabello'}
+            </h3>
+            <a
+              href="/vision"
+              className="hidden md:inline-flex items-center justify-center rounded-full px-4 py-2 text-xs md:text-sm text-white"
+              style={{ background: '#D7ABA5' }}
+            >
+              {lang === 'en' ? "What's your vision?" : '¿Cuál es tu visión?'}
+            </a>
+          </div>
 
-      <p className="text-sm md:text-base opacity-80 mb-4">
-        {lang === 'en'
-          ? 'A peek at some of our color, cuts and styling work. Share your own hair photos and vision to receive a personalized quote.'
-          : 'Un vistazo a algunos de nuestros trabajos de color, cortes y peinados. Comparte tus fotos y tu visión para recibir una cotización personalizada.'}
-      </p>
+          <p className="text-sm md:text-base opacity-80 mb-4">
+            {lang === 'en'
+              ? 'A peek at some of our color, cuts and styling work. Share your own hair photos and vision to receive a personalized quote.'
+              : 'Un vistazo a algunos de nuestros trabajos de color, cortes y peinados. Comparte tus fotos y tu visión para recibir una cotización personalizada.'}
+          </p>
+        </>
+      )}
 
       <div className="overflow-hidden">
         <div
@@ -113,15 +118,17 @@ export default function HairLooksReel() {
         </div>
       </div>
 
-      <div className="mt-4 md:hidden">
-        <a
-          href="/vision"
-          className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs text-white"
-          style={{ background: '#D7ABA5' }}
-        >
-          {lang === 'en' ? "What's your vision?" : '¿Cuál es tu visión?'}
-        </a>
-      </div>
+      {!hideIntro && (
+        <div className="mt-4 md:hidden">
+          <a
+            href="/vision"
+            className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs text-white"
+            style={{ background: '#D7ABA5' }}
+          >
+            {lang === 'en' ? "What's your vision?" : '¿Cuál es tu visión?'}
+          </a>
+        </div>
+      )}
     </section>
   );
 }

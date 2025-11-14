@@ -1,14 +1,20 @@
 import './globals.css';
-import { Fraunces, Quicksand } from 'next/font/google';
+import { Allura, Cormorant_Garamond, Nunito } from 'next/font/google';
 import Script from 'next/script';
 import { LanguageProvider } from '@/context/LanguageContext';
 import LayoutWithBooking from '@/components/LayoutWithBooking';
 
-// Load Google fonts and attach them to CSS variables.  The `variable`
-// properties correspond to the custom CSS variables defined in
-// `globals.css`.
-const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-display' });
-const quicksand = Quicksand({ subsets: ['latin'], variable: '--font-body' });
+const script = Allura({ subsets: ['latin'], weight: '400', variable: '--font-script' });
+const display = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  variable: '--font-display',
+});
+const body = Nunito({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-body',
+});
 
 export const metadata = {
   title: "Jael's Beauty Salon",
@@ -18,7 +24,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${quicksand.variable}`}> 
+    <html lang="en">
       <head>
         {/* Insert the Nanochat script here if provided. Replace `YOUR_NANOCHAT_SCRIPT` with your snippet */}
         {process.env.NEXT_PUBLIC_NANOCHAT_SCRIPT && (
@@ -28,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         )}
       </head>
-      <body>
+      <body className={`${body.variable} ${display.variable} ${script.variable} font-body antialiased bg-beige text-ink`}>
         {/* Wrap the UI with the language provider so text can toggle between EN/ES */}
         <LanguageProvider>
           <LayoutWithBooking>{children}</LayoutWithBooking>
