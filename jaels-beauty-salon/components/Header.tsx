@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useLang } from '@/context/LanguageContext';
 
 export interface HeaderProps {
@@ -103,58 +104,57 @@ export default function Header({}: HeaderProps) {
           </svg>
         </button>
       </div>
-      <MobileMenu
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        navLinks={navLinks}
-      />
+      <AnimatePresence>
+        {mobileOpen && (
+          <MobileMenu
+            onClose={() => setMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </header>
   );
 }
 
 // Separate component for mobile menu to avoid re-rendering entire header
 interface MobileMenuProps {
-  open: boolean;
   onClose: () => void;
-  navLinks: typeof navLinks;
 }
 
-function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
+function MobileMenu({ onClose }: MobileMenuProps) {
   const { lang, toggleLang } = useLang();
   return (
-    <div
-      aria-hidden={!open}
-      className={`fixed inset-0 z-50 transition-all duration-300 ${
-        open ? 'pointer-events-auto bg-black/30' : 'pointer-events-none bg-transparent'
-      }`}
-      onClick={open ? onClose : undefined}
+    <motion.aside
+      initial={{ x: '100%', opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: '100%', opacity: 0 }}
+      transition={{ type: 'tween', duration: 0.25 }}
+      className="fixed inset-0 z-50 bg-[#e8b3b3]"
+      onClick={onClose}
     >
-      <nav
-        className={`fixed top-0 right-0 h-full w-3/4 max-w-xs bg-beige shadow-xl px-6 pt-16 pb-8 flex flex-col justify-between transform transition-transform duration-300 ${
-          open ? 'translate-x-0' : 'translate-x-full'
-        }`}
+      <div
+        className="flex min-h-screen flex-col items-center justify-center gap-4 px-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="space-y-6 text-lg font-body">
-          {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={onClose}
-              className="block hover:text-rose transition-colors"
-            >
-              {label[lang]}
-            </Link>
-          ))}
+        {navLinks.map(({ href, label }) => (
+          <Link
+            key={href}
+            href={href}
+            onClick={onClose}
+            className="w-full py-4 text-center font-heading text-xl tracking-wide text-ink hover:opacity-80 transition"
+          >
+            {label[lang]}
+          </Link>
+        ))}
+        <div className="mt-10 flex w-full justify-center">
+          <button
+            onClick={toggleLang}
+            className="rounded-full border border-rose/50 px-6 py-2 text-sm font-body text-rose hover:bg-rose/20 transition"
+          >
+            {lang === 'en' ? 'ES' : 'EN'}
+          </button>
         </div>
-        <button
-          onClick={toggleLang}
-          className="w-full rounded-full border border-rose/50 py-3 text-sm font-body hover:bg-rose hover:text-white transition"
-        >
-          {lang === 'en' ? 'ES' : 'EN'}
-        </button>
-      </nav>
-    </div>
+      </div>
+    </motion.aside>
   );
 }
 
