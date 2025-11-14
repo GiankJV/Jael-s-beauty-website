@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       }
       const arrayBuffer = await file.arrayBuffer();
       const blob = await put(`quotes/${Date.now()}-${file.name}`, new Uint8Array(arrayBuffer), {
-        access: 'authenticated',
+        access: 'public',
       });
       photoLinks.push(blob.url);
     }
