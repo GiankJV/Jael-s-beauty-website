@@ -23,10 +23,8 @@ const nunito = Nunito({
 
 export const metadata = {
   title: "Jael's Beauty Salon",
-  description: 'Japanese head spa rituals and bespoke hair transformations on the Gulf Coast.',
   icons: {
     icon: '/icon.png',
-    shortcut: '/icon.png',
   },
 };
 
