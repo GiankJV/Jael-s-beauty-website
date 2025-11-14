@@ -1,10 +1,9 @@
 "use client";
 
 import Image from 'next/image';
-import { useBooking } from '@/context/BookingContext';
+import Link from 'next/link';
 
 export default function AboutPage() {
-  const { openBooking } = useBooking();
   return (
     <div className="max-w-5xl mx-auto px-6 py-12 space-y-12">
       <h1 className="font-display text-4xl text-rose text-center">Our Story</h1>
@@ -34,12 +33,12 @@ export default function AboutPage() {
             genuine love for their craft. From master stylists to skincare specialists, we work
             collaboratively to ensure you leave feeling fabulous.
           </p>
-          <button
-            onClick={openBooking}
-            className="bg-rose text-white px-6 py-3 rounded-full shadow hover:bg-rose/90 transition"
+          <Link
+            href="/vision"
+            className="inline-flex items-center justify-center bg-rose text-white px-6 py-3 rounded-full shadow hover:bg-rose/90 transition"
           >
-            Book an Appointment
-          </button>
+            Start with your vision
+          </Link>
         </div>
         <div className="overflow-hidden rounded-2xl">
           {/* Placeholder team photo; replace with your own images */}

@@ -2,7 +2,6 @@
 
 import ServiceCard, { Service } from '@/components/ServiceCard';
 import SpaCard from '@/components/SpaCard';
-import { useBooking } from '@/context/BookingContext';
 import { useLang } from '@/context/LanguageContext';
 import { spaServices } from '@/lib/services/spa';
 
@@ -46,7 +45,6 @@ const services: Service[] = [
 ];
 
 export default function ServicesPage() {
-  const { openBooking } = useBooking();
   const { lang } = useLang();
   const servicesHeading = lang === 'en' ? 'Our Services' : 'Nuestros Servicios';
   const spaHeading = lang === 'en' ? 'Spa' : 'Spa';
@@ -58,7 +56,7 @@ export default function ServicesPage() {
         <h1 className="font-display text-4xl text-rose text-center mb-8">{servicesHeading}</h1>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
-            <ServiceCard key={service.title} service={service} onOpenBooking={openBooking} />
+            <ServiceCard key={service.title} service={service} />
           ))}
         </div>
       </section>

@@ -1,10 +1,9 @@
 'use client';
-import { useBooking } from '@/context/BookingContext';
+import Link from 'next/link';
 import { useLang } from '@/context/LanguageContext';
 import { SpaService } from '@/lib/services/spa';
 
 export default function SpaCard({ service }: { service: SpaService }) {
-  const { openBooking } = useBooking();
   const { lang } = useLang();
   return (
     <article className="card p-6 shadow-sm border border-black/5">
@@ -17,14 +16,14 @@ export default function SpaCard({ service }: { service: SpaService }) {
         </p>
       </header>
       <p className="text-sm leading-relaxed">{service.description[lang]}</p>
-      <button
-        onClick={openBooking}
+      <Link
+        href="/vision"
         className="mt-5 inline-flex items-center justify-center rounded-full px-5 py-2 text-white"
         style={{ background: '#D7ABA5' }}
-        aria-label={lang === 'en' ? `Book ${service.name.en}` : `Reservar ${service.name.es}`}
+        aria-label={lang === 'en' ? `Start vision quiz` : 'Comienza con tu visión'}
       >
-        {lang === 'en' ? 'Book Now' : 'Reservar'}
-      </button>
+        {lang === 'en' ? 'Start with your vision' : 'Empezar con tu visión'}
+      </Link>
     </article>
   );
 }

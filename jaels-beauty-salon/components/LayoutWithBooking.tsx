@@ -13,18 +13,17 @@ import { useBooking } from '@/context/BookingContext';
  * `useBooking` hook safely within the provider.
  */
 export default function LayoutWithBooking({ children }: { children: React.ReactNode }) {
-  const { open, openBooking, closeBooking } = useBooking();
+  const { open, closeBooking } = useBooking();
   return (
     <>
       {/* Header is fixed at top; add top padding to main content equal to header height */}
-      <Header onOpenBooking={openBooking} />
+      <Header />
       <main className="pt-20">{children}</main>
       <Footer />
       {/* Sticky CTA appears only on mobile */}
-      <StickyCTA onOpenBooking={openBooking} />
+      <StickyCTA />
       {/* Booking modal overlay */}
       <BookingModal open={open} onClose={closeBooking} />
     </>
   );
 }
-

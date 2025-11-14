@@ -6,16 +6,16 @@ import { useLang } from '@/context/LanguageContext';
 
 export interface HeaderProps {
   /**
-   * Callback executed when the user clicks on the “Book Now” button.
+   * Header no longer controls the booking modal directly.
+   * All booking starts from the "What's your vision?" flow.
    */
-  onOpenBooking?: () => void;
 }
 
 /**
  * Responsive site header that hides when scrolling down and reappears on
- * scroll up. Includes navigation links and a prominent “Book Now” CTA.
+ * scroll up. Includes navigation links plus the bilingual vision CTA.
  */
-export default function Header({ onOpenBooking }: HeaderProps) {
+export default function Header({}: HeaderProps) {
   const [hidden, setHidden] = useState(false);
   const [lastY, setLastY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -58,12 +58,6 @@ export default function Header({ onOpenBooking }: HeaderProps) {
           >
             {lang === 'en' ? 'ES' : 'EN'}
           </button>
-          <button
-            onClick={onOpenBooking}
-            className="ml-4 bg-rose text-white px-4 py-2 rounded-full shadow hover:bg-rose/90 transition"
-          >
-            {lang === 'en' ? 'Book Now' : 'Reservar'}
-          </button>
         </nav>
         <button
           className="md:hidden flex items-center justify-center p-2 rounded-md hover:bg-rose/10"
@@ -90,19 +84,18 @@ export default function Header({ onOpenBooking }: HeaderProps) {
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        onOpenBooking={onOpenBooking}
       />
     </header>
   );
 }
 
 // Separate component for mobile menu to avoid re-rendering entire header
-interface MobileMenuProps extends HeaderProps {
+interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
 }
 
-function MobileMenu({ open, onClose, onOpenBooking }: MobileMenuProps) {
+function MobileMenu({ open, onClose }: MobileMenuProps) {
   const { lang, toggleLang } = useLang();
   return (
     <div
@@ -134,15 +127,6 @@ function MobileMenu({ open, onClose, onOpenBooking }: MobileMenuProps) {
             className="px-3 py-1 rounded-full border border-rose text-rose text-sm hover:bg-rose hover:text-white transition"
           >
             {lang === 'en' ? 'ES' : 'EN'}
-          </button>
-          <button
-            onClick={() => {
-              onClose();
-              onOpenBooking?.();
-            }}
-            className="mt-4 bg-rose text-white w-full py-2 rounded-full"
-          >
-            {lang === 'en' ? 'Book Now' : 'Reservar'}
           </button>
         </nav>
       </div>

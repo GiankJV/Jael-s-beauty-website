@@ -198,6 +198,24 @@ export default function QuoteRequestModal({
                 />
               </div>
 
+              <div>
+                <label className="block text-xs mb-1">
+                  {lang === 'en'
+                    ? 'Preferred days / times (optional)'
+                    : 'Días / horarios preferidos (opcional)'}
+                </label>
+                <textarea
+                  name="preferredTimes"
+                  rows={2}
+                  className="w-full rounded-2xl border border-rose/40 px-3 py-2 text-sm bg-white resize-none"
+                  placeholder={
+                    lang === 'en'
+                      ? 'Example: Any weekday after 3pm, ideally next week.'
+                      : 'Ejemplo: Cualquier día entre semana después de las 3pm, idealmente la próxima semana.'
+                  }
+                />
+              </div>
+
               <div className="flex items-start gap-2 text-[11px]">
                 <input type="checkbox" name="consent" required className="mt-1" />
                 <span>

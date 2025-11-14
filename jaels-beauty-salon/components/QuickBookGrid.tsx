@@ -1,8 +1,7 @@
 "use client";
 
-export interface QuickBookGridProps {
-  onOpenBooking?: () => void;
-}
+import Link from 'next/link';
+import { useLang } from '@/context/LanguageContext';
 
 interface Category {
   title: string;
@@ -25,10 +24,11 @@ const categories: Category[] = [
 ];
 
 /**
- * Display a grid of key service categories for quick booking. Each card
- * contains a brief description and triggers the booking modal when clicked.
+ * Display a grid of key service categories for quick explorations. Each card
+ * now nudges guests into the vision quiz instead of the Square modal.
  */
-export default function QuickBookGrid({ onOpenBooking }: QuickBookGridProps) {
+export default function QuickBookGrid() {
+  const { lang } = useLang();
   return (
     <div className="grid sm:grid-cols-3 gap-6 mt-8">
       {categories.map((cat) => (
@@ -37,12 +37,13 @@ export default function QuickBookGrid({ onOpenBooking }: QuickBookGridProps) {
             <h3 className="font-display text-xl mb-2 text-rose">{cat.title}</h3>
             <p className="text-sm mb-4">{cat.description}</p>
           </div>
-          <button
-            onClick={onOpenBooking}
-            className="self-start mt-auto bg-rose text-white px-4 py-2 rounded-full shadow hover:bg-rose/90 transition"
+          <Link
+            href="/vision"
+            className="self-start mt-auto inline-flex items-center justify-center rounded-full px-4 py-2 text-white shadow hover:bg-rose/90 transition"
+            style={{ background: '#D7ABA5' }}
           >
-            Book Now
-          </button>
+            {lang === 'en' ? 'Start with your vision' : 'Empezar con tu visión'}
+          </Link>
         </div>
       ))}
     </div>

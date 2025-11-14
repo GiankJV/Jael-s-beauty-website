@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { put } from '@vercel/blob';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const apiKey = process.env.RESEND_API_KEY;
+const resend = apiKey ? new Resend(apiKey) : null;
 
 export const runtime = 'edge';
 
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
     const lang = String(formData.get('lang') || 'en');
     const hairstyleId = String(formData.get('hairstyleId') || '');
     const answersRaw = String(formData.get('answers') || '{}');
+    const preferredTimes = String(formData.get('preferredTimes') || '');
 
     if (!name || !email || !consent) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -72,16 +74,23 @@ export async function POST(req: NextRequest) {
       'Client notes / Notas de la clienta:',
       notes || '(none)',
       '',
+      'Preferred days / times / Días y horarios preferidos:',
+      preferredTimes || '(not specified)',
+      '',
       'Photo links / Enlaces a fotos:',
       photoLinks.length ? photoLinks.join('\n') : '(no photos uploaded)',
     ];
 
-    await resend.emails.send({
-      from: 'Jaels Beauty Salon <quotes@jaelsbeauty.com>',
-      to: ['jaels3beautysalon@gmail.com'],
-      subject,
-      text: bodyLines.join('\n'),
-    });
+    if (resend) {
+      await resend.emails.send({
+        from: 'Jaels Beauty Salon <quotes@jaelsbeauty.com>',
+        to: ['jaels3beautysalon@gmail.com'],
+        subject,
+        text: bodyLines.join('\n'),
+      });
+    } else {
+      console.warn('RESEND_API_KEY is not set – skipping email send for quote request');
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {

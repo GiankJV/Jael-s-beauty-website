@@ -1,5 +1,8 @@
 "use client";
 
+import Link from 'next/link';
+import { useLang } from '@/context/LanguageContext';
+
 export interface Service {
   title: string;
   description: string;
@@ -9,14 +12,14 @@ export interface Service {
 
 export interface ServiceCardProps {
   service: Service;
-  onOpenBooking?: () => void;
 }
 
 /**
  * Card component used on the Services page. Displays a service name,
- * description, optional duration and price, and a booking button.
+ * description, optional duration and price, and now routes to the vision flow.
  */
-export default function ServiceCard({ service, onOpenBooking }: ServiceCardProps) {
+export default function ServiceCard({ service }: ServiceCardProps) {
+  const { lang } = useLang();
   return (
     <div className="card flex flex-col justify-between h-full">
       <div>
@@ -29,12 +32,13 @@ export default function ServiceCard({ service, onOpenBooking }: ServiceCardProps
           <p className="text-sm"><strong>Price:</strong> {service.price}</p>
         )}
       </div>
-      <button
-        onClick={onOpenBooking}
-        className="mt-4 bg-rose text-white px-4 py-2 rounded-full shadow hover:bg-rose/90 transition self-start"
+      <Link
+        href="/vision"
+        className="mt-4 inline-flex items-center justify-center rounded-full px-5 py-2 text-white self-start"
+        style={{ background: '#D7ABA5' }}
       >
-        Book Now
-      </button>
+        {lang === 'en' ? 'Start with your vision' : 'Empezar con tu visión'}
+      </Link>
     </div>
   );
 }

@@ -1,14 +1,12 @@
 "use client";
 
 import Image from 'next/image';
+import Link from 'next/link';
 import QuickBookGrid from '@/components/QuickBookGrid';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import InstagramGrid from '@/components/InstagramGrid';
-import { useBooking } from '@/context/BookingContext';
 
 export default function Home() {
-  // Access booking functions from context
-  const { openBooking } = useBooking();
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BeautySalon',
@@ -62,12 +60,12 @@ export default function Home() {
               stylists and estheticians deliver bespoke hair and spa services tailored to your unique
               beauty needs.
             </p>
-            <button
-              onClick={openBooking}
-              className="mt-6 bg-rose text-white px-8 py-3 rounded-full shadow-lg hover:bg-rose/90 transition"
+            <Link
+              href="/vision"
+              className="mt-6 inline-flex items-center justify-center bg-rose text-white px-8 py-3 rounded-full shadow-lg hover:bg-rose/90 transition"
             >
-              Book Now
-            </button>
+              Start with your vision
+            </Link>
           </div>
         </div>
       </section>
@@ -75,7 +73,7 @@ export default function Home() {
       {/* Quick book grid */}
       <section className="max-w-7xl mx-auto px-6 py-12">
         <h2 className="font-display text-3xl text-center text-rose mb-8">How can we pamper you?</h2>
-        <QuickBookGrid onOpenBooking={openBooking} />
+        <QuickBookGrid />
       </section>
 
       {/* Testimonials Carousel */}

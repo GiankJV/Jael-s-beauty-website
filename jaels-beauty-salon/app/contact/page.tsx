@@ -1,10 +1,9 @@
 "use client";
 
 import ContactForm from '@/components/ContactForm';
-import { useBooking } from '@/context/BookingContext';
+import Link from 'next/link';
 
 export default function ContactPage() {
-  const { openBooking } = useBooking();
   return (
     <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-12">
       {/* Contact details and map */}
@@ -32,12 +31,12 @@ export default function ContactPage() {
         <p>
           <strong>Hours:</strong> Mon–Fri, 8 am–6 pm (by appointment only)
         </p>
-        <button
-          onClick={openBooking}
-          className="mt-6 bg-rose text-white px-6 py-3 rounded-full shadow hover:bg-rose/90 transition"
+        <Link
+          href="/vision"
+          className="mt-6 inline-flex items-center justify-center bg-rose text-white px-6 py-3 rounded-full shadow hover:bg-rose/90 transition"
         >
-          Book Now
-        </button>
+          Start with your vision
+        </Link>
         <div className="mt-8">
           <iframe
             src="https://www.google.com/maps?q=729%20E%20Pass%20Rd%20h,%20Gulfport,%20MS%2039507&output=embed"
