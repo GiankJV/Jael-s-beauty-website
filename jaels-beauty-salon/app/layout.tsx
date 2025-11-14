@@ -3,6 +3,7 @@ import { Allura, Cormorant_Garamond, Nunito } from 'next/font/google';
 import Script from 'next/script';
 import { LanguageProvider } from '@/context/LanguageContext';
 import LayoutWithBooking from '@/components/LayoutWithBooking';
+import SplashScreen from '@/components/SplashScreen';
 
 const allura = Allura({
   subsets: ['latin'],
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-body antialiased bg-beige text-ink">
         {/* Wrap the UI with the language provider so text can toggle between EN/ES */}
         <LanguageProvider>
+          <SplashScreen />
           <LayoutWithBooking>{children}</LayoutWithBooking>
         </LanguageProvider>
       </body>
