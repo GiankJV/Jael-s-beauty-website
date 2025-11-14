@@ -130,32 +130,34 @@ type MobileMenuProps = {
 
 function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
   const { toggleLang, lang } = useLang();
+
   return (
     <div
       className={`fixed inset-0 z-[9999] md:hidden transform transition-transform duration-300 ${
         open ? 'translate-x-0' : 'translate-x-full'
-      } bg-[#e8b3b3]`}
+      }`}
+      style={{ backgroundColor: '#e8b3b3' }}
     >
       <div className="flex h-full w-full flex-col">
-        <nav className="mt-24 px-10 flex flex-col space-y-8">
+        <nav className="mt-28 px-10 flex flex-col space-y-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={onClose}
-              className="font-heading text-2xl tracking-wide text-ink text-left"
+              className="font-heading text-3xl tracking-wide text-ink text-left"
             >
               {link.label}
             </a>
           ))}
         </nav>
-        <div className="mt-auto px-10 pb-10">
+        <div className="mt-auto px-10 pb-12">
           <button
             onClick={() => {
               toggleLang();
               onClose();
             }}
-            className="w-full rounded-full border border-rose/50 px-6 py-2 text-base font-body text-rose hover:bg-rose/20 transition"
+            className="w-full rounded-full border border-rose/50 px-6 py-3 text-base font-body text-rose hover:bg-rose/20 transition"
           >
             {lang === 'en' ? 'ES' : 'EN'}
           </button>
