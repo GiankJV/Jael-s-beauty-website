@@ -65,9 +65,11 @@ export default function Header({}: HeaderProps) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 bg-pink/95 ${
-        hidden ? '-translate-y-full' : 'translate-y-0'
-      }`}
+      className={`
+        fixed left-0 right-0 z-40 bg-pink/95
+        transition-[top] duration-300
+        ${hidden ? '-top-24' : 'top-0'}
+      `}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between py-5 md:py-6 px-6">
         <Link href="/" aria-label="Jael's Beauty Salon home">
@@ -138,7 +140,6 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
         ${open ? 'pointer-events-auto' : 'pointer-events-none'}
       `}
     >
-      {/* Solid full-screen background */}
       <div
         className={`
           absolute inset-0 bg-[#e8b3b3]
@@ -147,7 +148,6 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
         `}
       />
 
-      {/* Sliding panel with the nav items */}
       <div
         className={`
           relative flex h-full w-full flex-col
@@ -155,7 +155,7 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
           ${open ? 'translate-x-0' : 'translate-x-full'}
         `}
       >
-        <nav className="pt-28 px-8 flex flex-col space-y-8">
+        <nav className="pt-32 px-8 flex flex-col space-y-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -168,7 +168,7 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
           ))}
         </nav>
 
-        <div className="mt-auto px-8 pb-10">
+        <div className="mt-auto px-8 pb-12">
           <button
             onClick={() => {
               toggleLang();
