@@ -23,9 +23,6 @@ const nunito = Nunito({
 
 export const metadata = {
   title: "Jael's Beauty Salon",
-  icons: {
-    icon: '/icon.png',
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
