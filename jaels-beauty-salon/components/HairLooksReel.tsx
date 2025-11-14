@@ -16,10 +16,11 @@ function shuffle<T>(array: T[]): T[] {
 export default function HairLooksReel() {
   const { lang } = useLang();
   const [order, setOrder] = useState<string[]>([]);
-  const [startIndex, setStartIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
+
     async function loadImages() {
       try {
         const res = await fetch('/api/hair-images');
@@ -29,10 +30,11 @@ export default function HairLooksReel() {
         if (!cancelled && list.length > 0) {
           setOrder(shuffle(list));
         }
-      } catch (err) {
-        console.error('Failed to load hair images', err);
+      } catch (error) {
+        console.error('Failed to load hair images', error);
       }
     }
+
     loadImages();
     return () => {
       cancelled = true;
@@ -40,22 +42,22 @@ export default function HairLooksReel() {
   }, []);
 
   useEffect(() => {
-    if (order.length === 0) return;
+    if (order.length <= 3) return;
 
-    const interval = setInterval(
-      () => setStartIndex((prev) => (prev + 1) % order.length),
-      3000
-    );
+    const maxIndex = order.length - 3;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => {
+        if (prev >= maxIndex) return 0;
+        return prev + 1;
+      });
+    }, 3000);
+
     return () => clearInterval(interval);
   }, [order]);
 
   if (order.length === 0) return null;
 
-  const visible = [
-    order[startIndex],
-    order[(startIndex + 1) % order.length],
-    order[(startIndex + 2) % order.length],
-  ];
+  const canSlide = order.length > 3;
 
   return (
     <section className="mt-10 max-w-5xl mx-auto">
@@ -82,19 +84,30 @@ export default function HairLooksReel() {
       </p>
 
       <div className="overflow-hidden">
-        <div className="flex gap-4 transition-transform duration-500 ease-out">
-          {visible.map((src) => (
-            <div
-              key={src}
-              className="relative w-1/3 min-w-[33%] aspect-[3/4] rounded-2xl overflow-hidden shadow-sm"
-            >
-              <Image
-                src={src}
-                alt="Hair transformation at Jael's Beauty Salon"
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 33vw, 50vw"
-              />
+        <div
+          className={
+            'flex ' +
+            (canSlide
+              ? 'transition-transform duration-1000 ease-[cubic-bezier(0.22,0.61,0.36,1)]'
+              : '')
+          }
+          style={
+            canSlide
+              ? { transform: `translateX(-${currentIndex * (100 / 3)}%)` }
+              : undefined
+          }
+        >
+          {order.map((src) => (
+            <div key={src} className="w-1/3 flex-none px-1 md:px-2">
+              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-sm">
+                <Image
+                  src={src}
+                  alt="Hair transformation at Jael's Beauty Salon"
+                  fill
+                  className="object-cover transition-transform duration-1000 ease-out hover:scale-[1.03]"
+                  sizes="(min-width: 1024px) 33vw, 50vw"
+                />
+              </div>
             </div>
           ))}
         </div>
