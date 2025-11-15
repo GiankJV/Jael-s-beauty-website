@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 export default function SplashScreen() {
   const [visible, setVisible] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
-  const [showText, setShowText] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
     if (window.sessionStorage.getItem('jaels_splash_seen') === 'true') {
       setVisible(false);
       return;
@@ -17,16 +17,14 @@ export default function SplashScreen() {
     window.sessionStorage.setItem('jaels_splash_seen', 'true');
     setVisible(true);
 
-    const textTimer = setTimeout(() => setShowText(true), 1200);
-    const fadeTimer = setTimeout(() => setFadeOut(true), 1700);
-    const hideTimer = setTimeout(() => setVisible(false), 2300);
+    const fadeTimer = setTimeout(() => setFadeOut(true), 1900);
+    const hideTimer = setTimeout(() => setVisible(false), 2400);
     const safetyTimer = setTimeout(() => {
       setFadeOut(true);
       setVisible(false);
     }, 4000);
 
     return () => {
-      clearTimeout(textTimer);
       clearTimeout(fadeTimer);
       clearTimeout(hideTimer);
       clearTimeout(safetyTimer);
@@ -44,19 +42,9 @@ export default function SplashScreen() {
         ${fadeOut ? 'opacity-0' : 'opacity-100'}
       `}
     >
-      <div className="relative flex flex-col items-center justify-center">
-        <div className="w-40 h-40 sm:w-48 sm:h-48">
-          <ScissorAnimation />
-        </div>
-        <div
-          className={`
-            mt-4 text-center
-            font-heading text-2xl sm:text-3xl tracking-[0.12em] uppercase
-            text-ink
-            transition-opacity duration-500
-            ${showText ? 'opacity-100' : 'opacity-0'}
-          `}
-        >
+      <div className="relative w-40 h-40 sm:w-48 sm:h-48">
+        <ScissorAnimation />
+        <div className="brand-text font-heading text-center text-ink text-lg sm:text-xl tracking-[0.2em] uppercase">
           Jael&apos;s Beauty Salon
         </div>
       </div>
@@ -74,6 +62,18 @@ export default function SplashScreen() {
           animation: snip-lower 0.3s ease-in-out 0s 4 alternate;
         }
 
+        .brand-text {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transform: translateY(10px) scale(0.85);
+          animation: brand-reveal 0.45s ease-out forwards;
+          animation-delay: 0.9s;
+        }
+
         @keyframes snip-upper {
           from {
             transform: rotate(0deg);
@@ -89,6 +89,17 @@ export default function SplashScreen() {
           }
           to {
             transform: rotate(16deg);
+          }
+        }
+
+        @keyframes brand-reveal {
+          from {
+            opacity: 0;
+            transform: translateY(10px) scale(0.85);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
           }
         }
       `}</style>
