@@ -10,7 +10,6 @@ export default function SplashScreen() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Only show once per session
     if (window.sessionStorage.getItem("jaels_splash_seen") === "true") {
       setVisible(false);
       return;
@@ -19,9 +18,8 @@ export default function SplashScreen() {
     window.sessionStorage.setItem("jaels_splash_seen", "true");
     setVisible(true);
 
-    // Second snip happens near the end of the 2-iteration animation,
-    // so reveal the text a bit after it starts.
-    const textTimer = setTimeout(() => setShowText(true), 1200);
+    // Show text around the second snip (animation ~1.4s)
+    const textTimer = setTimeout(() => setShowText(true), 800);
 
     const fadeTimer = setTimeout(() => setFadeOut(true), 2200);
     const hideTimer = setTimeout(() => setVisible(false), 2900);
@@ -50,23 +48,26 @@ export default function SplashScreen() {
         ${fadeOut ? "opacity-0" : "opacity-100"}
       `}
     >
-      <div className="relative flex flex-col items-center justify-center">
-        <div className="w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center">
+      <div className="relative flex items-center justify-center">
+        {/* Bigger scissors area so we have room for the logo */}
+        <div className="relative w-52 h-52 sm:w-64 sm:h-64">
           <AnimatedScissors />
-        </div>
 
-        <div
-          className={`
-            mt-4 text-center tracking-[0.4em]
-            text-ink text-xs sm:text-sm
-            uppercase
-            opacity-0
-            ${showText ? "splash-text" : ""}
-          `}
-        >
-          <div>JAEL&apos;S</div>
-          <div>BEAUTY</div>
-          <div>SALON</div>
+          {/* Logo text between the blades */}
+          <div
+            className={`
+              absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/3
+              text-center tracking-[0.4em]
+              text-ink text-[9px] sm:text-xs
+              uppercase
+              opacity-0
+              ${showText ? "logo-text-visible" : ""}
+            `}
+          >
+            <div>JAEL&apos;S</div>
+            <div>BEAUTY</div>
+            <div>SALON</div>
+          </div>
         </div>
       </div>
 
@@ -74,52 +75,70 @@ export default function SplashScreen() {
         .scissors-svg {
           width: 100%;
           height: 100%;
+          display: block;
         }
 
-        /* Animate just the upper blade like a snip */
+        /* Upper blade pivot is around the screw – tweak px if needed */
         .upper-blade {
-          transform-box: fill-box;
-          transform-origin: 50% 85%;
-          animation: snip-upper 0.35s ease-in-out 0s 4 alternate;
+          transform-origin: 122px 170px;
+          animation: snip-upper 1.4s ease-in-out forwards;
         }
 
-        /* Tiny counter wiggle to make the base feel alive */
+        /* Slight counter-wiggle for the base/handle */
         .base-group {
-          transform-box: fill-box;
-          transform-origin: 50% 70%;
-          animation: snip-base 0.35s ease-in-out 0s 4 alternate;
+          transform-origin: 122px 240px;
+          animation: snip-base 1.4s ease-in-out forwards;
         }
 
+        /* Two snips: open, close, open, then stay open */
         @keyframes snip-upper {
-          from {
+          0% {
             transform: rotate(0deg);
           }
-          to {
-            transform: rotate(-18deg);
+          15% {
+            transform: rotate(-18deg); /* first open */
+          }
+          30% {
+            transform: rotate(0deg); /* close */
+          }
+          55% {
+            transform: rotate(-18deg); /* second open */
+          }
+          100% {
+            transform: rotate(-18deg); /* stay open */
           }
         }
 
         @keyframes snip-base {
-          from {
+          0% {
             transform: rotate(0deg);
           }
-          to {
+          15% {
+            transform: rotate(4deg);
+          }
+          30% {
+            transform: rotate(0deg);
+          }
+          55% {
+            transform: rotate(4deg);
+          }
+          100% {
             transform: rotate(4deg);
           }
         }
 
-        .splash-text {
-          animation: splash-text-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        .logo-text-visible {
+          animation: logo-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
-        @keyframes splash-text-in {
+        @keyframes logo-in {
           0% {
             opacity: 0;
-            transform: translateY(10px) scale(0.9);
+            transform: translate(-50%, -5%) scale(0.9);
           }
           100% {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translate(-50%, -33%) scale(1);
           }
         }
       `}</style>
@@ -137,12 +156,15 @@ function AnimatedScissors() {
     >
       <g id="Scissors">
         <g id="Group">
+          {/* UPPER BLADE */}
           <path
             id="upper_Blade"
             className="upper-blade"
             d="M52.5333 2.26664C52.9333 3.59998 56 17.6 59.2 33.3333C62.5333 49.0666 66.6667 68.5333 68.6667 76.5333C76.2667 108.667 102.8 204.533 105.467 209.6C106.133 210.8 112.133 216.133 118.933 221.467C125.733 226.933 132.8 232.8 134.4 234.667C138.533 238.933 161.6 276.133 168.267 288.933C175.733 303.467 175.333 307.2 165.6 317.733C155.6 328.533 152.933 335.333 153.467 348.4C154.133 360.533 158.667 368.8 168.667 375.867C174.933 380.533 175.733 380.667 188.4 381.067C196.8 381.467 202.133 381.067 203.067 380.133C205.467 377.733 209.333 378.4 209.333 381.2C209.333 384.933 221.467 395.6 228 397.333C235.867 399.467 242 398.667 242 395.467C242 392.533 240 391.2 232 389.2C227.6 388.133 224.4 386 219.6 381.067L213.2 374.267L217.067 370.133C222.8 364.133 225.467 357.867 226.267 349.2C228 330.533 218.8 317.067 199.333 310C185.867 305.067 181.733 298.4 156.267 240C144 211.6 140.933 204.267 122.267 155.333C108.4 119.2 101.2 101.733 91.3333 79.3333C80.8 55.6 53.7333 -2.48537e-05 52.6667 -2.48537e-05C52.2667 -2.48537e-05 52.1333 1.06664 52.5333 2.26664ZM92 93.3333C107.067 128.8 118.933 159.733 118 161.333C116.667 163.467 106.667 165.867 105.333 164.533C104.667 163.867 102.533 157.867 100.667 151.333C94.9333 131.6 80.1333 84.6666 77.7333 79.0666C76.5333 76.2666 75.3333 74.6666 75.0667 75.6C74.5333 77.2 81.8667 103.467 105.2 182.667L112.133 206L123.067 217.2C129.067 223.333 133.067 227.867 131.867 227.2C126.667 224.4 112 210.933 109.6 206.667C104.8 198.4 71.2 77.7333 72.4 73.2C72.8 71.7333 72.5333 68.6666 71.8667 66.2666C69.2 57.6 65.6 40.1333 66.4 39.4666C67.3333 38.4 78.2667 61.3333 92 93.3333ZM120.667 170.133C124.4 174.133 124.533 175.067 122.667 178.8C120.667 182.4 118.8 182 117.2 177.6C113.067 166.933 114.667 163.6 120.667 170.133ZM113.333 174.8C114.133 177.733 115.2 181.067 115.6 182.133C116.667 184.933 113.2 184.4 109.733 181.067C106.267 177.867 106 176.4 108 171.333C109.733 166.8 111.6 168 113.333 174.8ZM131.067 192.8C133.2 197.867 137.6 208.533 140.933 216.4C144.133 224.4 146.533 231.2 146.267 231.6C144.8 232.933 138.533 227.467 128.267 215.867C111.467 197.067 109.467 190.533 119.067 185.867C122.133 184.267 125.333 183.2 126 183.333C126.8 183.467 129.067 187.733 131.067 192.8ZM144.8 239.6C155.6 257.733 172.267 288.133 171.733 288.667C171.467 288.933 164.933 278.667 157.333 265.6C149.733 252.667 141.733 239.467 139.733 236.267C137.2 232.533 136.533 230.667 137.733 230.667C138.667 230.667 141.867 234.667 144.8 239.6ZM182.133 303.333C187.2 311.067 187.467 314.267 182.533 309.867C178.667 306.533 174.267 296 176.533 296C176.933 296 179.333 299.333 182.133 303.333ZM177.333 314.267C177.2 314.933 174.933 316.933 172 318.933C165.2 323.733 159.733 333.333 158.933 341.867C157.867 355.067 162.933 365.6 173.867 373.067C177.333 375.333 179.467 377.333 178.4 377.333C174.8 377.333 163.867 368.933 160.267 363.6C157.2 359.067 156.533 356.4 156.267 347.467C155.867 337.733 156.133 336 159.333 330.4C164 322.133 177.467 310 177.333 314.267ZM202.4 319.6C204.933 320.8 209.333 324.667 212.133 328.4C217.067 334.533 217.333 335.333 217.333 344.4C217.333 360.933 208.933 371.733 194.267 373.867C181.333 375.867 166.267 366.267 162.8 353.867C159.6 342.533 162.8 331.733 171.467 324.267C180.8 316 191.333 314.4 202.4 319.6ZM220 331.067C223.733 339.6 224 351.733 220.667 359.333C219.467 362.267 218.133 364 217.733 363.067C217.467 362.133 217.733 360.4 218.4 359.067C222.933 350.667 220.8 334.667 214 325.467C209.733 319.6 209.733 317.333 213.867 321.2C215.6 322.933 218.4 327.333 220 331.067ZM231.333 392.667C239.6 395.067 243.067 398.133 235.867 396.667C230.267 395.467 220 391.067 220 389.867C220 389.467 220.933 389.467 222 389.867C223.2 390.267 227.333 391.6 231.333 392.667Z"
             fill="black"
           />
+
+          {/* BASE + HANDLE */}
           <g id="base" className="base-group">
             <path
               id="Lower_Blade"
