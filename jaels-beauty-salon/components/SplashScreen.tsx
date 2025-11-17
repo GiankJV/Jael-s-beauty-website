@@ -60,7 +60,7 @@ export default function SplashScreen() {
           <div
             className={`
               pointer-events-none
-              absolute left-1/2 top-[70%]
+              absolute left-1/2 top-[15%]
               -translate-x-1/2 -translate-y-1/2
               text-[9px] sm:text-[11px]
               tracking-[0.35em]
