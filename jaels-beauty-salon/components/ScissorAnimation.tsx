@@ -5,7 +5,7 @@ export default function ScissorAnimation() {
     <>
       <svg
         className="w-full h-full scissor-svg"
-        viewBox="0 0 244 400"
+        viewBox="-80 0 400 400"
         xmlns="http://www.w3.org/2000/svg"
       >
         <g id="Scissors">
@@ -39,13 +39,14 @@ export default function ScissorAnimation() {
         .scissor-svg {
           transform: rotate(90deg) scale(0.35);
           transform-origin: center center;
+          overflow: visible;
         }
 
         .upper-blade,
         .lower-blade {
           transform-box: fill-box;
           transform-origin: 45% 50%;
-          animation-duration: 1.1s;
+          animation-duration: 0.8s;
           animation-timing-function: ease-in-out;
           animation-iteration-count: 1;
           animation-fill-mode: forwards;
@@ -65,19 +66,16 @@ export default function ScissorAnimation() {
             transform: rotate(0deg);
           }
           15% {
-            transform: rotate(-18deg);
+            transform: rotate(-20deg);
           }
           30% {
             transform: rotate(0deg);
           }
-          45% {
-            transform: rotate(-18deg);
-          }
-          60% {
-            transform: rotate(0deg);
+          55% {
+            transform: rotate(-20deg);
           }
           100% {
-            transform: rotate(0deg);
+            transform: rotate(-20deg);
           }
         }
 
@@ -86,19 +84,16 @@ export default function ScissorAnimation() {
             transform: rotate(0deg);
           }
           15% {
-            transform: rotate(14deg);
+            transform: rotate(16deg);
           }
           30% {
             transform: rotate(0deg);
           }
-          45% {
-            transform: rotate(14deg);
-          }
-          60% {
-            transform: rotate(0deg);
+          55% {
+            transform: rotate(16deg);
           }
           100% {
-            transform: rotate(0deg);
+            transform: rotate(16deg);
           }
         }
       `}</style>
