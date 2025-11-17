@@ -45,7 +45,7 @@ export default function ScissorAnimation() {
         .lower-blade {
           transform-box: fill-box;
           transform-origin: 45% 50%;
-          animation-duration: 0.7s;
+          animation-duration: 1.6s;
           animation-timing-function: ease-in-out;
           animation-iteration-count: 1;
           animation-fill-mode: forwards;
@@ -64,13 +64,13 @@ export default function ScissorAnimation() {
           0% {
             transform: rotate(0deg);
           }
-          25% {
+          20% {
             transform: rotate(-20deg);
           }
-          50% {
+          40% {
             transform: rotate(0deg);
           }
-          75% {
+          60% {
             transform: rotate(-20deg);
           }
           100% {
@@ -82,13 +82,13 @@ export default function ScissorAnimation() {
           0% {
             transform: rotate(0deg);
           }
-          25% {
+          20% {
             transform: rotate(16deg);
           }
-          50% {
+          40% {
             transform: rotate(0deg);
           }
-          75% {
+          60% {
             transform: rotate(16deg);
           }
           100% {
