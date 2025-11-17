@@ -37,7 +37,7 @@ export default function ScissorAnimation() {
 
       <style jsx>{`
         .scissor-svg {
-          transform: rotate(90deg) scale(0.9);
+          transform: rotate(90deg) scale(0.85);
           transform-origin: center center;
         }
 
