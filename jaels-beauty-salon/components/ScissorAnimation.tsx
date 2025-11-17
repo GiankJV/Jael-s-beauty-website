@@ -46,19 +46,14 @@ export default function ScissorAnimation() {
         .lower-blade {
           transform-box: fill-box;
           transform-origin: 45% 50%;
-          animation-duration: 0.8s;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: 1;
-          animation-fill-mode: forwards;
-          animation-delay: 0.1s;
         }
 
         .upper-blade {
-          animation-name: snip-upper;
+          animation: snip-upper 1.2s ease-in-out 0s 1 forwards;
         }
 
         .lower-blade {
-          animation-name: snip-lower;
+          animation: snip-lower 1.2s ease-in-out 0s 1 forwards;
         }
 
         @keyframes snip-upper {
