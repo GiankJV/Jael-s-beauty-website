@@ -122,7 +122,7 @@ export default function SplashScreen() {
             margin-left: -37vw; /* nudge left on mobile to avoid overlap */
           }
           .business-name {
-            left: 63%;
+            left: 69%;
             top: 50%;
             transform: translate(-5%, -50%);
             font-size: 14px;
