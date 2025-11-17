@@ -6,7 +6,6 @@ import ScissorAnimation from "./ScissorAnimation";
 export default function SplashScreen() {
   const [visible, setVisible] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
-  const [showText, setShowText] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -20,9 +19,6 @@ export default function SplashScreen() {
     window.sessionStorage.setItem("jaels_splash_seen", "true");
     setVisible(true);
 
-    // time this so it lines up with the *second* snip
-    const textTimer = setTimeout(() => setShowText(true), 850);
-
     // fade the whole splash out after the animation
     const fadeTimer = setTimeout(() => setFadeOut(true), 1800);
     const hideTimer = setTimeout(() => setVisible(false), 2400);
@@ -34,7 +30,6 @@ export default function SplashScreen() {
     }, 4000);
 
     return () => {
-      clearTimeout(textTimer);
       clearTimeout(fadeTimer);
       clearTimeout(hideTimer);
       clearTimeout(safetyTimer);
