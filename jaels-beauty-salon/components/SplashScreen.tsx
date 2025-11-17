@@ -26,7 +26,7 @@ export default function SplashScreen() {
     const safetyTimer = setTimeout(() => {
       setFadeOut(true);
       setVisible(false);
-    }, 4000);
+    }, 6000);
 
     return () => {
       clearTimeout(textTimer);
