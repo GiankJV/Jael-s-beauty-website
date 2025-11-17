@@ -19,13 +19,10 @@ export default function SplashScreen() {
     window.sessionStorage.setItem("jaels_splash_seen", "true");
     setVisible(true);
 
-    // First snip happens immediately (handled in CSS)
-    // Show text on second snip (slightly later)
+    // Text appears on second snip
     const textTimer = setTimeout(() => setShowText(true), 1200);
-
     const fadeTimer = setTimeout(() => setFadeOut(true), 2000);
     const hideTimer = setTimeout(() => setVisible(false), 2600);
-
     const safetyTimer = setTimeout(() => {
       setFadeOut(true);
       setVisible(false);
@@ -50,21 +47,25 @@ export default function SplashScreen() {
         ${fadeOut ? "opacity-0" : "opacity-100"}
       `}
     >
-      {/* BIGGER, NO CLIPPING */}
       <div className="relative flex items-center justify-center">
-        <div className="relative w-[260px] h-[360px] sm:w-[320px] sm:h-[440px]">
-          {/* Scissors */}
-          <ScissorAnimation />
+        {/* Wider + a little taller for horizontal layout */}
+        <div className="relative w-[360px] h-[260px] sm:w-[440px] sm:h-[300px]">
+          {/* ROTATED SCISSORS */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-full h-full origin-center rotate-90">
+              <ScissorAnimation />
+            </div>
+          </div>
 
-          {/* TEXT INSIDE BLADES */}
+          {/* TEXT BETWEEN BLADES (NOT ROTATED) */}
           <div
             className={`
               pointer-events-none
-              absolute left-1/2 top-[10%]
+              absolute left-1/2 top-1/2
               -translate-x-1/2 -translate-y-1/2
-              text-[9px] sm:text-[11px]
+              text-[10px] sm:text-[12px]
               tracking-[0.35em]
-              leading-[1.4]
+              leading-[1.5]
               text-[#2f2929]
               uppercase
               text-center
