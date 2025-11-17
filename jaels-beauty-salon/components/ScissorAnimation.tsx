@@ -49,11 +49,11 @@ export default function ScissorAnimation() {
         }
 
         .upper-blade {
-          animation: snip-upper 1.1s ease-in-out 0s 1 forwards;
+          animation: snip-upper 0.5s ease-in-out 0s 1 forwards;
         }
 
         .lower-blade {
-          animation: snip-lower 1.1s ease-in-out 0s 1 forwards;
+          animation: snip-lower 0.5s ease-in-out 0s 1 forwards;
         }
 
         @keyframes snip-upper {
