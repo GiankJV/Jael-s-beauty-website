@@ -19,10 +19,10 @@ export default function SplashScreen() {
     window.sessionStorage.setItem("jaels_splash_seen", "true");
     setVisible(true);
 
-    // Text appears on second snip
-    const textTimer = setTimeout(() => setShowText(true), 1200);
-    const fadeTimer = setTimeout(() => setFadeOut(true), 2000);
-    const hideTimer = setTimeout(() => setVisible(false), 2600);
+    // show text after second snip
+    const textTimer = setTimeout(() => setShowText(true), 900);
+    const fadeTimer = setTimeout(() => setFadeOut(true), 1700);
+    const hideTimer = setTimeout(() => setVisible(false), 2300);
     const safetyTimer = setTimeout(() => {
       setFadeOut(true);
       setVisible(false);
@@ -40,47 +40,95 @@ export default function SplashScreen() {
 
   return (
     <div
-      className={`
-        fixed inset-0 z-[99999] flex items-center justify-center
-        bg-[#e8b3b3]
-        transition-opacity duration-700
-        ${fadeOut ? "opacity-0" : "opacity-100"}
-      `}
+      className={`fixed inset-0 z-[99999] flex items-center justify-center
+                  bg-[#e8b3b3] transition-opacity duration-700
+                  ${fadeOut ? "opacity-0" : "opacity-100"}`}
     >
       <div className="relative flex items-center justify-center">
-        {/* Wider + a little taller for horizontal layout */}
-        <div className="relative w-[360px] h-[260px] sm:w-[440px] sm:h-[300px]">
-          {/* ROTATED SCISSORS */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-full h-full origin-center rotate-90">
+        {/* BIGGER, HORIZONTAL SCISSORS */}
+        <div className="scissor-wrapper w-[80vw] max-w-[900px]">
+          <div className="relative flex items-center justify-center">
+            <div className="w-full">
               <ScissorAnimation />
             </div>
-          </div>
 
-          {/* TEXT BETWEEN BLADES (NOT ROTATED) */}
-          <div
-            className={`
-              pointer-events-none
-              absolute left-1/2 top-1/2
-              -translate-x-1/2 -translate-y-1/2
-              text-[10px] sm:text-[12px]
-              tracking-[0.35em]
-              leading-[1.5]
-              text-[#2f2929]
-              uppercase
-              text-center
-              transition-opacity duration-500
-              ${showText ? "opacity-100" : "opacity-0"}
-            `}
-          >
-            J A E L&apos; S
-            <br />
-            B E A U T Y
-            <br />
-            S A L O N
+            {/* SINGLE-LINE BUSINESS NAME, BETWEEN BLADES */}
+            <div
+              className={`
+                business-name
+                absolute
+                font-heading uppercase tracking-[0.35em]
+                text-ink whitespace-nowrap
+                text-[clamp(16px,2.1vw,22px)]
+                transition-opacity duration-500
+                ${showText ? "opacity-100" : "opacity-0"}
+              `}
+            >
+              JAEL&apos;S&nbsp;BEAUTY&nbsp;SALON
+            </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        /* Rotate SVG so scissors are horizontal */
+        .scissor-wrapper svg {
+          transform: rotate(-90deg);
+          transform-origin: 50% 50%;
+        }
+
+        /* Put the text roughly between the blades, slightly to the right */
+        .business-name {
+          left: 55%;
+          top: 50%;
+          transform: translate(-10%, -50%);
+        }
+
+        /* SNIP ANIMATION */
+        .upper-blade,
+        .lower-blade {
+          transform-origin: 122px 200px; /* pivot around the screw area */
+        }
+
+        .upper-blade {
+          animation: snip-upper 0.25s ease-in-out 0.1s 4 alternate;
+        }
+
+        .lower-blade {
+          animation: snip-lower 0.25s ease-in-out 0.1s 4 alternate;
+        }
+
+        @keyframes snip-upper {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(18deg);
+          }
+        }
+
+        @keyframes snip-lower {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(-18deg);
+          }
+        }
+
+        @media (max-width: 640px) {
+          .scissor-wrapper {
+            width: 90vw;
+          }
+          .business-name {
+            left: 58%;
+            top: 50%;
+            transform: translate(-5%, -50%);
+            font-size: 14px;
+            letter-spacing: 0.3em;
+          }
+        }
+      `}</style>
     </div>
   );
 }
