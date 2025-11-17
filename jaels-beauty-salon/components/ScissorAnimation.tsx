@@ -37,7 +37,7 @@ export default function ScissorAnimation() {
 
       <style jsx>{`
         .scissor-svg {
-          transform: rotate(90deg) scale(0.45);
+          transform: rotate(90deg) scale(0.35);
           transform-origin: center center;
         }
 
@@ -45,7 +45,7 @@ export default function ScissorAnimation() {
         .lower-blade {
           transform-box: fill-box;
           transform-origin: 45% 50%;
-          animation-duration: 1.6s;
+          animation-duration: 1.1s;
           animation-timing-function: ease-in-out;
           animation-iteration-count: 1;
           animation-fill-mode: forwards;
@@ -64,17 +64,20 @@ export default function ScissorAnimation() {
           0% {
             transform: rotate(0deg);
           }
-          20% {
-            transform: rotate(-20deg);
+          15% {
+            transform: rotate(-18deg);
           }
-          40% {
+          30% {
             transform: rotate(0deg);
           }
+          45% {
+            transform: rotate(-18deg);
+          }
           60% {
-            transform: rotate(-20deg);
+            transform: rotate(0deg);
           }
           100% {
-            transform: rotate(-20deg);
+            transform: rotate(0deg);
           }
         }
 
@@ -82,17 +85,20 @@ export default function ScissorAnimation() {
           0% {
             transform: rotate(0deg);
           }
-          20% {
-            transform: rotate(16deg);
+          15% {
+            transform: rotate(14deg);
           }
-          40% {
+          30% {
             transform: rotate(0deg);
           }
+          45% {
+            transform: rotate(14deg);
+          }
           60% {
-            transform: rotate(16deg);
+            transform: rotate(0deg);
           }
           100% {
-            transform: rotate(16deg);
+            transform: rotate(0deg);
           }
         }
       `}</style>
