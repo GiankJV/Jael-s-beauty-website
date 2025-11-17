@@ -119,11 +119,12 @@ export default function SplashScreen() {
         @media (max-width: 640px) {
           .scissor-wrapper {
             width: 90vw;
+            margin-left: -10vw; /* nudge left on mobile to avoid overlap */
           }
           .business-name {
             left: 58%;
             top: 50%;
-            transform: translate(-5%, -50%);
+            transform: translate(-10%, -50%);
             font-size: 14px;
             letter-spacing: 0.3em;
           }
