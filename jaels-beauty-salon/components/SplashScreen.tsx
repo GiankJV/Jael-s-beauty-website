@@ -21,7 +21,7 @@ export default function SplashScreen() {
 
     // show text after second snip
     const textTimer = setTimeout(() => setShowText(true), 1200);
-    const fadeTimer = setTimeout(() => setFadeOut(true), 1700);
+    const fadeTimer = setTimeout(() => setFadeOut(true), 4000);
     const hideTimer = setTimeout(() => setVisible(false), 4000);
     const safetyTimer = setTimeout(() => {
       setFadeOut(true);
@@ -91,11 +91,11 @@ export default function SplashScreen() {
         }
 
         .upper-blade {
-          animation: snip-upper 0.25s ease-in-out 0.1s 4 alternate;
+          animation: snip-upper 0.35s ease-in-out 0.1s 4 alternate;
         }
 
         .lower-blade {
-          animation: snip-lower 0.25s ease-in-out 0.1s 4 alternate;
+          animation: snip-lower 0.35s ease-in-out 0.1s 4 alternate;
         }
 
         @keyframes snip-upper {
