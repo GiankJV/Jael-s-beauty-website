@@ -49,27 +49,21 @@ export default function ScissorAnimation() {
         }
 
         .upper-blade {
-          animation: snip-upper 0.5s ease-in-out 0s 1 forwards;
+          animation: snip-upper 0.35s ease-in-out 0s 4 alternate forwards;
         }
 
         .lower-blade {
-          animation: snip-lower 0.5s ease-in-out 0s 1 forwards;
+          animation: snip-lower 0.35s ease-in-out 0s 4 alternate forwards;
         }
 
         @keyframes snip-upper {
           0%   { transform: rotate(0deg); }
-          20%  { transform: rotate(-20deg); }
-          40%  { transform: rotate(0deg); }
-          70%  { transform: rotate(-20deg); }
-          100% { transform: rotate(0deg); } /* end open */
+          100% { transform: rotate(-20deg); }
         }
 
         @keyframes snip-lower {
           0%   { transform: rotate(0deg); }
-          20%  { transform: rotate(16deg); }
-          40%  { transform: rotate(0deg); }
-          70%  { transform: rotate(16deg); }
-          100% { transform: rotate(0deg); } /* end open */
+          100% { transform: rotate(16deg); }
         }
       `}</style>
     </>
