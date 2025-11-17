@@ -79,7 +79,7 @@ export default function SplashScreen() {
 
         /* Put the text roughly between the blades, slightly to the right */
         .business-name {
-          left: 80%;
+          left: 65%;
           top: 50%;
           transform: translate(-10%, -50%);
         }
