@@ -4,11 +4,11 @@ import React from "react";
 
 export default function ScissorAnimation() {
   return (
-    <div className="relative flex items-center justify-center">
+    <div className="relative flex items-center justify-center overflow-visible">
       {/* Larger SVG */}
       <svg
         viewBox="0 0 244 400"
-        className="w-[420px] h-[420px] sm:w-[500px] sm:h-[500px]"
+        className="w-[360px] h-[360px] sm:w-[430px] sm:h-[430px]"
         aria-hidden="true"
       >
         {/* YOUR EXACT SCISSOR SVG, unchanged */}
@@ -75,25 +75,25 @@ export default function ScissorAnimation() {
           70% { transform: rotate(-18deg); }
         }
 
-        /* Text now MUCH higher (where it belongs) */
+        /* ⬇⬇ ADJUSTED: text lowered into the V between the blades */
         .splash-logo-text {
           opacity: 0;
-          transform: translateY(-70px) scale(0.9);
+          transform: translateY(-28px) scale(0.9);
           animation: logo-reveal 0.65s ease-out 0.62s forwards;
         }
 
         @keyframes logo-reveal {
           0% {
             opacity: 0;
-            transform: translateY(-70px) scale(0.9);
+            transform: translateY(-28px) scale(0.9);
           }
           60% {
             opacity: 1;
-            transform: translateY(-70px) scale(1.03);
+            transform: translateY(-28px) scale(1.03);
           }
           100% {
             opacity: 1;
-            transform: translateY(-70px) scale(1);
+            transform: translateY(-28px) scale(1);
           }
         }
       `}</style>
