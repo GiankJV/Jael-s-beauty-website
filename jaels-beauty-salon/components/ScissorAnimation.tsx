@@ -57,11 +57,7 @@ export default function ScissorAnimation() {
           ${showText ? "opacity-100" : "opacity-0"}
         `}
       >
-        JAEL'S
-        <br />
-        BEAUTY
-        <br />
-        SALON
+        JAEL&apos;S<br />BEAUTY<br />SALON
       </div>
 
       <style jsx>{`
