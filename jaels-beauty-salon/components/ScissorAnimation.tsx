@@ -62,45 +62,19 @@ export default function ScissorAnimation() {
         }
 
         @keyframes snip-upper {
-          0% {
-            transform: rotate(0deg);
-          }
-          12% {
-            transform: rotate(-20deg); /* close 1 */
-          }
-          24% {
-            transform: rotate(0deg); /* open 1 */
-          }
-          40% {
-            transform: rotate(-20deg); /* close 2 */
-          }
-          60% {
-            transform: rotate(0deg); /* final open */
-          }
-          100% {
-            transform: rotate(0deg);
-          }
+          0%   { transform: rotate(0deg); }
+          25%  { transform: rotate(-20deg); }
+          50%  { transform: rotate(0deg); }
+          75%  { transform: rotate(-20deg); }
+          100% { transform: rotate(-20deg); } /* stay open */
         }
 
         @keyframes snip-lower {
-          0% {
-            transform: rotate(0deg);
-          }
-          12% {
-            transform: rotate(16deg); /* close 1 */
-          }
-          24% {
-            transform: rotate(0deg); /* open 1 */
-          }
-          40% {
-            transform: rotate(16deg); /* close 2 */
-          }
-          60% {
-            transform: rotate(0deg); /* final open */
-          }
-          100% {
-            transform: rotate(0deg);
-          }
+          0%   { transform: rotate(0deg); }
+          25%  { transform: rotate(16deg); }
+          50%  { transform: rotate(0deg); }
+          75%  { transform: rotate(16deg); }
+          100% { transform: rotate(16deg); } /* stay open */
         }
       `}</style>
     </>
