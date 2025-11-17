@@ -119,7 +119,7 @@ export default function SplashScreen() {
         @media (max-width: 640px) {
           .scissor-wrapper {
             width: 90vw;
-            margin-left: -10vw; /* nudge left on mobile to avoid overlap */
+            margin-left: -20vw; /* nudge left on mobile to avoid overlap */
           }
           .business-name {
             left: 58%;
