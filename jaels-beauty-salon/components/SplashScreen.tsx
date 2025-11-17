@@ -20,7 +20,7 @@ export default function SplashScreen() {
     setVisible(true);
 
     // show text after second snip
-    const textTimer = setTimeout(() => setShowText(true), 1000);
+    const textTimer = setTimeout(() => setShowText(true), 1200);
     const fadeTimer = setTimeout(() => setFadeOut(true), 1700);
     const hideTimer = setTimeout(() => setVisible(false), 2300);
     const safetyTimer = setTimeout(() => {
