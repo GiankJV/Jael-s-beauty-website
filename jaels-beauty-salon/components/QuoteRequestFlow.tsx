@@ -534,22 +534,6 @@ function Step4Success() {
           ? 'We’ll review your photos and preferences and reach out with a personalized quote within a few hours.'
           : 'Revisaremos tus fotos y preferencias y te contactaremos con una cotización personalizada en unas horas.'}
       </p>
-
-      <div className="mt-4">
-        <p className="text-sm font-medium mb-3">
-          {lang === 'en'
-            ? 'Want to pencil in a time now?'
-            : '¿Quieres apartar un horario ahora?'}
-        </p>
-        <p className="text-xs opacity-70 mb-4 max-w-md mx-auto">
-          {lang === 'en'
-            ? 'Choose a day and time using the calendar below. We’ll confirm or adjust it when we send your quote.'
-            : 'Elige día y horario usando el calendario abajo. Confirmaremos o ajustaremos al enviarte tu cotización.'}
-        </p>
-        <div className="bg-beige rounded-2xl p-4 shadow-sm">
-          <SquareBookingEmbed />
-        </div>
-      </div>
     </div>
   );
 }

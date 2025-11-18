@@ -11,7 +11,7 @@ const cards = [
       en: 'Cuts, color, extensions, and styling tailored to every hair type.',
       es: 'Cortes, color, extensiones y peinados a medida para cada tipo de cabello.',
     },
-    href: '/vision',
+    href: '/hair/start',
     cta: { en: 'Start with your vision', es: 'Empezar con tu visión' },
   },
   {
