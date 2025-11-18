@@ -33,7 +33,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
         )}
       </div>
       <Link
-        href="/vision"
+        href="/hair/start"
         className="mt-4 inline-flex items-center justify-center rounded-full px-5 py-2 text-white self-start"
         style={{ background: '#D7ABA5' }}
       >

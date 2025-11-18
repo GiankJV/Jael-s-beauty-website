@@ -12,7 +12,7 @@ export default function StickyCTA() {
   const { lang } = useLang();
   return (
     <Link
-      href="/vision"
+      href="/hair/start"
       className="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:hidden bg-rose text-white px-6 py-3 rounded-full shadow-lg z-40 hover:bg-rose/90 transition"
       aria-label={lang === 'en' ? 'Start with your vision' : 'Empezar con tu visión'}
     >

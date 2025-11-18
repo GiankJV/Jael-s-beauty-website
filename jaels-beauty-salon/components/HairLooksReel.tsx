@@ -72,7 +72,7 @@ export default function HairLooksReel({ hideIntro = false }: HairLooksReelProps)
               {lang === 'en' ? 'Hair transformations' : 'Transformaciones de cabello'}
             </h3>
             <a
-              href="/vision"
+              href="/hair/start"
               className="hidden md:inline-flex items-center justify-center rounded-full px-4 py-2 text-xs md:text-sm text-white"
               style={{ background: '#D7ABA5' }}
             >
@@ -121,7 +121,7 @@ export default function HairLooksReel({ hideIntro = false }: HairLooksReelProps)
       {!hideIntro && (
         <div className="mt-4 md:hidden">
           <a
-            href="/vision"
+            href="/hair/start"
             className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs text-white"
             style={{ background: '#D7ABA5' }}
           >

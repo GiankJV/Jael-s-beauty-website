@@ -60,7 +60,7 @@ export default function AboutPage() {
           <h2 className="font-heading text-3xl text-rose">{t('meetTitle')}</h2>
           <p className="leading-relaxed">{t('meetBody')}</p>
           <Link
-            href="/vision"
+            href="/hair/start"
             className="inline-flex items-center justify-center bg-rose text-white px-6 py-3 rounded-full shadow hover:bg-rose/90 transition"
           >
             {t('cta')}

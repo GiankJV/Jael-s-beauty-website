@@ -56,7 +56,7 @@ export default function ContactPage() {
           <p>Gulfport, MS 39507</p>
 
           <Link
-            href="/vision"
+            href="/hair/start"
             className="mt-6 inline-flex items-center justify-center bg-rose text-white px-6 py-3 rounded-full shadow hover:bg-rose/90 transition"
           >
             {lang === 'en' ? 'Start with your vision' : 'Empieza con tu visión'}

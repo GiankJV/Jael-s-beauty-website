@@ -36,7 +36,7 @@ export default function ServicesPage() {
         </p>
         <div className="flex justify-center mb-6">
           <Link
-            href="/vision"
+            href="/hair/start"
             className="px-6 py-2 rounded-full bg-rose text-white text-sm md:text-base shadow hover:bg-rose/90 transition"
           >
             {lang === 'en' ? "What's your vision?" : '¿Cuál es tu visión?'}
