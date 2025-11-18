@@ -141,13 +141,15 @@ export default function QuoteRequestFlow() {
         throw new Error('Request failed');
       }
 
-      // Best-effort: sync customer into Square; errors won't block UX
+      setStep(4);
+
+      // Best-effort Square sync; errors are logged only
       const hairGoals = [notes, sanitizedAnswers ? `Quiz: ${sanitizedAnswers}` : null, slotsText]
         .filter(Boolean)
         .join(' | ');
-      void (async () => {
+      const syncSquare = async () => {
         try {
-          await fetch('/api/square/create-customer', {
+          const sqRes = await fetch('/api/square/create-customer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -158,12 +160,15 @@ export default function QuoteRequestFlow() {
               hairGoals: hairGoals || undefined,
             }),
           });
+          if (!sqRes.ok) {
+            const sqData = await sqRes.json().catch(() => null);
+            console.error('Square sync failed', sqRes.status, sqData);
+          }
         } catch (err) {
           console.error('Failed to sync customer to Square', err);
         }
-      })();
-
-      setStep(4);
+      };
+      void syncSquare();
     } catch (err) {
       console.error(err);
       setError(
