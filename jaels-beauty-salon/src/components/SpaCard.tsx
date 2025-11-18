@@ -16,7 +16,7 @@ export default function SpaCard({ service }: { service: SpaService }) {
       </header>
       <p className="text-sm leading-relaxed">{service.description[lang]}</p>
       <a
-        href="/book"
+        href={service.bookingUrl ?? '/vision'}
         className="mt-5 inline-flex items-center justify-center rounded-full px-5 py-2 text-white"
         style={{ background: '#D7ABA5' }}
       >
