@@ -29,7 +29,29 @@ export default function HairLooksReel({ hideIntro = false }: HairLooksReelProps)
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    setOrder(shuffle(photoList));
+    let cancelled = false;
+
+    async function loadImages() {
+      try {
+        const res = await fetch('/api/hair-images');
+        const data = res.ok ? await res.json() : null;
+        const apiImages = Array.isArray(data?.images) ? data.images : [];
+        const combined = shuffle([...photoList, ...apiImages]);
+        if (!cancelled) {
+          setOrder(combined);
+        }
+      } catch (err) {
+        console.error('Failed to load hair images', err);
+        if (!cancelled) {
+          setOrder(shuffle(photoList));
+        }
+      }
+    }
+
+    loadImages();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
