@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 
 type IncomingCustomer = {
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
   }
 
   const payload = {
-    idempotency_key: crypto.randomUUID(),
+    idempotency_key: randomUUID(),
     given_name: body.firstName || undefined,
     family_name: body.lastName || undefined,
     email_address: body.email || undefined,
