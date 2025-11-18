@@ -1,7 +1,7 @@
 import './globals.css';
 import { Allura, Cormorant_Garamond, Nunito } from 'next/font/google';
 import Script from 'next/script';
-import { LanguageProvider } from '@/context/LanguageContext';
+import { LanguageProvider } from '@/components/LanguageProvider';
 import LayoutWithBooking from '@/components/LayoutWithBooking';
 import SplashScreen from '@/components/SplashScreen';
 

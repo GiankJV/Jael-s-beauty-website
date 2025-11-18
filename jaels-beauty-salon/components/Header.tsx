@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useLang } from '@/context/LanguageContext';
+import { LanguageToggle } from '@/components/LanguageToggle';
 
 export interface HeaderProps {
   /**
@@ -32,7 +33,7 @@ export default function Header({}: HeaderProps) {
   const [hidden, setHidden] = useState(false);
   const [lastY, setLastY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { lang, toggleLang } = useLang();
+  const { lang } = useLang();
 
   useEffect(() => {
     function onScroll() {
@@ -81,13 +82,7 @@ export default function Header({}: HeaderProps) {
               {label[lang]}
             </Link>
           ))}
-          <button
-            onClick={toggleLang}
-            className="px-4 py-1.5 rounded-full border border-rose text-rose text-sm hover:bg-rose hover:text-white transition"
-            aria-label="Toggle language"
-          >
-            {lang === 'en' ? 'ES' : 'EN'}
-          </button>
+          <LanguageToggle />
         </nav>
         <button
           className="md:hidden flex items-center justify-center p-2 rounded-md hover:bg-rose/10"
@@ -131,8 +126,6 @@ type MobileMenuProps = {
 };
 
 function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
-  const { toggleLang, lang } = useLang();
-
   return (
     <div
       className={`
@@ -179,33 +172,7 @@ function MobileMenu({ open, onClose, navLinks }: MobileMenuProps) {
             </svg>
           </button>
 
-          <button
-            type="button"
-            onClick={toggleLang}
-            className="
-              inline-flex items-center rounded-full
-              border border-rose/70 bg-[#f6e8e8]
-              px-1 py-1 text-xs font-body text-ink shadow-sm
-            "
-            aria-label="Toggle language"
-          >
-            <span
-              className={`
-                px-3 py-0.5 rounded-full transition-colors
-                ${lang === 'en' ? 'bg-rose text-white' : 'text-ink'}
-              `}
-            >
-              EN
-            </span>
-            <span
-              className={`
-                px-3 py-0.5 rounded-full transition-colors
-                ${lang === 'es' ? 'bg-rose text-white' : 'text-ink'}
-              `}
-            >
-              ES
-            </span>
-          </button>
+          <LanguageToggle />
         </div>
 
         {/* Nav links */}
