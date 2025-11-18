@@ -4,6 +4,7 @@ import { put } from '@vercel/blob';
 
 const apiKey = process.env.RESEND_API_KEY;
 const resend = apiKey ? new Resend(apiKey) : null;
+const hasBlobToken = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 
 export const runtime = 'edge';
 
@@ -23,8 +24,10 @@ export async function POST(req: NextRequest) {
     const preferredTimes = String(formData.get('slots') || '');
 
     if (!name || !email || !consent) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ ok: false, error: 'Missing required fields' }, { status: 400 });
     }
+
+    console.log('New quote request from', name, email);
 
     let answers: unknown;
     try {
@@ -36,18 +39,27 @@ export async function POST(req: NextRequest) {
     const photos = formData.getAll('photos') as File[];
     const photoLinks: string[] = [];
 
+    if (!hasBlobToken && photos.length) {
+      console.warn('BLOB_READ_WRITE_TOKEN not set; skipping photo uploads for quote request');
+    }
+
     for (const file of photos.slice(0, 3)) {
       if (!file) continue;
       if (file.size > 10 * 1024 * 1024) {
         continue;
       }
-      const arrayBuffer = await file.arrayBuffer();
-      const blob = await put(
-        `quotes/${Date.now()}-${file.name}`,
-        new Uint8Array(arrayBuffer),
-        { access: 'public' }
-      );
-      photoLinks.push(blob.url);
+      if (!hasBlobToken) continue;
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const blob = await put(
+          `quotes/${Date.now()}-${file.name}`,
+          new Uint8Array(arrayBuffer),
+          { access: 'public' }
+        );
+        photoLinks.push(blob.url);
+      } catch (uploadErr) {
+        console.error('Failed to upload quote photo', uploadErr);
+      }
     }
 
     const prettyAnswers =
@@ -92,9 +104,9 @@ export async function POST(req: NextRequest) {
       console.warn('RESEND_API_KEY is not set – skipping email send for quote request');
     }
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true }, { status: 200 });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    console.error('Quote request failed', err);
+    return NextResponse.json({ ok: false, error: 'Internal error' }, { status: 500 });
   }
 }
