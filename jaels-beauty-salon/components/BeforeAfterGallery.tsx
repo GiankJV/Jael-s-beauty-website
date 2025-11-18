@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const BASE_PATH = "/Jael_before_after_gallery";
@@ -21,8 +21,15 @@ export default function BeforeAfterGallery() {
   const prev = () => setIndex((i) => (i - 1 + models.length) % models.length);
   const next = () => setIndex((i) => (i + 1) % models.length);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((i) => (i + 1) % models.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <section className="relative max-w-6xl mx-auto">
+    <section className="relative max-w-4xl mx-auto">
       <article className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2 items-start">
           <div className="space-y-2">
@@ -31,8 +38,8 @@ export default function BeforeAfterGallery() {
               <Image
                 src={current.before}
                 alt={`Before – Jael's model ${String(current.id).padStart(2, "0")}`}
-                width={700}
-                height={900}
+                width={350}
+                height={450}
                 className="h-full w-full object-cover"
                 priority={index === 0}
               />
@@ -45,8 +52,8 @@ export default function BeforeAfterGallery() {
               <Image
                 src={current.after}
                 alt={`After – Jael's model ${String(current.id).padStart(2, "0")}`}
-                width={700}
-                height={900}
+                width={350}
+                height={450}
                 className="h-full w-full object-cover"
               />
             </div>
