@@ -1,12 +1,14 @@
 import Image from "next/image";
 
+const BASE_PATH = "/Jael_before_after_gallery";
+
 const models = Array.from({ length: 13 }, (_, i) => {
   const num = String(i + 1).padStart(2, "0");
   return {
     id: i + 1,
     label: `Jael's Model ${num}`,
-    before: `/jaels-model-${num}-before.webp`,
-    after: `/jaels-model-${num}-after.webp`,
+    before: `${BASE_PATH}/jaels-model-${num}-before.webp`,
+    after: `${BASE_PATH}/jaels-model-${num}-after.webp`,
   };
 });
 

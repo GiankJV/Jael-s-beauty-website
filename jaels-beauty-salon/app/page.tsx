@@ -4,7 +4,6 @@ import Image from 'next/image';
 import QuickBookGrid from '@/components/QuickBookGrid';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 import InstagramGrid from '@/components/InstagramGrid';
-import BeforeAfterGallery from '@/components/BeforeAfterGallery';
 import { useLang } from '@/context/LanguageContext';
 
 export default function Home() {
@@ -77,11 +76,6 @@ export default function Home() {
           {lang === 'en' ? 'What Our Clients Say' : 'Lo que dicen nuestras clientas'}
         </h2>
         <TestimonialCarousel />
-      </section>
-
-      {/* Before / After gallery */}
-      <section id="gallery" className="px-4 sm:px-8 lg:px-16 py-16">
-        <BeforeAfterGallery />
       </section>
 
       {/* Instagram grid */}
