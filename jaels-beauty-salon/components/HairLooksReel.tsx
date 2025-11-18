@@ -13,6 +13,12 @@ function shuffle<T>(array: T[]): T[] {
   return arr;
 }
 
+const photoList = Array.from({ length: 132 }, (_, i) => {
+  const num = i + 1;
+  const suffix = num < 10 ? `0${num}` : `${num}`;
+  return `/Services_people_photos_only/services-photo-${suffix}.webp`;
+});
+
 type HairLooksReelProps = {
   hideIntro?: boolean;
 };
@@ -23,26 +29,7 @@ export default function HairLooksReel({ hideIntro = false }: HairLooksReelProps)
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    let cancelled = false;
-
-    async function loadImages() {
-      try {
-        const res = await fetch('/api/hair-images');
-        if (!res.ok) return;
-        const data = await res.json();
-        const list = Array.isArray(data?.images) ? data.images : [];
-        if (!cancelled && list.length > 0) {
-          setOrder(shuffle(list));
-        }
-      } catch (error) {
-        console.error('Failed to load hair images', error);
-      }
-    }
-
-    loadImages();
-    return () => {
-      cancelled = true;
-    };
+    setOrder(shuffle(photoList));
   }, []);
 
   useEffect(() => {
