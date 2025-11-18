@@ -109,6 +109,10 @@ export default function QuoteRequestFlow() {
     setError(null);
 
     try {
+      const [firstName, ...restName] = name.trim().split(/\s+/);
+      const lastName = restName.join(' ');
+      const slotsText = formatSlotsForSubmission();
+
       const data = new FormData();
       data.append('name', name);
       data.append('email', email);
@@ -124,7 +128,6 @@ export default function QuoteRequestFlow() {
         data.append('photos', file);
       });
 
-      const slotsText = formatSlotsForSubmission();
       if (slotsText) {
         data.append('slots', slotsText);
       }
@@ -137,6 +140,28 @@ export default function QuoteRequestFlow() {
       if (!res.ok) {
         throw new Error('Request failed');
       }
+
+      // Best-effort: sync customer into Square; errors won't block UX
+      const hairGoals = [notes, sanitizedAnswers ? `Quiz: ${sanitizedAnswers}` : null, slotsText]
+        .filter(Boolean)
+        .join(' | ');
+      void (async () => {
+        try {
+          await fetch('/api/square/create-customer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              firstName: firstName || undefined,
+              lastName: lastName || undefined,
+              email,
+              phone,
+              hairGoals: hairGoals || undefined,
+            }),
+          });
+        } catch (err) {
+          console.error('Failed to sync customer to Square', err);
+        }
+      })();
 
       setStep(4);
     } catch (err) {
