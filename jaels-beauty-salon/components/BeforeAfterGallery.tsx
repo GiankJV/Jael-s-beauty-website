@@ -30,7 +30,7 @@ export default function BeforeAfterGallery() {
 
   return (
     <section className="relative max-w-4xl mx-auto">
-      <article className="space-y-4">
+      <article key={current.id} className="space-y-4 fade-slide">
         <div className="grid gap-4 md:grid-cols-2 items-start">
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-wide text-ink/60">Before</p>
@@ -65,7 +65,7 @@ export default function BeforeAfterGallery() {
       <div className="absolute inset-y-0 left-0 flex items-center">
         <button
           aria-label="Previous transformation"
-          className="p-2 text-rose hover:text-ink"
+          className="p-3 rounded-full bg-white/90 border border-rose/30 shadow text-rose hover:bg-rose hover:text-white transition"
           onClick={prev}
         >
           ‹
@@ -74,12 +74,28 @@ export default function BeforeAfterGallery() {
       <div className="absolute inset-y-0 right-0 flex items-center">
         <button
           aria-label="Next transformation"
-          className="p-2 text-rose hover:text-ink"
+          className="p-3 rounded-full bg-white/90 border border-rose/30 shadow text-rose hover:bg-rose hover:text-white transition"
           onClick={next}
         >
           ›
         </button>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeSlide {
+          from {
+            opacity: 0;
+            transform: translateY(6px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .fade-slide {
+          animation: fadeSlide 0.6s ease;
+        }
+      `}</style>
     </section>
   );
 }
