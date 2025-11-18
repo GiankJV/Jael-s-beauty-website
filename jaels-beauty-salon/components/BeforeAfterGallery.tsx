@@ -30,7 +30,7 @@ export default function BeforeAfterGallery() {
 
   return (
     <section className="relative max-w-4xl mx-auto">
-      <article key={current.id} className="space-y-4 fade-slide">
+      <article key={current.id} className="space-y-4 slide-fade">
         <div className="grid gap-4 md:grid-cols-2 items-start">
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-wide text-ink/60">Before</p>
@@ -62,19 +62,17 @@ export default function BeforeAfterGallery() {
       </article>
 
       {/* Navigation */}
-      <div className="absolute inset-y-0 left-0 flex items-center">
+      <div className="mt-6 flex items-center justify-between gap-4">
         <button
           aria-label="Previous transformation"
-          className="p-3 rounded-full bg-white/90 border border-rose/30 shadow text-rose hover:bg-rose hover:text-white transition"
+          className="inline-flex items-center justify-center px-6 py-2 rounded-full bg-[#e8b3b3] text-ink font-semibold shadow hover:bg-rose/80 transition"
           onClick={prev}
         >
           ‹
         </button>
-      </div>
-      <div className="absolute inset-y-0 right-0 flex items-center">
         <button
           aria-label="Next transformation"
-          className="p-3 rounded-full bg-white/90 border border-rose/30 shadow text-rose hover:bg-rose hover:text-white transition"
+          className="inline-flex items-center justify-center px-6 py-2 rounded-full bg-[#e8b3b3] text-ink font-semibold shadow hover:bg-rose/80 transition"
           onClick={next}
         >
           ›
@@ -82,18 +80,18 @@ export default function BeforeAfterGallery() {
       </div>
 
       <style jsx>{`
-        @keyframes fadeSlide {
+        @keyframes slideFade {
           from {
             opacity: 0;
-            transform: translateY(6px);
+            transform: translateX(35px);
           }
           to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(0);
           }
         }
-        .fade-slide {
-          animation: fadeSlide 0.6s ease;
+        .slide-fade {
+          animation: slideFade 0.7s ease;
         }
       `}</style>
     </section>
