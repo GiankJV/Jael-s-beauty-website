@@ -1,5 +1,6 @@
-import Link from 'next/link';
-import Image from 'next/image';
+"use client";
+
+import { useLang } from '@/context/LanguageContext';
 
 /**
  * Site footer containing business contact information, a mini map, and
@@ -7,22 +8,29 @@ import Image from 'next/image';
  * `app/layout.tsx`.
  */
 export default function Footer() {
+  const { lang } = useLang();
+
   return (
     <footer className="bg-beige text-ink mt-16 border-t border-ink/10">
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Contact details */}
         <div>
-          <h3 className="font-display text-xl mb-4">Visit Us</h3>
+          <h3 className="font-display text-xl mb-4">
+            {lang === 'en' ? 'Visit Us' : 'Visítanos'}
+          </h3>
           <p>Jael’s Beauty Salon</p>
           <p>729 E Pass Rd h</p>
           <p>Gulfport, MS 39507</p>
           <p className="mt-4">
-            <strong>Hours:</strong> Mon–Fri, 8 am–6 pm
+            <strong>{lang === 'en' ? 'Hours:' : 'Horario:'}</strong>{' '}
+            {lang === 'en' ? 'Mon–Fri, 8 am–6 pm' : 'Lun–Vie, 8 am–6 pm'}
           </p>
         </div>
         {/* Map embed */}
         <div>
-          <h3 className="font-display text-xl mb-4">Our Location</h3>
+          <h3 className="font-display text-xl mb-4">
+            {lang === 'en' ? 'Our Location' : 'Nuestra ubicación'}
+          </h3>
           <iframe
             src="https://www.google.com/maps?q=729%20E%20Pass%20Rd%20h,%20Gulfport,%20MS%2039507&output=embed"
             width="100%"
@@ -30,13 +38,19 @@ export default function Footer() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="rounded-2xl border-0"
-            title="Salon location on map"
+            title={lang === 'en' ? 'Salon location on map' : 'Ubicación del salón en el mapa'}
           ></iframe>
         </div>
         {/* Social & newsletter */}
         <div>
-          <h3 className="font-display text-xl mb-4">Stay Connected</h3>
-          <p className="mb-4">Follow us on social media for the latest styles and promotions.</p>
+          <h3 className="font-display text-xl mb-4">
+            {lang === 'en' ? 'Stay Connected' : 'Mantente conectada/o'}
+          </h3>
+          <p className="mb-4">
+            {lang === 'en'
+              ? 'Follow us on social media for the latest styles and promotions.'
+              : 'Síguenos en redes para ver las últimas tendencias y promociones.'}
+          </p>
           <div className="flex gap-4">
             <a
               href="https://www.facebook.com/Jaels3beautysalon/about"
@@ -76,7 +90,8 @@ export default function Footer() {
         </div>
       </div>
       <div className="text-center text-sm py-4 bg-beige border-t border-ink/10">
-        &copy; {new Date().getFullYear()} Jael’s Beauty Salon. All rights reserved.
+        &copy; {new Date().getFullYear()} Jael’s Beauty Salon.{' '}
+        {lang === 'en' ? 'All rights reserved.' : 'Todos los derechos reservados.'}
       </div>
     </footer>
   );

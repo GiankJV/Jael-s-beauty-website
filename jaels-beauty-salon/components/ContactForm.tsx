@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { validate as validateEmail } from 'email-validator';
+import { useLang } from '@/context/LanguageContext';
 
 /**
  * Contact form that posts messages to the `/api/contact` route. It
@@ -9,6 +10,7 @@ import { validate as validateEmail } from 'email-validator';
  * form clears and displays a confirmation message.
  */
 export default function ContactForm() {
+  const { lang } = useLang();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -19,11 +21,11 @@ export default function ContactForm() {
     e.preventDefault();
     setError('');
     if (!name.trim() || !email.trim() || !message.trim()) {
-      setError('Please complete all fields.');
+      setError(lang === 'en' ? 'Please complete all fields.' : 'Por favor completa todos los campos.');
       return;
     }
     if (!validateEmail(email)) {
-      setError('Please enter a valid email address.');
+      setError(lang === 'en' ? 'Please enter a valid email address.' : 'Ingresa un correo válido.');
       return;
     }
     setStatus('sending');
@@ -40,11 +42,16 @@ export default function ContactForm() {
         setMessage('');
       } else {
         const data = await res.json().catch(() => null);
-        setError(data?.error || 'Unable to send message. Please try again later.');
+        setError(
+          data?.error ||
+            (lang === 'en'
+              ? 'Unable to send message. Please try again later.'
+              : 'No pudimos enviar el mensaje. Inténtalo más tarde.')
+        );
         setStatus('error');
       }
     } catch (err) {
-      setError('Network error. Please try again later.');
+      setError(lang === 'en' ? 'Network error. Please try again later.' : 'Error de red. Inténtalo más tarde.');
       setStatus('error');
     }
   }
@@ -53,7 +60,7 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="block text-sm font-medium mb-1" htmlFor="name">
-          Name
+          {lang === 'en' ? 'Name' : 'Nombre'}
         </label>
         <input
           id="name"
@@ -66,7 +73,7 @@ export default function ContactForm() {
       </div>
       <div>
         <label className="block text-sm font-medium mb-1" htmlFor="email">
-          Email
+          {lang === 'en' ? 'Email' : 'Correo electrónico'}
         </label>
         <input
           id="email"
@@ -79,7 +86,7 @@ export default function ContactForm() {
       </div>
       <div>
         <label className="block text-sm font-medium mb-1" htmlFor="message">
-          Message
+          {lang === 'en' ? 'Message' : 'Mensaje'}
         </label>
         <textarea
           id="message"
@@ -91,13 +98,17 @@ export default function ContactForm() {
         ></textarea>
       </div>
       {error && <p className="text-rose text-sm">{error}</p>}
-      {status === 'sent' && <p className="text-green-600 text-sm">Thank you! Your message has been sent.</p>}
+      {status === 'sent' && (
+        <p className="text-green-600 text-sm">
+          {lang === 'en' ? 'Thank you! Your message has been sent.' : '¡Gracias! Tu mensaje ha sido enviado.'}
+        </p>
+      )}
       <button
         type="submit"
         disabled={status === 'sending'}
         className="bg-rose text-white px-6 py-2 rounded-full shadow hover:bg-rose/90 transition disabled:opacity-60"
       >
-        {status === 'sending' ? 'Sending…' : 'Send Message'}
+        {status === 'sending' ? (lang === 'en' ? 'Sending…' : 'Enviando…') : lang === 'en' ? 'Send Message' : 'Enviar mensaje'}
       </button>
     </form>
   );
