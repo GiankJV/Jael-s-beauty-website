@@ -6,6 +6,12 @@ import TestimonialCarousel from '@/components/TestimonialCarousel';
 import InstagramGrid from '@/components/InstagramGrid';
 import { useLang } from '@/context/LanguageContext';
 
+export const metadata = {
+  title: 'Spa, Hair Color & Treatments on the Gulf Coast | Jael’s Beauty Salon',
+  description:
+    'Jael’s Beauty Salon in Biloxi serves guests from across the Gulf Coast with spa services, custom hair color grounded in color theory, and hair repair treatments. Request a personalized quote and start your vision.',
+};
+
 export default function Home() {
   const { lang } = useLang();
   const schema = {
@@ -48,7 +54,7 @@ export default function Home() {
           <div className="flex flex-col items-center gap-4">
             <Image
               src="/jaels-logo.png"
-              alt="Jael's Beauty Salon logo"
+              alt="Jael's Beauty Salon logo alongside spa and hair treatment guests on the Mississippi Gulf Coast"
               width={300}
               height={300}
               className="object-contain"
@@ -58,8 +64,8 @@ export default function Home() {
             </h1>
             <p className="mt-4 text-lg text-ink max-w-prose">
               {lang === 'en'
-                ? 'Indulge in a luxurious experience crafted to leave you feeling confident and radiant. Our stylists and estheticians deliver bespoke hair and spa services tailored to your unique beauty needs.'
-                : 'Disfruta de una experiencia de lujo diseñada para que te sientas segura y radiante. Nuestras estilistas y esteticistas crean servicios de cabello y spa a tu medida.'}
+                ? 'Jael’s Beauty Salon is a destination studio on the Mississippi Gulf Coast, serving Biloxi, Gulfport, Ocean Springs, Pascagoula, Mobile, Hattiesburg and beyond. We specialize in spa rituals, custom color grounded in color theory, and hair repair treatments designed to last beyond the chair.'
+                : 'Jael’s Beauty Salon es un estudio de destino en la Costa del Golfo de Mississippi, atendiendo a Biloxi, Gulfport, Ocean Springs, Pascagoula, Mobile, Hattiesburg y más. Nos especializamos en rituales de spa, color personalizado basado en teoría del color y tratamientos de reparación capilar que duran más allá de la cita.'}
             </p>
           </div>
         </div>

@@ -27,6 +27,23 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'HairSalon',
+    name: "Jael's Beauty Salon",
+    url: 'https://jaelsbeauty.com',
+    telephone: '+1-657-353-7263',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '729 E Pass Rd h',
+      addressLocality: 'Biloxi',
+      addressRegion: 'MS',
+      postalCode: '39507',
+      addressCountry: 'US',
+    },
+    areaServed: ['Biloxi', 'Gulfport', 'Ocean Springs', 'Pascagoula', 'Mobile', 'Hattiesburg'],
+    makesOffer: ['Spa services', 'Hair color', 'Hair treatments'],
+  };
   return (
     <html lang="en" className={`${allura.variable} ${cormorant.variable} ${nunito.variable}`}>
       <head>
@@ -39,6 +56,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       </head>
       <body className="font-body antialiased bg-beige text-ink">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
         {/* Wrap the UI with the language provider so text can toggle between EN/ES */}
         <LanguageProvider>
           <SplashScreen />

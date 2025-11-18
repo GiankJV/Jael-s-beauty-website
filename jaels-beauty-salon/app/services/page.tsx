@@ -6,6 +6,12 @@ import HairLooksReel from '@/components/HairLooksReel';
 import { useLang } from '@/context/LanguageContext';
 import { spaServices } from '@/lib/services/spa';
 
+export const metadata = {
+  title: 'Spa, Hair Color & Hair Treatments in Biloxi, MS | Jael’s Beauty Salon',
+  description:
+    'Explore spa services, custom hair color, and strengthening hair treatments at Jael’s Beauty Salon in Biloxi. Loved by guests traveling from Gulfport, Ocean Springs, Pascagoula, Mobile and beyond.',
+};
+
 export default function ServicesPage() {
   const { lang } = useLang();
   const servicesHeading = lang === 'en' ? 'Our Services' : 'Nuestros servicios';
@@ -20,8 +26,8 @@ export default function ServicesPage() {
         </h1>
         <p className="text-sm md:text-base opacity-80 mb-4 max-w-2xl mx-auto">
           {lang === 'en'
-            ? 'Discover our signature Japanese head spa rituals, or start with your vision if you’re dreaming of a custom hair transformation.'
-            : 'Descubre nuestros rituales de spa capilar japonés o empieza con tu visión si buscas una transformación de color o peinado a medida.'}
+            ? 'Discover spa services, custom color grounded in color theory, and strengthening hair treatments—visited by guests from Biloxi, Gulfport, Ocean Springs, Pascagoula, Mobile, Hattiesburg and beyond.'
+            : 'Descubre servicios de spa, color personalizado basado en teoría del color y tratamientos fortalecedores, elegidos por clientas de Biloxi, Gulfport, Ocean Springs, Pascagoula, Mobile, Hattiesburg y más.'}
         </p>
       </section>
 

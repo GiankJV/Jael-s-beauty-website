@@ -116,7 +116,7 @@ export default function HairLooksReel({ hideIntro = false }: HairLooksReelProps)
               <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-sm">
                 <Image
                   src={src}
-                  alt="Hair transformation at Jael's Beauty Salon"
+                  alt="Hair color and treatment transformation at Jael's Beauty Salon for Gulf Coast guests"
                   fill
                   className="object-cover transition-transform duration-1000 ease-out hover:scale-[1.03]"
                   sizes="(min-width: 1024px) 33vw, 50vw"

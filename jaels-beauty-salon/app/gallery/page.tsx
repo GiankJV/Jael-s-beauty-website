@@ -3,7 +3,7 @@ import GalleryContent from "@/components/GalleryContent";
 export const metadata = {
   title: "Gallery | Jael's Beauty Salon",
   description:
-    "Browse the latest hair transformations and beauty creations from Jael’s Beauty Salon.",
+    "Browse the latest spa-worthy hair transformations and color work from Jael’s Beauty Salon across the Mississippi Gulf Coast.",
 };
 
 export default function GalleryPage() {
