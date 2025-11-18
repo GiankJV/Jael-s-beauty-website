@@ -3,20 +3,35 @@
 import { useLanguage } from "@/context/LanguageContext";
 
 export function LanguageToggle() {
-  const { lang, setLang } = useLanguage();
-
-  const toggle = () => setLang(lang === "en" ? "es" : "en");
+  const { lang, toggleLang } = useLanguage();
 
   return (
     <button
       type="button"
-      onClick={toggle}
-      className="inline-flex items-center rounded-full border border-rose-200 bg-rose-50/80 px-3 py-1 text-xs font-medium tracking-wide shadow-sm"
+      onClick={toggleLang}
+      className="
+        inline-flex items-center rounded-full
+        border border-rose/70 bg-[#f6e8e8]
+        px-1 py-1 text-xs font-body text-ink shadow-sm
+      "
       aria-label="Toggle language"
     >
-      <span className={lang === "en" ? "font-semibold" : "opacity-60"}>EN</span>
-      <span className="mx-1 h-4 w-px bg-rose-200" />
-      <span className={lang === "es" ? "font-semibold" : "opacity-60"}>ES</span>
+      <span
+        className={`
+          px-3 py-0.5 rounded-full transition-colors
+          ${lang === 'en' ? 'bg-rose text-white' : 'text-ink'}
+        `}
+      >
+        EN
+      </span>
+      <span
+        className={`
+          px-3 py-0.5 rounded-full transition-colors
+          ${lang === 'es' ? 'bg-rose text-white' : 'text-ink'}
+        `}
+      >
+        ES
+      </span>
     </button>
   );
 }

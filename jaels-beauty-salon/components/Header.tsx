@@ -76,34 +76,50 @@ export default function Header({}: HeaderProps) {
         <Link href="/" aria-label="Jael's Beauty Salon home">
           <BrandLogo />
         </Link>
-        <nav className="hidden md:flex gap-6 items-center font-body text-[15px] md:text-base">
-          {navLinks.map(({ href, label }) => (
-            <Link key={href} href={href} className="hover:text-rose transition-colors">
-              {label[lang]}
-            </Link>
-          ))}
-          <LanguageToggle />
-        </nav>
-        <button
-          className="md:hidden flex items-center justify-center p-2 rounded-md hover:bg-rose/10"
-          aria-label="Open menu"
-          onClick={() => setMobileOpen((open) => !open)}
-        >
-          <svg
-            className="h-6 w-6 text-ink"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+
+        {/* Right side: language + nav/menu */}
+        <div className="flex items-center gap-4">
+          {/* Mobile language pill */}
+          <div className="md:hidden">
+            <LanguageToggle />
+          </div>
+
+          {/* Desktop nav + pill */}
+          <nav className="hidden md:flex gap-6 items-center font-body text-[15px] md:text-base">
+            {navLinks.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="hover:text-rose transition-colors"
+              >
+                {label[lang]}
+              </Link>
+            ))}
+            <LanguageToggle />
+          </nav>
+
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden flex items-center justify-center p-2 rounded-md hover:bg-rose/10"
+            aria-label="Open menu"
+            onClick={() => setMobileOpen((open) => !open)}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
+            <svg
+              className="h-6 w-6 text-ink"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       <MobileMenu
         open={mobileOpen}
