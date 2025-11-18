@@ -1,6 +1,13 @@
 'use client';
 
-import { Dispatch, FormEvent, SetStateAction, useMemo, useState } from 'react';
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useSearchParams } from 'next/navigation';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -505,6 +512,13 @@ function Step3TimingAndConsent({
 
 function Step4Success() {
   const { lang } = useLang();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('jaels_hair_onboarded', 'true');
+    }
+  }, []);
+
   return (
     <div className="space-y-6 text-center">
       <h2
