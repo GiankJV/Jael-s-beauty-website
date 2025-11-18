@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
 
     if (resend && process.env.QUOTE_INBOX_EMAIL) {
       await resend.emails.send({
-        from: 'Jaels Beauty Salon <quotes@jaelsbeauty.com>',
+        from: 'Jael’s Beauty Salon <quotes@gulfcoastjaelsbeautysalon.com>',
         to: [process.env.QUOTE_INBOX_EMAIL],
         subject,
         text: bodyLines.join('\n'),
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
           ? 'Thank you for sharing your vision. We will review your photos and preferences and follow up with a personalized quote soon.'
           : 'Gracias por compartir tu visión. Revisaremos tus fotos y preferencias y te responderemos pronto con una cotización personalizada.';
       await resend.emails.send({
-        from: 'Jaels Beauty Salon <quotes@jaelsbeauty.com>',
+        from: 'Jael’s Beauty Salon <quotes@gulfcoastjaelsbeautysalon.com>',
         to: [email],
         subject: clientSubject,
         text: clientBody,

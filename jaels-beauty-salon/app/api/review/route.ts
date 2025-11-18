@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     ];
 
     await resend.emails.send({
-      from: 'Jaels Beauty Salon <quotes@jaelsbeauty.com>',
+      from: 'Jael’s Beauty Salon <quotes@gulfcoastjaelsbeautysalon.com>',
       to: ['jaels3beautysalon@gmail.com'],
       subject,
       text: lines.join('\n'),
@@ -57,4 +57,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: 'Internal error' }, { status: 500 });
   }
 }
-
