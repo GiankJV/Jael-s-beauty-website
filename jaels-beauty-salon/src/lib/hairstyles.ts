@@ -6,7 +6,10 @@ export type HairGoal =
   | 'grey-blend'
   | 'dimensional'
   | 'blowout'
-  | 'keratin';
+  | 'keratin'
+  | 'haircut'
+  | 'treatment'
+  | 'perm';
 
 export type HairLength = 'short' | 'medium' | 'long' | 'extra';
 export type HairTexture = 'straight' | 'wavy' | 'curly' | 'coily';
@@ -90,5 +93,53 @@ export const hairstyles: Hairstyle[] = [
     requiresConsult: false,
     sessionMinutes: { min: 150, max: 210 },
     images: ['/looks/grey-1.jpg'],
+  },
+  {
+    id: 'precision-cut',
+    name: { en: 'Precision Haircut', es: 'Corte de Precisión' },
+    description: {
+      en: 'A tailored cut with custom shaping for your texture and face frame—perfect for refreshes, big chops, or seasonal updates.',
+      es: 'Un corte a medida con forma personalizada para tu textura y contorno—ideal para un refresh, un gran cambio o ajustes de temporada.',
+    },
+    goals: ['haircut'],
+    lengths: ['short', 'medium', 'long', 'extra'],
+    textures: ['straight', 'wavy', 'curly', 'coily'],
+    colorHistory: ['virgin', 'pro-colored', 'bleached', 'box-dye'],
+    maintenance: 'moderate',
+    requiresConsult: false,
+    sessionMinutes: { min: 60, max: 90 },
+    images: ['/looks/cut-1.jpg'],
+  },
+  {
+    id: 'repair-treatment',
+    name: { en: 'Repair & Scalp Treatment', es: 'Tratamiento Reparador y Cuero Cabelludo' },
+    description: {
+      en: 'Targeted treatment to fortify over-processed or fragile hair, paired with scalp care to soothe and rebalance before color or cuts.',
+      es: 'Tratamiento enfocado para fortalecer cabello sobreprocesado o frágil, combinado con cuidado del cuero cabelludo para calmar y reequilibrar antes de color o cortes.',
+    },
+    goals: ['treatment', 'keratin'],
+    lengths: ['short', 'medium', 'long', 'extra'],
+    textures: ['straight', 'wavy', 'curly', 'coily'],
+    colorHistory: ['virgin', 'pro-colored', 'bleached', 'box-dye'],
+    maintenance: 'moderate',
+    requiresConsult: false,
+    sessionMinutes: { min: 75, max: 105 },
+    images: ['/looks/treatment-1.jpg'],
+  },
+  {
+    id: 'texture-perm',
+    name: { en: 'Texture Perm / Body Wave', es: 'Perm / Ondulado con Volumen' },
+    description: {
+      en: 'Adds soft movement or defined texture with a modern perm approach tailored to your density and desired wave pattern.',
+      es: 'Aporta movimiento suave o textura definida con una permanente moderna adaptada a tu densidad y patrón de onda deseado.',
+    },
+    goals: ['perm', 'dimensional'],
+    lengths: ['medium', 'long'],
+    textures: ['straight', 'wavy'],
+    colorHistory: ['virgin', 'pro-colored'],
+    maintenance: 'high',
+    requiresConsult: true,
+    sessionMinutes: { min: 150, max: 210 },
+    images: ['/looks/perm-1.jpg'],
   },
 ];
