@@ -4,6 +4,9 @@ import { encodeApprovalPayload } from '@/lib/approvalPayload';
 
 const apiKey = process.env.RESEND_API_KEY;
 const resend = apiKey ? new Resend(apiKey) : null;
+const quoteInboxEmail = process.env.QUOTE_INBOX_EMAIL;
+const squareToken = process.env.SQUARE_ACCESS_TOKEN;
+const squareLocationId = process.env.SQUARE_LOCATION_ID;
 
 export const runtime = 'nodejs';
 
@@ -93,15 +96,15 @@ export async function POST(req: NextRequest) {
       bodyLines.push('', 'Approve hair consultation:', approveUrl);
     }
 
-    if (resend && process.env.QUOTE_INBOX_EMAIL) {
+    if (resend && quoteInboxEmail) {
       await resend.emails.send({
         from: 'Jael’s Beauty Salon <quotes@gulfcoastjaelsbeautysalon.com>',
-        to: [process.env.QUOTE_INBOX_EMAIL],
+        to: [quoteInboxEmail],
         subject,
         text: bodyLines.join('\n'),
         attachments,
       });
-    } else if (!process.env.QUOTE_INBOX_EMAIL) {
+    } else if (!quoteInboxEmail) {
       console.error('QUOTE_INBOX_EMAIL not set');
     } else {
       console.warn('RESEND_API_KEY is not set – skipping email send for quote request');
@@ -127,7 +130,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (err) {
-    console.error('Quote request failed', err);
-    return NextResponse.json({ ok: false, error: 'Internal error' }, { status: 500 });
+    console.error('[/api/quote] error', err);
+    return NextResponse.json({ error: 'Internal error' }, { status: 500 });
   }
 }
