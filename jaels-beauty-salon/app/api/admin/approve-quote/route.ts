@@ -153,7 +153,7 @@ export async function GET(req: NextRequest) {
     const bookingRes = await fetch('https://connect.squareup.com/v2/bookings', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${SQUARE_ACCESS_TOKEN}`,
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
