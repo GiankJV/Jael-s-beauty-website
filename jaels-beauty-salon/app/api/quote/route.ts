@@ -5,8 +5,6 @@ import { encodeApprovalPayload } from '@/lib/approvalPayload';
 const apiKey = process.env.RESEND_API_KEY;
 const resend = apiKey ? new Resend(apiKey) : null;
 const quoteInboxEmail = process.env.QUOTE_INBOX_EMAIL;
-const squareToken = process.env.SQUARE_ACCESS_TOKEN;
-const squareLocationId = process.env.SQUARE_LOCATION_ID;
 
 export const runtime = 'nodejs';
 

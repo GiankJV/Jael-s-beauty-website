@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { decodeApprovalPayload } from '@/lib/approvalPayload';
 import { randomUUID } from 'crypto';
 
-const token = process.env.SQUARE_ACCESS_TOKEN;
-const locationId = process.env.SQUARE_LOCATION_ID;
-const defaultServiceId = process.env.SQUARE_HAIR_CONSULT_SERVICE_ID;
+const { SQUARE_ACCESS_TOKEN, SQUARE_LOCATION_ID, SQUARE_HAIR_CONSULT_SERVICE_ID } = process.env;
 const staffId = process.env.SQUARE_HAIR_CONSULT_STAFF_ID;
 
 function normalizePhone(phone?: string): string | undefined {
@@ -30,7 +28,7 @@ export async function GET(req: NextRequest) {
     return html('<h1>Invalid or expired approval link.</h1>', 400);
   }
 
-  if (!token || !locationId || !staffId) {
+  if (!SQUARE_ACCESS_TOKEN || !SQUARE_LOCATION_ID) {
     console.error('Missing Square env vars');
     return html('<h1>Server misconfigured for Square booking.</h1>', 500);
   }
@@ -46,7 +44,7 @@ export async function GET(req: NextRequest) {
   };
 
   const serviceVariationId =
-    (data.hairstyleId && SERVICE_ID_BY_HAIRSTYLE[data.hairstyleId]) || defaultServiceId;
+    (data.hairstyleId && SERVICE_ID_BY_HAIRSTYLE[data.hairstyleId]) || SQUARE_HAIR_CONSULT_SERVICE_ID;
 
   if (!serviceVariationId) {
     console.error('Missing Square service variation ID for hairstyle', data.hairstyleId);
@@ -66,7 +64,7 @@ export async function GET(req: NextRequest) {
       const searchRes = await fetch('https://connect.squareup.com/v2/customers/search', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${SQUARE_ACCESS_TOKEN}`,
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
@@ -87,7 +85,7 @@ export async function GET(req: NextRequest) {
       const createRes = await fetch('https://connect.squareup.com/v2/customers', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${SQUARE_ACCESS_TOKEN}`,
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
@@ -141,7 +139,7 @@ export async function GET(req: NextRequest) {
     const bookingPayload = {
       idempotency_key: randomUUID(),
       customer_id: customerId,
-      location_id: locationId,
+      location_id: SQUARE_LOCATION_ID,
       start_at: startAt,
       appointment_segments: [
         {
