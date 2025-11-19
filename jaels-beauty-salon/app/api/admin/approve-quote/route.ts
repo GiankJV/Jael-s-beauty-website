@@ -4,7 +4,7 @@ import { randomUUID } from 'crypto';
 
 const token = process.env.SQUARE_ACCESS_TOKEN;
 const locationId = process.env.SQUARE_LOCATION_ID;
-const serviceId = process.env.SQUARE_HAIR_CONSULT_SERVICE_ID;
+const defaultServiceId = process.env.SQUARE_HAIR_CONSULT_SERVICE_ID;
 const staffId = process.env.SQUARE_HAIR_CONSULT_STAFF_ID;
 
 function normalizePhone(phone?: string): string | undefined {
@@ -30,9 +30,27 @@ export async function GET(req: NextRequest) {
     return html('<h1>Invalid or expired approval link.</h1>', 400);
   }
 
-  if (!token || !locationId || !serviceId || !staffId) {
+  if (!token || !locationId || !staffId) {
     console.error('Missing Square env vars');
     return html('<h1>Server misconfigured for Square booking.</h1>', 500);
+  }
+
+  const SERVICE_ID_BY_HAIRSTYLE: Record<string, string | undefined> = {
+    'lived-in-blonde': process.env.SQUARE_SERVICE_LIVED_IN_BLONDE_ID,
+    'dimensional-brunette': process.env.SQUARE_SERVICE_DIMENSIONAL_BRUNETTE_ID,
+    'vivid-fashion-color': process.env.SQUARE_SERVICE_VIVID_COLOR_ID,
+    'grey-blend': process.env.SQUARE_SERVICE_GREY_BLENDING_ID,
+    'precision-cut': process.env.SQUARE_SERVICE_PRECISION_HAIRCUT_ID,
+    'repair-treatment': process.env.SQUARE_SERVICE_REPAIR_TREATMENT_ID,
+    'texture-perm': process.env.SQUARE_SERVICE_TEXTURE_PERM_ID,
+  };
+
+  const serviceVariationId =
+    (data.hairstyleId && SERVICE_ID_BY_HAIRSTYLE[data.hairstyleId]) || defaultServiceId;
+
+  if (!serviceVariationId) {
+    console.error('Missing Square service variation ID for hairstyle', data.hairstyleId);
+    return html('<h1>Service mapping missing for this hairstyle. Please configure Square IDs.</h1>', 500);
   }
 
   const normalizedPhone = normalizePhone(data.phone);
@@ -128,7 +146,7 @@ export async function GET(req: NextRequest) {
       appointment_segments: [
         {
           duration_minutes: 30,
-          service_variation_id: serviceId,
+          service_variation_id: serviceVariationId,
           team_member_id: staffId,
         },
       ],
