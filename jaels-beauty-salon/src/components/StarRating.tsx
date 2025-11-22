@@ -1,61 +1,54 @@
-import * as React from 'react';
+"use client";
 
-type StarRatingProps = {
+type Lang = "en" | "es";
+
+export type StarRatingProps = {
   value: number;
   onChange: (value: number) => void;
-  max?: number;
-  lang?: 'en' | 'es';
+  lang: Lang;
 };
 
-const StarRating: React.FC<StarRatingProps> = ({ value, onChange, max = 5, lang = 'en' }) => {
+export default function StarRating({
+  value,
+  onChange,
+  lang,
+}: StarRatingProps) {
+  const stars = [1, 2, 3, 4, 5];
+
   return (
-    <div className="flex items-center gap-2">
-      {[...Array(max)].map((_, index) => {
-        const starValue = index + 1;
-        const isActive = starValue <= value;
-        const ariaLabel =
-          lang === 'es'
-            ? `${starValue} estrella${starValue > 1 ? 's' : ''}`
-            : `${starValue} star${starValue > 1 ? 's' : ''}`;
+    <div className="inline-flex flex-col gap-1">
+      <div className="flex gap-1">
+        {stars.map((star) => {
+          const active = star <= value;
 
-        return (
-          <button
-            key={starValue}
-            type="button"
-            onClick={() => onChange(starValue)}
-            aria-label={ariaLabel}
-            className="
-                 relative
-                 focus:outline-none
-                 focus-visible:ring-2 focus-visible:ring-rose-300 focus-visible:ring-offset-2 focus-visible:ring-offset-rose-50
-               "
-          >
-            <svg
-              className={`
-                   h-8 w-8
-                   transition-transform duration-150
-                   hover:scale-110 active:scale-125
-                   ${isActive ? 'scale-105' : 'scale-100'}
-                 `}
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+          return (
+            <button
+              key={star}
+              type="button"
+              onClick={() => onChange(star)}
+              aria-label={
+                lang === "es"
+                  ? `${star} de 5 estrellas`
+                  : `${star} out of 5 stars`
+              }
+              className={[
+                "h-8 w-8 flex items-center justify-center rounded-full",
+                "transition-transform duration-150 ease-out",
+                "hover:scale-110 active:scale-95",
+                active ? "text-amber-400" : "text-slate-300",
+              ].join(" ")}
             >
-              <path
-                d="M12 2.5l2.69 5.45 6.01.87-4.35 4.24 1.03 6.02L12 16.9l-5.38 2.83 1.03-6.02L3.3 8.82l6.01-.87L12 2.5z"
-                fill={isActive ? '#E4B0A8' : 'none'}
-                stroke="#E4B0A8"
-                strokeWidth={1.5}
-              />
-            </svg>
-          </button>
-        );
-      })}
+              <span className="text-2xl leading-none">
+                {active ? "★" : "☆"}
+              </span>
+            </button>
+          );
+        })}
+      </div>
 
-      <span className="ml-2 text-sm text-slate-500">
-        {value}/{max}
+      <span className="text-xs text-slate-500 mt-1">
+        {lang === "es" ? `${value} de 5` : `${value}/5`}
       </span>
     </div>
   );
-};
-
-export default StarRating;
+}
