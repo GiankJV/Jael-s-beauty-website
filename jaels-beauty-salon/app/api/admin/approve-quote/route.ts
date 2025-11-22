@@ -135,15 +135,12 @@ export async function GET(req: NextRequest) {
 
   let bookingId: string | undefined;
   try {
-    const appointmentSegment: Record<string, unknown> = {
+    const appointmentSegment = {
       duration_minutes: 30,
       service_variation_id: serviceVariationId,
+      service_variation_version: 1763518047249,
       team_member_id: 'TMNhiEc9dMeUyW1d',
     };
-
-    if (data.serviceVariationVersion) {
-      appointmentSegment.service_variation_version = data.serviceVariationVersion;
-    }
 
     const bookingPayload = {
       idempotency_key: randomUUID(),
