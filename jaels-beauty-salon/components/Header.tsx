@@ -1,15 +1,13 @@
 "use client";
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useLang } from '@/context/LanguageContext';
 import { LanguageToggle } from '@/components/LanguageToggle';
 
 export interface HeaderProps {
-  /**
-   * Header no longer controls the booking modal directly.
-   * All booking starts from the "What's your vision?" flow.
-   */
+  mobileOpen: boolean;
+  setMobileOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -29,10 +27,9 @@ const navLinks: NavLinkConfig[] = [
   { href: '/contact', label: { en: 'Contact', es: 'Contacto' } },
 ];
 
-export default function Header({}: HeaderProps) {
+export default function Header({ mobileOpen, setMobileOpen }: HeaderProps) {
   const [hidden, setHidden] = useState(false);
   const [lastY, setLastY] = useState(0);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const { lang } = useLang();
 
   useEffect(() => {
@@ -62,7 +59,7 @@ export default function Header({}: HeaderProps) {
     const handleScroll = () => setMobileOpen(false);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [mobileOpen]);
+  }, [mobileOpen, setMobileOpen]);
 
   return (
     <header

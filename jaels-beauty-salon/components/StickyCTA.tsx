@@ -3,18 +3,25 @@
 import Link from 'next/link';
 import { useLang } from '@/context/LanguageContext';
 
+type StickyCTAProps = {
+  onBeforeNavigate?: () => void;
+};
+
 /**
  * Sticky call‑to‑action button that stays pinned to the bottom of the viewport
  * on mobile screens. It now routes guests into the vision experience instead
  * of opening the Square booking modal directly.
  */
-export default function StickyCTA() {
+export default function StickyCTA({ onBeforeNavigate }: StickyCTAProps = {}) {
   const { lang } = useLang();
   return (
     <Link
       href="/hair/start"
       className="fixed bottom-4 left-1/2 transform -translate-x-1/2 md:hidden bg-rose text-white px-6 py-3 rounded-full shadow-lg z-40 hover:bg-rose/90 transition"
       aria-label={lang === 'en' ? 'Start with your vision' : 'Empezar con tu visión'}
+      onClick={() => {
+        onBeforeNavigate?.();
+      }}
     >
       {lang === 'en' ? 'Start with your vision' : 'Empezar con tu visión'}
     </Link>
