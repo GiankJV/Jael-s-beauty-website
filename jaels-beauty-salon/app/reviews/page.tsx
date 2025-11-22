@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
+import StarRating from "@/components/StarRating";
 
 type Lang = "en" | "es";
 const serviceOptions = [
@@ -21,7 +22,7 @@ export default function ReviewsPage() {
 
   const [name, setName] = useState("");
   const [serviceType, setServiceType] = useState("Color");
-  const [rating, setRating] = useState("5");
+  const [rating, setRating] = useState(5);
   const [message, setMessage] = useState("");
   const [permissionToPublish, setPermissionToPublish] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -57,7 +58,7 @@ export default function ReviewsPage() {
       setSubmitted(true);
       setName("");
       setServiceType("Color");
-      setRating("5");
+      setRating(5);
       setMessage("");
       setPermissionToPublish(false);
     } catch (err) {
@@ -143,22 +144,16 @@ export default function ReviewsPage() {
               </select>
             </div>
 
-            <div>
-              <label className="block text-xs mb-1">
-                {lang === "en" ? "Rating" : "Calificación"}
-              </label>
-              <select
-                required
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
-                className="w-full rounded-full border border-rose/40 px-3 py-2 text-sm bg-white"
+            <div className="space-y-2">
+              <label
+                htmlFor="rating"
+                className="block text-sm font-medium text-slate-700"
               >
-                {["5", "4", "3", "2", "1"].map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </select>
+                {lang === "es" ? "Calificación" : "Rating"}
+              </label>
+
+              <StarRating value={rating} onChange={setRating} />
+              <input type="hidden" name="rating" id="rating" value={rating} />
             </div>
 
             <div>
@@ -212,4 +207,3 @@ export default function ReviewsPage() {
     </main>
   );
 }
-
