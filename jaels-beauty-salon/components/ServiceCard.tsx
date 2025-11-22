@@ -8,6 +8,7 @@ export interface Service {
   description: string;
   price?: string;
   duration?: string;
+  bookingUrl?: string;
 }
 
 export interface ServiceCardProps {
@@ -20,6 +21,9 @@ export interface ServiceCardProps {
  */
 export default function ServiceCard({ service }: ServiceCardProps) {
   const { lang } = useLang();
+  const label = service.bookingUrl
+    ? (lang === 'en' ? 'Book this ritual' : 'Reservar este ritual')
+    : (lang === 'en' ? 'Start with your vision' : 'Empezar con tu visión');
   return (
     <div className="card flex flex-col justify-between h-full">
       <div>
@@ -32,13 +36,25 @@ export default function ServiceCard({ service }: ServiceCardProps) {
           <p className="text-sm"><strong>Price:</strong> {service.price}</p>
         )}
       </div>
-      <Link
-        href="/hair/start"
-        className="mt-4 inline-flex items-center justify-center rounded-full px-5 py-2 text-white self-start"
-        style={{ background: '#D7ABA5' }}
-      >
-        {lang === 'en' ? 'Start with your vision' : 'Empezar con tu visión'}
-      </Link>
+      {service.bookingUrl ? (
+        <a
+          href={service.bookingUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center justify-center rounded-full px-5 py-2 text-white self-start"
+          style={{ background: '#D7ABA5' }}
+        >
+          {label}
+        </a>
+      ) : (
+        <Link
+          href="/vision"
+          className="mt-4 inline-flex items-center justify-center rounded-full px-5 py-2 text-white self-start"
+          style={{ background: '#D7ABA5' }}
+        >
+          {label}
+        </Link>
+      )}
     </div>
   );
 }
