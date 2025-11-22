@@ -191,10 +191,6 @@ function MobileMenu({ open, onClose, navLinks, lang }: MobileMenuProps & { lang:
 
           <LanguageToggle />
         </div>
-        <div className="px-8 pt-4">
-          <ReviewCTA lang={lang} />
-        </div>
-
         {/* Nav links */}
         <nav className="mt-20 px-8 flex flex-col space-y-12">
           {navLinks.map((link) => (
@@ -219,26 +215,5 @@ function BrandLogo() {
       <span className="font-logo text-2xl md:text-3xl leading-none">Jael&apos;s</span>
       <span className="font-brand-small text-[0.7rem] md:text-xs">Beauty Salon</span>
     </span>
-  );
-}
-
-function ReviewCTA({ lang }: { lang: string }) {
-  const [canReview, setCanReview] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const flag = window.localStorage.getItem('jaels_hair_onboarded');
-    if (flag === 'true') setCanReview(true);
-  }, []);
-
-  if (!canReview) return null;
-
-  return (
-    <Link
-      href="/reviews"
-      className="inline-flex rounded-full border border-rose/40 px-4 py-2 text-xs md:text-sm hover:bg-rose/5"
-    >
-      {lang === 'en' ? 'Leave a review' : 'Dejar una reseña'}
-    </Link>
   );
 }
