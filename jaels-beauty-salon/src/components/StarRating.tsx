@@ -6,21 +6,26 @@ type StarRatingProps = {
   value: number;
   onChange: (value: number) => void;
   max?: number;
+  lang?: 'en' | 'es';
 };
 
-const StarRating: React.FC<StarRatingProps> = ({ value, onChange, max = 5 }) => {
+const StarRating: React.FC<StarRatingProps> = ({ value, onChange, max = 5, lang = 'en' }) => {
   return (
     <div className="flex items-center gap-2">
       {[...Array(max)].map((_, index) => {
         const starValue = index + 1;
         const isActive = starValue <= value;
+        const ariaLabel =
+          lang === 'es'
+            ? `${starValue} estrella${starValue > 1 ? 's' : ''}`
+            : `${starValue} star${starValue > 1 ? 's' : ''}`;
 
         return (
           <button
             key={starValue}
             type="button"
             onClick={() => onChange(starValue)}
-            aria-label={`${starValue} star${starValue > 1 ? 's' : ''}`}
+            aria-label={ariaLabel}
             className="
                  relative
                  focus:outline-none

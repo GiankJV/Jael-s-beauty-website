@@ -152,7 +152,7 @@ export default function ReviewsPage() {
                 {lang === "es" ? "Calificación" : "Rating"}
               </label>
 
-              <StarRating value={rating} onChange={setRating} />
+              <StarRating value={rating} onChange={setRating} lang={lang} />
               <input type="hidden" name="rating" id="rating" value={rating} />
             </div>
 
