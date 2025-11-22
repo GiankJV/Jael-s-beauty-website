@@ -14,4 +14,5 @@ export type QuoteApprovalPayload = {
   hairstyleId?: string;
   serviceVariationId?: string;
   slot?: QuoteApprovalSlot;
+  photoUrls?: string[];
 };

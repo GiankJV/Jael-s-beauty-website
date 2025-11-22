@@ -26,16 +26,26 @@ function escapeHtml(value: string) {
     .replace(/'/g, '&#39;');
 }
 
-function parseSlotFromFormData(formData: FormData, index: number): QuoteApprovalSlot | null {
-  const rawLabel = formData.get(`slot${index}Label`);
-  const rawStartAt = formData.get(`slot${index}StartAt`) ?? formData.get(`slot${index}Iso`);
-  const startAt = typeof rawStartAt === 'string' ? rawStartAt : '';
-  if (!startAt) return null;
-  const label =
-    typeof rawLabel === 'string' && rawLabel.trim()
-      ? rawLabel.trim()
-      : `Preferred slot ${index}`;
-  return { label, startAt };
+function sanitizeSlots(raw: unknown): QuoteApprovalSlot[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((slot) => {
+      if (!slot || typeof slot !== 'object') return null;
+      const label = typeof (slot as { label?: unknown }).label === 'string' ? slot.label.trim() : '';
+      const startAt =
+        typeof (slot as { startAt?: unknown }).startAt === 'string' ? slot.startAt.trim() : '';
+      if (!label || !startAt) return null;
+      return { label, startAt };
+    })
+    .filter((slot): slot is QuoteApprovalSlot => Boolean(slot));
+}
+
+function sanitizePhotoUrls(raw: unknown): string[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((url) => (typeof url === 'string' ? url.trim() : ''))
+    .filter((url) => /^https?:\/\//i.test(url))
+    .slice(0, 5);
 }
 
 function parseSlotsFromText(slotsText: string): QuoteApprovalSlot[] {
@@ -57,50 +67,47 @@ export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
   try {
-    const formData = await req.formData();
+    const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
+    if (!body) {
+      return NextResponse.json({ ok: false, error: 'Invalid request body' }, { status: 400 });
+    }
 
-    const name = String(formData.get('name') || '');
-    const email = String(formData.get('email') || '');
-    const phone = String(formData.get('phone') || '');
-    const contactPref = String(formData.get('contactPref') || 'email');
-    const notes = String(formData.get('notes') || '');
-    const consent = formData.get('consent');
-    const lang = String(formData.get('lang') || 'en');
-    const hairstyleId = String(formData.get('hairstyleId') || '');
-    const answersRaw = String(formData.get('answers') || '{}');
-    const slotsText = String(formData.get('slots') || '');
+    const name = typeof body.name === 'string' ? body.name : '';
+    const email = typeof body.email === 'string' ? body.email : '';
+    const phone = typeof body.phone === 'string' ? body.phone : '';
+    const contactPref = typeof body.contactPref === 'string' ? body.contactPref : 'email';
+    const notes = typeof body.notes === 'string' ? body.notes : '';
+    const consent = body.consent;
+    const lang = typeof body.lang === 'string' ? body.lang : 'en';
+    const hairstyleId = typeof body.hairstyleId === 'string' ? body.hairstyleId : '';
+    const answersRaw = body.answers ?? '{}';
+    const slotsText = typeof body.slotsText === 'string' ? body.slotsText : '';
+    const requestType = typeof body.requestType === 'string' ? body.requestType : undefined;
+    const structuredSlotInput = sanitizeSlots(body.slots);
+    const photoUrls = sanitizePhotoUrls(body.photoUrls);
 
-    if (!name || !email || !consent) {
+    const hasConsent =
+      typeof consent === 'string' ? consent.toLowerCase() === 'true' : Boolean(consent);
+
+    if (!name || !email || !hasConsent) {
       return NextResponse.json({ ok: false, error: 'Missing required fields' }, { status: 400 });
     }
 
     let answers: unknown;
-    try {
-      answers = JSON.parse(answersRaw);
-    } catch {
+    if (typeof answersRaw === 'string') {
+      try {
+        answers = JSON.parse(answersRaw);
+      } catch {
+        answers = answersRaw;
+      }
+    } else {
       answers = answersRaw;
     }
-
-    const photoFiles = formData.getAll('photos') as File[];
-    const attachments = await Promise.all(
-      photoFiles.slice(0, 3).map(async (file, idx) => {
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-        return {
-          filename: file.name || `photo-${idx + 1}.jpg`,
-          content: buffer.toString('base64'),
-          contentType: file.type || 'image/jpeg',
-        };
-      })
-    );
-
-    const structuredSlots: QuoteApprovalSlot[] = [];
-    for (let i = 1; i <= 3; i += 1) {
-      const slot = parseSlotFromFormData(formData, i);
-      if (slot) structuredSlots.push(slot);
-    }
+    const structuredSlots = structuredSlotInput;
     const fallbackSlots = structuredSlots.length === 0 ? parseSlotsFromText(slotsText) : [];
-    const slots = (structuredSlots.length > 0 ? structuredSlots : fallbackSlots).filter((slot) => !!slot.startAt);
+    const slots = (structuredSlots.length > 0 ? structuredSlots : fallbackSlots).filter(
+      (slot) => !!slot.startAt
+    );
 
     const serviceVariationId =
       (hairstyleId && SERVICE_ID_BY_HAIRSTYLE[hairstyleId]) || process.env.SQUARE_HAIR_CONSULT_SERVICE_ID;
@@ -120,6 +127,7 @@ export async function POST(req: NextRequest) {
           notes,
           hairstyleId,
           serviceVariationId,
+          photoUrls,
         };
         approvalLinks = slots.map((slot, index) => {
           const payload: QuoteApprovalPayload = { ...commonFields, slot };
@@ -158,10 +166,23 @@ export async function POST(req: NextRequest) {
       'Preferred days / times / Días y horarios preferidos:',
     ];
 
+    if (requestType) {
+      textLines.splice(4, 0, `Request type / Tipo de solicitud: ${requestType}`);
+    }
+
     if (approvalLinks.length > 0) {
       textLines.push(...approvalLinks.map((link) => `- ${link.label}: ${link.approveUrl}`));
     } else {
       textLines.push(slotsText || '(not specified)');
+    }
+
+    textLines.push('', 'Photos / Fotos:');
+    if (photoUrls.length > 0) {
+      photoUrls.forEach((url, index) => {
+        textLines.push(`- Photo ${index + 1}: ${url}`);
+      });
+    } else {
+      textLines.push('- (none)');
     }
 
     const htmlApprovalList =
@@ -192,6 +213,22 @@ export async function POST(req: NextRequest) {
             .join('')
         : `<li style="margin-bottom: 16px;">${escapeHtml(slotsText || 'No preferred slots provided')}</li>`;
 
+    const htmlPhotoGallery =
+      photoUrls.length > 0
+        ? photoUrls
+            .map(
+              (url) => `
+        <div style="margin-bottom: 16px;">
+          <img src="${escapeHtml(url)}" alt="Client reference photo" style="max-width: 100%; border-radius: 8px;" />
+          <div style="margin-top: 4px;">
+            <a href="${escapeHtml(url)}" style="color:#d5a4a0; font-size:12px; text-decoration:underline;">View full size</a>
+          </div>
+        </div>
+      `
+            )
+            .join('')
+        : `<p style="font-size: 14px; color: #6b7280;">No reference photos provided.</p>`;
+
     const html = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.5; color: #1f2933;">
         <h2 style="font-size: 20px; margin-bottom: 16px;">New hair consultation request</h2>
@@ -200,8 +237,12 @@ export async function POST(req: NextRequest) {
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
         <p><strong>Phone / Teléfono:</strong> ${escapeHtml(phone || 'N/A')}</p>
         <p><strong>Preferred contact / Preferencia de contacto:</strong> ${escapeHtml(contactPref)}</p>
+        ${requestType ? `<p><strong>Request type / Tipo de solicitud:</strong> ${escapeHtml(requestType)}</p>` : ''}
         <p><strong>Language / Idioma:</strong> ${escapeHtml(lang)}</p>
         <p><strong>Selected hairstyle id:</strong> ${escapeHtml(hairstyleId || 'N/A')}</p>
+
+        <h3 style="margin-top: 24px; font-size: 16px;">Reference photos / Fotos de referencia</h3>
+        ${htmlPhotoGallery}
         
         <h3 style="margin-top: 24px; font-size: 16px;">Preferred days / times / Días y horarios preferidos</h3>
         <ul style="padding-left: 0; list-style: none; margin: 0;">
@@ -225,7 +266,6 @@ export async function POST(req: NextRequest) {
         subject,
         html,
         text: textLines.join('\n'),
-        attachments,
       });
     } else if (!quoteInboxEmail) {
       console.error('QUOTE_INBOX_EMAIL not set');

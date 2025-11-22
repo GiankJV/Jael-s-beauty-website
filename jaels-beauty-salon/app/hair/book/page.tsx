@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLang } from "@/context/LanguageContext";
+import type { QuoteApprovalSlot } from "@/types/quoteApproval";
 
  type ContactPref = "email" | "whatsapp" | "sms";
  type Slot = { date: Date | null; time: string };
@@ -23,6 +24,20 @@ const TIME_OPTIONS = [
   "03:30 PM",
   "05:00 PM",
 ];
+
+function combineDateAndTimeToIso(date: Date, time: string): string | null {
+  const match = time.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return null;
+  let hours = parseInt(match[1], 10);
+  const minutes = parseInt(match[2], 10);
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+  const period = match[3].toUpperCase();
+  if (period === "PM" && hours !== 12) hours += 12;
+  if (period === "AM" && hours === 12) hours = 0;
+  const composed = new Date(date);
+  composed.setHours(hours, minutes, 0, 0);
+  return composed.toISOString();
+}
 
 export default function HairBookingPage() {
   const { lang } = useLang();
@@ -48,24 +63,33 @@ export default function HairBookingPage() {
 
   const formatSlotsForSubmission = () => {
     const locale = lang === "en" ? "en-US" : "es-MX";
-    const lines = slots
-      .map((slot, idx) => {
-        if (!slot.date && !slot.time) return null;
-        const dateText = slot.date
-          ? slot.date.toLocaleDateString(locale, {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })
-          : lang === "en"
-          ? "No date selected"
-          : "Sin fecha";
-        const timeText = slot.time || (lang === "en" ? "No time selected" : "Sin hora");
-        return `Slot ${idx + 1}: ${dateText} ${timeText}`;
-      })
-      .filter(Boolean);
+    const lines: string[] = [];
+    const slotOptions: QuoteApprovalSlot[] = [];
 
-    return lines.join("\n");
+    slots.forEach((slot, idx) => {
+      if (!slot.date && !slot.time) return;
+      const dateText = slot.date
+        ? slot.date.toLocaleDateString(locale, {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })
+        : lang === "en"
+        ? "No date selected"
+        : "Sin fecha";
+      const timeText = slot.time || (lang === "en" ? "No time selected" : "Sin hora");
+      const label = `Slot ${idx + 1}: ${dateText} ${timeText}`;
+      lines.push(label);
+
+      if (slot.date && slot.time) {
+        const iso = combineDateAndTimeToIso(slot.date, slot.time);
+        if (iso) {
+          slotOptions.push({ label, startAt: iso });
+        }
+      }
+    });
+
+    return { slotsText: lines.join("\n"), slotOptions };
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -84,26 +108,30 @@ export default function HairBookingPage() {
     setError(null);
 
     try {
-      const data = new FormData();
-      data.append("name", name);
-      data.append("email", email);
-      data.append("phone", phone);
-      data.append("contactPref", contactPref);
-      data.append(
-        "notes",
-        notes ||
+      const { slotsText, slotOptions } = formatSlotsForSubmission();
+      const payload = {
+        name,
+        email,
+        phone,
+        contactPref,
+        notes:
+          notes ||
           (lang === "en"
             ? "Returning hair client scheduling request."
-            : "Solicitud de horario para clienta/o de cabello que regresa.")
-      );
-      data.append("lang", lang);
-      data.append("consent", "true");
-      data.append("requestType", "returning-hair");
+            : "Solicitud de horario para clienta/o de cabello que regresa."),
+        lang,
+        consent: true,
+        requestType: "returning-hair",
+        slotsText,
+        slots: slotOptions,
+        photoUrls: [] as string[],
+      };
 
-      const slotsText = formatSlotsForSubmission();
-      if (slotsText) data.append("slots", slotsText);
-
-      const res = await fetch("/api/quote", { method: "POST", body: data });
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
       if (!res.ok) throw new Error("Request failed");
 
       setSuccess(true);

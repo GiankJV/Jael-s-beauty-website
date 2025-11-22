@@ -14,8 +14,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useLang } from '@/context/LanguageContext';
 import PhotoDropzone from '@/components/PhotoDropzone';
 import SquareBookingEmbed from '@/components/SquareBookingEmbed';
+import { uploadToCloudinary } from '@/lib/uploadToCloudinary';
 
 import type { VisionAnswers } from '@/lib/visionQuiz';
+import type { QuoteApprovalSlot } from '@/types/quoteApproval';
 
 type ContactPref = 'email' | 'whatsapp' | 'sms';
 type Slot = { date: Date | null; time: string };
@@ -37,6 +39,20 @@ const TIME_OPTIONS = [
   '03:30 PM',
   '05:00 PM',
 ];
+
+function combineDateAndTimeToIso(date: Date, time: string): string | null {
+  const match = time.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return null;
+  let hours = parseInt(match[1], 10);
+  const minutes = parseInt(match[2], 10);
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+  const period = match[3].toUpperCase();
+  if (period === 'PM' && hours !== 12) hours += 12;
+  if (period === 'AM' && hours === 12) hours = 0;
+  const composed = new Date(date);
+  composed.setHours(hours, minutes, 0, 0);
+  return composed.toISOString();
+}
 
 export default function QuoteRequestFlow() {
   const { lang } = useLang();
@@ -73,26 +89,35 @@ export default function QuoteRequestFlow() {
     return JSON.stringify(answers);
   }, [answers]);
 
-  const formatSlotsForSubmission = () => {
+  const buildSlotDetails = () => {
     const locale = lang === 'en' ? 'en-US' : 'es-MX';
-    const lines = slots
-      .map((slot, idx) => {
-        if (!slot.date && !slot.time) return null;
-        const dateText = slot.date
-          ? slot.date.toLocaleDateString(locale, {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
-            })
-          : lang === 'en'
-          ? 'No date selected'
-          : 'Sin fecha';
-        const timeText = slot.time || (lang === 'en' ? 'No time selected' : 'Sin hora');
-        return `Slot ${idx + 1}: ${dateText} ${timeText}`;
-      })
-      .filter(Boolean);
+    const lines: string[] = [];
+    const slotOptions: QuoteApprovalSlot[] = [];
 
-    return lines.join('\n');
+    slots.forEach((slot, idx) => {
+      if (!slot.date && !slot.time) return;
+      const dateText = slot.date
+        ? slot.date.toLocaleDateString(locale, {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          })
+        : lang === 'en'
+        ? 'No date selected'
+        : 'Sin fecha';
+      const timeText = slot.time || (lang === 'en' ? 'No time selected' : 'Sin hora');
+      const label = `Slot ${idx + 1}: ${dateText} ${timeText}`;
+      lines.push(label);
+
+      if (slot.date && slot.time) {
+        const iso = combineDateAndTimeToIso(slot.date, slot.time);
+        if (iso) {
+          slotOptions.push({ label, startAt: iso });
+        }
+      }
+    });
+
+    return { slotsText: lines.join('\n'), slotOptions };
   };
 
   const handleSubmit = async () => {
@@ -111,30 +136,43 @@ export default function QuoteRequestFlow() {
     try {
       const [firstName, ...restName] = name.trim().split(/\s+/);
       const lastName = restName.join(' ');
-      const slotsText = formatSlotsForSubmission();
+      const { slotsText, slotOptions } = buildSlotDetails();
 
-      const data = new FormData();
-      data.append('name', name);
-      data.append('email', email);
-      data.append('phone', phone);
-      data.append('contactPref', contactPref);
-      data.append('notes', notes);
-      data.append('lang', lang);
-      if (hairstyleId) data.append('hairstyleId', hairstyleId);
-      if (sanitizedAnswers) data.append('answers', sanitizedAnswers);
-      if (consent) data.append('consent', 'true');
-
-      files.slice(0, 3).forEach((file) => {
-        data.append('photos', file);
-      });
-
-      if (slotsText) {
-        data.append('slots', slotsText);
+      const limitedFiles = files.slice(0, 3);
+      let photoUrls: string[] = [];
+      if (limitedFiles.length > 0) {
+        try {
+          photoUrls = await Promise.all(limitedFiles.map((file) => uploadToCloudinary(file)));
+        } catch (uploadErr) {
+          console.error('Cloudinary upload failed', uploadErr);
+          setError(
+            lang === 'en'
+              ? 'We could not upload your photos. Please try again.'
+              : 'No pudimos subir tus fotos. Inténtalo nuevamente.'
+          );
+          return;
+        }
       }
+
+      const payload = {
+        name,
+        email,
+        phone,
+        contactPref,
+        notes,
+        lang,
+        hairstyleId,
+        answers: sanitizedAnswers,
+        consent: true,
+        slotsText,
+        slots: slotOptions,
+        photoUrls,
+      };
 
       const res = await fetch('/api/quote', {
         method: 'POST',
-        body: data,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -142,6 +180,7 @@ export default function QuoteRequestFlow() {
       }
 
       setStep(4);
+      setFiles([]);
 
       // Best-effort Square sync; errors are logged only
       const hairGoals = [notes, sanitizedAnswers ? `Quiz: ${sanitizedAnswers}` : null, slotsText]

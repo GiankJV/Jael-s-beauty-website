@@ -3,6 +3,8 @@
 import { FormEvent, useState } from 'react';
 import { useLang } from '@/context/LanguageContext';
 import type { VisionAnswers } from '@/lib/visionQuiz';
+import type { QuoteApprovalSlot } from '@/types/quoteApproval';
+import { uploadToCloudinary } from '@/lib/uploadToCloudinary';
 
 type Props = {
   open: boolean;
@@ -33,17 +35,41 @@ export default function QuoteRequestModal({
     try {
       const form = e.currentTarget;
       const data = new FormData(form);
-      files.slice(0, 3).forEach((file) => {
-        data.append('photos', file);
-      });
+      const limitedFiles = files.slice(0, 3);
+      let photoUrls: string[] = [];
+      if (limitedFiles.length > 0) {
+        try {
+          photoUrls = await Promise.all(limitedFiles.map((file) => uploadToCloudinary(file)));
+        } catch (uploadErr) {
+          console.error('Cloudinary upload failed', uploadErr);
+          setError(
+            lang === 'en'
+              ? 'We could not upload your photos. Please try again.'
+              : 'No pudimos subir tus fotos. Inténtalo nuevamente.'
+          );
+          return;
+        }
+      }
 
-      data.append('lang', lang);
-      if (selectedHairstyleId) data.append('hairstyleId', selectedHairstyleId);
-      data.append('answers', JSON.stringify(answers));
+      const payload = {
+        name: String(data.get('name') || ''),
+        email: String(data.get('email') || ''),
+        phone: String(data.get('phone') || ''),
+        contactPref: String(data.get('contactPref') || 'email'),
+        notes: String(data.get('notes') || ''),
+        lang,
+        hairstyleId: selectedHairstyleId || '',
+        answers: JSON.stringify(answers),
+        consent: Boolean(data.get('consent')),
+        slotsText: String(data.get('preferredTimes') || ''),
+        slots: [] as QuoteApprovalSlot[],
+        photoUrls,
+      };
 
       const res = await fetch('/api/quote', {
         method: 'POST',
-        body: data,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
