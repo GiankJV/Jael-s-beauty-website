@@ -29,6 +29,18 @@ export default function HomePageClient() {
         opens: '08:00',
         closes: '18:00',
       },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Saturday'],
+        opens: '08:00',
+        closes: '15:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Sunday'],
+        opens: '00:00',
+        closes: '00:00',
+      },
     ],
     areaServed: 'Biloxi, MS and surrounding 100 miles',
     sameAs: ['https://www.facebook.com/Jaels3beautysalon/about'],

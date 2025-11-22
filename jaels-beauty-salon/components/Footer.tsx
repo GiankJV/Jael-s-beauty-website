@@ -21,10 +21,12 @@ export default function Footer() {
           <p>Jael’s Beauty Salon</p>
           <p>729 E Pass Rd h</p>
           <p>Gulfport, MS 39507</p>
-          <p className="mt-4">
-            <strong>{lang === 'en' ? 'Hours:' : 'Horario:'}</strong>{' '}
-            {lang === 'en' ? 'Mon–Fri, 8 am–6 pm' : 'Lun–Vie, 8 am–6 pm'}
-          </p>
+          <div className="mt-4 text-sm space-y-1">
+            <p><strong>{lang === 'en' ? 'Hours:' : 'Horario:'}</strong></p>
+            <p>- Monday – Friday: 8:00 AM – 6:00 PM (by appointment only)</p>
+            <p>- Saturday: 8:00 AM – 3:00 PM (by appointment only)</p>
+            <p>- Sunday: Closed</p>
+          </div>
         </div>
         {/* Map embed */}
         <div>

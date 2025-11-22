@@ -42,11 +42,12 @@ export default function ContactPage() {
           <h2 className="font-display text-xl mt-4 mb-2">
             {lang === 'en' ? 'Hours' : 'Horario'}
           </h2>
-          <p>
-            {lang === 'en'
-              ? 'Mon–Fri, 8 am–6 pm (by appointment only)'
-              : 'Lunes a viernes, 8 am–6 pm (solo con cita)'}
-          </p>
+          <div className="text-sm space-y-1">
+            <p>Hours</p>
+            <p>- Monday – Friday: 8:00 AM – 6:00 PM (by appointment only)</p>
+            <p>- Saturday: 8:00 AM – 3:00 PM (by appointment only)</p>
+            <p>- Sunday: Closed</p>
+          </div>
 
           <h2 className="font-display text-xl mt-4 mb-2">
             {lang === 'en' ? 'Visit us' : 'Visítanos'}
