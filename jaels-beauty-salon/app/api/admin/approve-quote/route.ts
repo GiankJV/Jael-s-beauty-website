@@ -3,7 +3,6 @@ import { decodeApprovalPayload } from '@/lib/approvalPayload';
 import { randomUUID } from 'crypto';
 
 const { SQUARE_ACCESS_TOKEN, SQUARE_LOCATION_ID, SQUARE_HAIR_CONSULT_SERVICE_ID } = process.env;
-const staffId = process.env.SQUARE_HAIR_CONSULT_STAFF_ID;
 
 function normalizePhone(phone?: string): string | undefined {
   if (!phone) return undefined;
@@ -136,18 +135,24 @@ export async function GET(req: NextRequest) {
 
   let bookingId: string | undefined;
   try {
+    const appointmentSegment: Record<string, unknown> = {
+      duration_minutes: 30,
+      service_variation_id: serviceVariationId,
+      team_member_id: 'TMNhiEc9dMeUyW1d',
+    };
+
+    if (data.serviceVariationVersion) {
+      appointmentSegment.service_variation_version = data.serviceVariationVersion;
+    }
+
     const bookingPayload = {
       idempotency_key: randomUUID(),
-      customer_id: customerId,
-      location_id: SQUARE_LOCATION_ID,
-      start_at: startAt,
-      appointment_segments: [
-        {
-          duration_minutes: 30,
-          service_variation_id: serviceVariationId,
-          team_member_id: staffId,
-        },
-      ],
+      booking: {
+        customer_id: customerId,
+        location_id: SQUARE_LOCATION_ID!,
+        start_at: startAt,
+        appointment_segments: [appointmentSegment],
+      },
     };
 
     const bookingRes = await fetch('https://connect.squareup.com/v2/bookings', {
