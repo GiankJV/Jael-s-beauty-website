@@ -2,15 +2,11 @@
 
 import { useState } from "react";
 
-type Lang = "en" | "es";
-
 export type StarRatingProps = {
-  value: number; // 1–5
+  value: number;
   onChange: (value: number) => void;
-  lang: Lang;
+  lang: "en" | "es";
 };
-
-const STAR_COUNT = 5;
 
 export default function StarRating({ value, onChange, lang }: StarRatingProps) {
   const [poppingStar, setPoppingStar] = useState<number | null>(null);
@@ -19,13 +15,17 @@ export default function StarRating({ value, onChange, lang }: StarRatingProps) {
     onChange(starValue);
     setPoppingStar(starValue);
 
-    setTimeout(() => setPoppingStar(null), 160);
+    // brief “pop” animation
+    setTimeout(() => setPoppingStar(null), 180);
   };
 
+  const pink = "#d99393";
+  const grey = "#e2d8d8";
+
   return (
-    <div className="inline-flex flex-col gap-1">
-      <div className="flex items-center">
-        {Array.from({ length: STAR_COUNT }, (_, i) => {
+    <div className="flex items-center gap-3">
+      <div className="flex gap-1">
+        {Array.from({ length: 5 }, (_, i) => {
           const starValue = i + 1;
           const isActive = starValue <= value;
           const isPopping = poppingStar === starValue;
@@ -35,29 +35,36 @@ export default function StarRating({ value, onChange, lang }: StarRatingProps) {
               key={starValue}
               type="button"
               onClick={() => handleClick(starValue)}
-              className={[
-                "mx-0.5 text-2xl md:text-3xl",
-                "transition-transform duration-150",
-                "focus:outline-none",
-                "cursor-pointer select-none",
-                isPopping ? "scale-125" : "scale-100",
-                isActive ? "text-[#d99393]" : "text-[#e3d3d0]",
-              ].join(" ")}
+              className="relative h-8 w-8 flex items-center justify-center focus:outline-none"
               aria-label={
-                lang === "es"
-                  ? `Calificación ${starValue} de 5`
-                  : `Rating ${starValue} out of 5`
+                lang === "en"
+                  ? `${starValue} star${starValue > 1 ? "s" : ""}`
+                  : `${starValue} estrella${starValue > 1 ? "s" : ""}`
               }
             >
-              ★
+              {/* Pop ring */}
+              <span
+                className={`pointer-events-none absolute inset-0 rounded-full border transition duration-150 ease-out opacity-0 scale-75 ${
+                  isPopping ? "opacity-100 scale-125" : ""
+                }`}
+                style={{ borderColor: pink }}
+              />
+
+              {/* Star */}
+              <span
+                className={`text-2xl transition-transform duration-150 ease-out ${
+                  isPopping ? "scale-125" : "scale-100"
+                }`}
+                style={{ color: isActive ? pink : grey }}
+              >
+                {isActive ? "★" : "☆"}
+              </span>
             </button>
           );
         })}
       </div>
 
-      <span className="text-xs text-slate-500">
-        {value}/{STAR_COUNT}
-      </span>
+      <span className="text-xs text-slate-500">{value}/5</span>
     </div>
   );
 }
