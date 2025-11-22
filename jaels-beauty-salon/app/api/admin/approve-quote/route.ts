@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { decodeApprovalPayload } from '@/lib/approvalPayload';
 import { randomUUID } from 'crypto';
+import type { QuoteApprovalPayload } from '@/types/quoteApproval';
 
 const { SQUARE_ACCESS_TOKEN, SQUARE_LOCATION_ID, SQUARE_HAIR_CONSULT_SERVICE_ID } = process.env;
 
@@ -22,7 +23,7 @@ export async function GET(req: NextRequest) {
   if (!payloadParam) {
     return html('<h1>Missing approval payload.</h1>', 400);
   }
-  const data = decodeApprovalPayload(payloadParam);
+  const data = decodeApprovalPayload(payloadParam) as QuoteApprovalPayload | null;
   if (!data) {
     return html('<h1>Invalid or expired approval link.</h1>', 400);
   }
@@ -43,7 +44,9 @@ export async function GET(req: NextRequest) {
   };
 
   const serviceVariationId =
-    (data.hairstyleId && SERVICE_ID_BY_HAIRSTYLE[data.hairstyleId]) || SQUARE_HAIR_CONSULT_SERVICE_ID;
+    data.serviceVariationId ||
+    (data.hairstyleId && SERVICE_ID_BY_HAIRSTYLE[data.hairstyleId]) ||
+    SQUARE_HAIR_CONSULT_SERVICE_ID;
 
   if (!serviceVariationId) {
     console.error('Missing Square service variation ID for hairstyle', data.hairstyleId);
@@ -114,14 +117,18 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // Pick start time from slotsText if possible, else fallback to +7 days 10:00 local-ish UTC
-  let startAt: string;
+  // Pick start time from approved slot if available, else fallback to parsed slotsText or default time.
   const fallback = new Date();
   fallback.setDate(fallback.getDate() + 7);
   fallback.setHours(15, 0, 0, 0); // 10am CT ~ 15:00 UTC
-  startAt = fallback.toISOString();
+  let startAt = fallback.toISOString();
 
-  if (typeof data.slotsText === 'string') {
+  if (data.slot?.startAt) {
+    const parsedSlot = new Date(data.slot.startAt);
+    if (!isNaN(parsedSlot.getTime())) {
+      startAt = parsedSlot.toISOString();
+    }
+  } else if (typeof data.slotsText === 'string') {
     const lines = data.slotsText.split('\n').map((l: string) => l.trim()).filter(Boolean);
     for (const line of lines) {
       const cleaned = line.replace(/Slot \\d:\\s*/i, '');
@@ -135,10 +142,12 @@ export async function GET(req: NextRequest) {
 
   let bookingId: string | undefined;
   try {
+    const durationMinutes = 30;
+    const serviceVariationVersion = 1763518047249;
     const appointmentSegment = {
-      duration_minutes: 30,
+      duration_minutes: durationMinutes,
       service_variation_id: serviceVariationId,
-      service_variation_version: 1763518047249,
+      service_variation_version: serviceVariationVersion,
       team_member_id: 'TMNhiEc9dMeUyW1d',
     };
 
