@@ -33,6 +33,27 @@ Your website is ready to deploy! Here are the steps:
    vercel --prod
    ```
 
+### Manual SQL: Reviews Table
+
+Run this SQL snippet once in your Vercel Postgres database to provision the `reviews` table used by the site:
+
+```sql
+CREATE TABLE reviews (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT,
+  rating INT,
+  service TEXT,
+  message TEXT NOT NULL,
+  permission_to_publish BOOLEAN NOT NULL DEFAULT FALSE,
+  status TEXT NOT NULL DEFAULT 'pending', -- pending | approved | rejected
+  token TEXT NOT NULL,
+  lang TEXT,
+  source TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
 ### Option 2: Deploy via Vercel Web Interface
 
 1. **Push your code to GitHub:**
@@ -66,4 +87,3 @@ After deployment, you can add a custom domain in the Vercel dashboard:
 - [ ] Test booking functionality
 - [ ] Verify all pages load correctly
 - [ ] Check mobile responsiveness
-
